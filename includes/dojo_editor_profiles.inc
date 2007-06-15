@@ -58,6 +58,12 @@ function _dojo_editor_profiles_menu(&$items, $may_cache) {
  * Loads all profiles or a specific profile.
  */
 function _dojo_editor_profiles_load($profile_name = NULL) {
+	static $profiles;
+
+	if (isset($profiles)) {
+		return $profile_name ? $profiles[$profile_name] : $profiles;
+	}
+
 	$results = db_query('SELECT P.name, P.weight, P.settings, R.rid FROM {dojo_editor_profiles} P JOIN {dojo_editor_roles} R ON P.name = R.name' . ($profile_name ? " WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight');
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {

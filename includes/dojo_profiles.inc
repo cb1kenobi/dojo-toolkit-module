@@ -33,12 +33,17 @@ function _dojo_profiles_menu(&$items, $may_cache) {
 function _dojo_profiles_form($type = NULL, $action = NULL) {
 	$form = array();
 
+	$profile_name = '';
+	for ($i = 5; arg($i) != NULL; $i++) {
+		$profile_name .= ($i > 5 ? '/' : '') . urldecode(arg($i));
+	}
+
 	switch ($type) {
 		case 'config':
-			_dojo_config_profiles_form($form, $action, urldecode(arg(5)));
+			_dojo_config_profiles_form($form, $action, $profile_name);
 			break;
 		case 'editor':
-			_dojo_editor_profiles_form($form, $action, urldecode(arg(5)));
+			_dojo_editor_profiles_form($form, $action, $profile_name);
 			break;
 		default:
 			_dojo_config_profiles_list($form);

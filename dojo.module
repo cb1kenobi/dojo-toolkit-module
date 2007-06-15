@@ -35,6 +35,13 @@ function dojo_perm() {
 }
 
 /**
+ * Implementation of hook_requirements
+ */
+function dojo_requirements() {
+	return array("dojo" => array('title' => 'Dojo Toolkit', 'severity' => 1, 'value' => '<span id="dojo_version">Javascript not enabled.</span><script type="text/javascript">(function(){var e=document.getElementById("dojo_version"),p=e.parentNode.parentNode;var m="Dojo not found! Make sure the build for your config profile is valid.";var s="error";if(typeof dojo!="undefined"){m=dojo.version.toString();s="ok";}e.innerHTML=m;p.className=p.className.replace(/warning/ig,s);})();</script>'));
+}
+
+/**
  * Implementation of hook_elements
  */
 function dojo_elements() {
@@ -61,7 +68,7 @@ function dojo_menu($may_cache) {
 			'description' => t('Configure Dojo profiles and utilities.'),
 			'callback' => 'drupal_get_form',
 			'callback arguments' => array('_dojo_profiles_form'),
-			'access' => user_access('administer filters'),
+			'access' => user_access('administer filters')
 		);
 	} else {
 		// force Dojo to load on all pages
@@ -113,6 +120,13 @@ function dojo_require_js($package) {
 		dojo_add_js('dojo.require("' . $package . '");', 'inline');
 		$dojo_loaded_packages[$package] = $package;
 	}
+}
+
+/**
+ * Helper function to register dojo module paths
+ */
+function dojo_register_module_path_js($module, $path) {
+	dojo_add_js('dojo.registerModulePath("' . $module . '", location.protocol+"//"+location.host+"/' . $path . '");', 'inline');
 }
 
 /**

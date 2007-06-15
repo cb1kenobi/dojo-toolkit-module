@@ -31,6 +31,12 @@ function _dojo_config_profiles_menu(&$items, $may_cache) {
  * Loads all profiles or a specific profile.
  */
 function _dojo_config_profiles_load($profile_name = NULL) {
+	static $profiles;
+
+	if (isset($profiles)) {
+		return $profile_name ? $profiles[$profile_name] : $profiles;
+	}
+
 	$results = db_query('SELECT P.name, P.weight, P.settings, R.rid FROM {dojo_config_profiles} P JOIN {dojo_config_roles} R ON P.name = R.name' . ($profile_name ? " WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight');
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {
@@ -206,6 +212,19 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 				'#default_value' => isset($profile['loadjQuery']) ? $profile['loadjQuery'] : 1,
 				'#options' => array(t('Only load Dojo'), t('Load both Dojo and jQuery')),
 				'#description' => t('<p>Note: There are some areas that use jQuery and cannot be updated to use Dojo.  If you choose to only load Dojo, then jQuery will be automatically loaded on those pages which require jQuery.</p>')
+			);
+
+			$override_jquery = array('editor', 'collapsiblepane', 'autocomplete');
+			if ($action == 'edit' && $profile_name) {
+				$override_jquery = isset($profile['override_jquery']) ? $profile['override_jquery'] : array();
+			}
+
+			$form['toolkits']['override_jquery'] = array(
+				'#type' => 'checkboxes',
+				'#title' => t('Override jQuery form elements'),
+				'#default_value' => $override_jquery,
+				'#options' => array('editor' => 'Resizable textareas/rich text editor', 'collapsiblepane' => 'Collapsible panes/fieldsets', 'autocomplete' => 'Autocomplete fields'),
+				'#description' =>  t('Keeping the original jQuery form elements will automatically load jQuery even if you chose to only load Dojo.')
 			);
 
 			$form['build'] = array(
@@ -395,7 +414,7 @@ function _dojo_config_profiles_config_handler() {
 	echo 'var host=location.protocol+"//"+location.host;';
 
 	// render the djConfig
-	echo 'var djConfig = {modulePaths:{"dojo":"' . substr($dojo_js, 0, strrpos($dojo_js, '/')) . '/src",';
+	echo 'var djConfig={modulePaths:{"dojo":"' . substr($dojo_js, 0, strrpos($dojo_js, '/')) . '/src",';
 	echo '"drupal":host+"/' . $dojo_module_path . '/drupal"';
 
 	// scan the site folder for any dojo module paths we should include

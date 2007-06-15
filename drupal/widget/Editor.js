@@ -24,8 +24,6 @@ dojo.widget.defineWidget(
 		widgetType: "Editor",
 
 		// params
-		profile: "",
-		revision: "1",
 		showToggle: true,
 		defaultState: false,
 
@@ -141,7 +139,7 @@ dojo.widget.defineWidget(
 						focusOnLoad: true,
 						minHeight: "10em",
 						editingAreaStyleSheets: this._styleSheets,
-						toolbarTemplatePath: "/dojo/toolbar" + (this.profile ? '/' + escape(this.profile) : '') + '/' + this.revision,
+						toolbarTemplatePath: "/dojo/toolbar",
 						contentPreFilters: [ function(txt) { return txt.replace(/\n/g, "<br/>"); } ],
 						contentPostFilters: [ function(txt) { return txt.replace(/\<br\s*\/?\>/ig, "\n"); } ]
 					},
