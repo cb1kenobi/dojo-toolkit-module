@@ -64,7 +64,9 @@ function _dojo_editor_profiles_load($profile_name = NULL) {
 		return $profile_name ? $profiles[$profile_name] : $profiles;
 	}
 
-	$results = db_query('SELECT P.name, P.weight, P.settings, R.rid FROM {dojo_editor_profiles} P JOIN {dojo_editor_roles} R ON P.name = R.name' . ($profile_name ? " WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight');
+	global $user;
+	$results = db_query('SELECT P.name, P.weight, P.settings, R.rid FROM {dojo_editor_profiles} P JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight", implode(',', array_keys($user->roles)));
+
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {
 		if (!isset($profiles[$data->name])) {
@@ -87,7 +89,7 @@ function _dojo_editor_profiles_list(&$form) {
 	$form['editor_profiles'] = array(
 		'#type' => 'fieldset',
 		'#title' => t('Dojo Editor Profiles'),
-		'#description' => t('<p>Editor profiles allow you associate editor settings to specific pages, fields and access roles.  Editor settings include which toolbar commands are visible and visibility options.</p><p><a href="/admin/settings/dojo/editor/add">Add new editor profile</a></p>')
+		'#description' => t('<p>Editor profiles allow you associate editor settings to specific pages, fields and access roles.  Editor settings include which toolbar commands are visible and visibility options.</p><p><a href="dojo/editor/add">Add new editor profile</a></p>')
 	);
 
 	$profiles = _dojo_editor_profiles_load();

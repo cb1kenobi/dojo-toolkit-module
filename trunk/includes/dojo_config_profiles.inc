@@ -37,7 +37,9 @@ function _dojo_config_profiles_load($profile_name = NULL) {
 		return $profile_name ? $profiles[$profile_name] : $profiles;
 	}
 
-	$results = db_query('SELECT P.name, P.weight, P.settings, R.rid FROM {dojo_config_profiles} P JOIN {dojo_config_roles} R ON P.name = R.name' . ($profile_name ? " WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight');
+	global $user;
+	$results = db_query('SELECT P.name, P.weight, P.settings, R.rid FROM {dojo_config_profiles} P JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight", implode(',', array_keys($user->roles)));
+
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {
 		if (!isset($profiles[$data->name])) {
@@ -60,7 +62,7 @@ function _dojo_config_profiles_list(&$form) {
 	$form['config_profiles'] = array(
 		'#type' => 'fieldset',
 		'#title' => t('Dojo Config Profiles'),
-		'#description' => t('<p>Config profiles allow you to associate Dojo configurations to specific pages, fields, and access roles.</p><p><a href="/admin/settings/dojo/config/add">Add new config profile</a></p>')
+		'#description' => t('<p>Config profiles allow you to associate Dojo configurations to specific pages, fields, and access roles.</p><p><a href="dojo/config/add">Add new config profile</a></p>')
 	);
 
 	$profiles = _dojo_config_profiles_load();

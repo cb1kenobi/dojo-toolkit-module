@@ -117,7 +117,8 @@ function _dojo_process_textarea_check_page($profile = NULL) {
 	}
 	$access = isset($profile['access']) ? $profile['access'] : 1;
 	if ($access < 2) {
-		$path = drupal_get_path_alias($_GET['q']);
+		$dest = drupal_get_destination();
+		$path = urldecode(substr($dest, strpos($dest, '=') + 1));
 		$regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote($pages, '/')) .')$/';
 		return !($access xor preg_match($regexp, $path));
 	}
