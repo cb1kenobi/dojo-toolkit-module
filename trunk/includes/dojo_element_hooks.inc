@@ -11,6 +11,13 @@
  */
 function _dojo_process_fieldset($element) {
 	if ($element['#collapsible']) {
+		foreach (_dojo_config_profiles_load() as $config_profile_name => $config_profile) {
+			if (!isset($config_profile['override_jquery']) || array_search('collapsiblepane', $config_profile['override_jquery']) === FALSE) {
+				return $element;
+			}
+			break;
+		}
+
 		dojo_require_js('drupal.widget.CollapsiblePane');
 		dojo_create_widget_js($element, 'drupal:CollapsiblePane');
 
@@ -46,7 +53,7 @@ function _dojo_process_hidden($element) {
  * Submit button callback function
  */
 function _dojo_process_submit($element) {
-	if ($element['#pleaseWait']) {
+	if ($element['#please_wait']) {
 		$element['#id'] .= '_' + md5(mt_rand());
 		dojo_require_js('drupal.widget.PleaseWait');
 		dojo_create_widget_js($element, 'drupal:PleaseWait');
@@ -58,31 +65,43 @@ function _dojo_process_submit($element) {
  * Textarea callback function
  */
 function _dojo_process_textarea($element) {
-	static $profiles;
-
 	if ($element['#googleMapKeyTable']) {
 		dojo_require_js('drupal.widget.GoogleMapKeyTable');
 		dojo_create_widget_js($element, 'drupal:GoogleMapKeyTable');
 		$element['#resizable'] = FALSE;
 	} elseif ($element['#resizable'] !== FALSE) {
-		if (!$profiles) {
-			$profiles = _dojo_editor_profiles_load();
+		foreach (_dojo_config_profiles_load() as $config_profile_name => $config_profile) {
+			if (!isset($config_profile['override_jquery']) || array_search('editor', $config_profile['override_jquery']) === FALSE) {
+				return $element;
+			}
+			break;
 		}
+
+		$editor_profiles = _dojo_editor_profiles_load();
 		$element['#resizable'] = FALSE;
 
 		// find just one profile that matches
-		foreach ($profiles as $profile_name => $profile) {
-			if (_dojo_process_textarea_check_page($profile) && _dojo_process_textarea_check_field($element, $profile)) {
+		foreach ($editor_profiles as $editor_profile_name => $editor_profile) {
+			if (_dojo_process_textarea_check_page($editor_profile) && _dojo_process_textarea_check_field($element, $editor_profile)) {
+				$show_toggle = !isset($editor_profile['show_toggle']) || $editor_profile['show_toggle'] == 1;
+				$default_state = isset($editor_profile['default_state']) && $editor_profile['default_state'] == 1;
+
 				dojo_require_js('drupal.widget.Editor');
-				dojo_create_widget_js($element, 'drupal:Editor', array('profile' => $profile_name, 'revision' => (isset($profile['revision']) ? $profile['revision'] : '0'), 'showToggle' => (!isset($profile['show_toggle']) || $profile['show_toggle'] == 1), 'defaultState' => (!isset($profile['default_state']) || $profile['default_state'] == 1)));
+				dojo_create_widget_js($element, 'drupal:Editor', array('showToggle' => $show_toggle, 'defaultState' => $default_state));
+
+				$element['#resizable'] = FALSE;
 				return $element;
 			}
 		}
 
 		// if we didn't match a profile, then just create an editor for resizable purposes
-		$allow_editor = _dojo_process_textarea_check_page() && _dojo_process_textarea_check_field($element);
+		$show_toggle = _dojo_process_textarea_check_field($element);
+		if (count($editor_profiles)) {
+			$show_toggle = FALSE;
+		}
+
 		dojo_require_js('drupal.widget.Editor');
-		dojo_create_widget_js($element, 'drupal:Editor', array('showToggle' => $allow_editor));
+		dojo_create_widget_js($element, 'drupal:Editor', array('showToggle' => $show_toggle, 'defaultState' => FALSE));
 	}
 
 	return $element;
@@ -122,6 +141,13 @@ function _dojo_process_textarea_check_field($element, $profile = NULL) {
  */
 function _dojo_process_textfield($element) {
 	if ($element['#autocomplete_path']) {
+		foreach (_dojo_config_profiles_load() as $config_profile_name => $config_profile) {
+			if (!isset($config_profile['override_jquery']) || array_search('autocomplete', $config_profile['override_jquery']) === FALSE) {
+				return $element;
+			}
+			break;
+		}
+
 		dojo_require_js('drupal.widget.AutoComplete');
 		dojo_create_widget_js($element, 'drupal:AutoComplete', array('url' => check_url(url($element['#autocomplete_path']))));
 		$element['#autocomplete_path'] = FALSE;

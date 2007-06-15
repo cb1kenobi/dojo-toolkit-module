@@ -1,0 +1,12 @@
+Dojo Toolkit Module 1.1, 2007-04-17
+---------------------------------------
+- added Dojo Module status to Drupal status report
+- added dojo_register_module_path_js($module, $path) for adding Dojo module
+  paths
+- fixed by with editing profiles with a name containing a forward slash
+- added ability to disable Dojo overriding jQuery form elements
+- cleaned up deprecated code in the Editor Dojo widget
+
+Dojo Toolkit Module 1.0, 2007-04-09
+---------------------------------------
+- initial release

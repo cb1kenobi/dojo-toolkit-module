@@ -129,7 +129,7 @@ function _dojo_svn_form($form_values = NULL) {
 			);
 	
 			$form['submit'] = array(
-				'#pleaseWait' => TRUE,
+				'#please_wait' => TRUE,
 				'#type' => 'submit',
 				'#value' => t('Continue'),
 			);
@@ -161,7 +161,7 @@ function _dojo_svn_form($form_values = NULL) {
 			);
 
 			$form['submit'] = array(
-				'#pleaseWait' => TRUE,
+				'#please_wait' => TRUE,
 				'#type' => 'submit',
 				'#value' => t('Checkout'),
 			);
