@@ -1,6 +1,9 @@
 <?php
 // $Id:
 
+/**
+ * Implementation of hook_install().
+ */
 function dojo_install() {
 	switch ($GLOBALS['db_type']) {
 		case 'mysql':
@@ -64,4 +67,16 @@ function dojo_install() {
 
 function dojo_update_1() {
 	return _system_update_utf8(array('dojo_config_profiles', 'dojo_config_role', 'dojo_editor_profiles', 'dojo_editor_role'));
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function dojo_uninstall() {
+	db_query('DROP TABLE {dojo_config_profiles}');
+	db_query('DROP TABLE {dojo_config_roles}');
+	db_query('DROP TABLE {dojo_editor_profiles}');
+	db_query('DROP TABLE {dojo_editor_roles}');
+	variable_del('dojo_svn_bin');
+	variable_del('dojo_svn_url');
 }

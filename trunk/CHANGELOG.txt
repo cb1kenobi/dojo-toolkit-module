@@ -1,3 +1,13 @@
+Dojo Toolkit Module 1.2, 2007-07-04
+---------------------------------------
+- added uninstall logic
+- fixed access roles for both config and editor profiles
+- fixed visibility for both config and editor profiles
+- fixed tree images pre-loading URLs on Subversion repository page
+- added support for Dojo Toolkit 0.4.3
+- added ability to tie config profiles to pages
+- removed support for djConfig.debugAtAllCosts
+
 Dojo Toolkit Module 1.1, 2007-04-17
 ---------------------------------------
 - added Dojo Module status to Drupal status report

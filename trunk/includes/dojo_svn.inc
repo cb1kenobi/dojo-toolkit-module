@@ -136,8 +136,13 @@ function _dojo_svn_form($form_values = NULL) {
 			break;
 
 		case 2:
-			$dojo_js = variable_get('dojo_js', DOJO_JS);
-			$image_path = '/' . drupal_get_path('module', 'dojo') . '/' . substr($dojo_js, 0, strrpos($dojo_js, '/')) . '/src/widget/template/TreeV3/';
+			$profile = _dojo_config_profiles_detect();
+			$build = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
+			
+			$image_path = '/' . drupal_get_path('module', 'dojo') . '/' . substr($build, 0, strrpos($build, '/')) . '/src/widget/templates/images/TreeV3/';
+			if (stripos($build, 'http') !== FALSE || (strlen($build) > 1 && !file_exists(substr($build, 1)))) {
+				$image_path = str_replace('dojo.js', 'src/widget/templates/images/TreeV3/', $build);
+			}
 
 			$form['tree_icons'] = array(
 				'#value' => '<div style="display:none"><img src="' . $image_path . 'i.gif"><img src="' . $image_path . 'i_half.gif"><img src="' . $image_path . 'expand_minus.gif"><img src="' . $image_path . 'expand_plus.gif"><img src="' . $image_path . 'expand_leaf.gif"><img src="' . $image_path . 'i_long.gif"><img src="' . $image_path . 'document.gif"><img src="' . $image_path . 'open.gif"><img src="' . $image_path . 'closed.gif"></div>'
