@@ -65,7 +65,7 @@ function _dojo_editor_profiles_load($profile_name = NULL) {
 	}
 
 	global $user;
-	$results = db_query('SELECT P.name, P.weight, P.settings, R.rid FROM {dojo_editor_profiles} P JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight", implode(',', array_keys($user->roles)));
+	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_editor_profiles} P LEFT JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN dojo_config_roles R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight", implode(',', array_keys($user->roles)));
 
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {
@@ -257,42 +257,33 @@ function _dojo_editor_profiles_form(&$form, $action = 'add', $profile_name = NUL
 				'#collapsible' => TRUE
 			);
 
-			$access = user_access('use PHP for block visibility');
+			$options = array(
+				t('Show on every page except the listed pages.'),
+				t('Show on only the listed pages.'),
+				t('Show if the following PHP code returns <code>TRUE</code> (PHP-mode, experts only).')
+			);
+			$description = t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page. If the PHP-mode is chosen, enter PHP code between %php. Note that executing incorrect PHP-code can break your Drupal site.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>', '%php' => '<?php ?>'));
 
-			if ($profile['vis_settings'] == 2 && !$access) {
-				$form['vis_settings'] = array();
-				$form['vis_settings']['visibility'] = array('#type' => 'value', '#value' => 2);
-				$form['vis_settings']['pages'] = array('#type' => 'value', '#value' => $profile['pages']);
-			} else {
-				$options = array(t('Show on every page except the listed pages.'), t('Show on only the listed pages.'));
-				$description = t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>'));
-
-				if ($access) {
-					$options[] = t('Show if the following PHP code returns <code>TRUE</code> (PHP-mode, experts only).');
-					$description .= ' ' . t('If the PHP-mode is chosen, enter PHP code between %php. Note that executing incorrect PHP-code can break your Drupal site.', array('%php' => '<?php ?>'));
-				}
-
-				$form['vis_settings']['visibility'] = array(
-					'#type' => 'radios',
-					'#title' => t('Show editor on specific pages'),
-					'#options' => $options,
-					'#default_value' => isset($profile['visibility']) ? $profile['visibility'] : 1
-				);
-		
-				$form['vis_settings']['pages'] = array(
-					'#type' => 'textarea',
-					'#title' => t('Pages'),
-					'#default_value' => isset($profile['pages']) ? $profile['pages'] : DOJO_DEFAULT_EDITOR_PAGES,
-					'#description' => $description
-				);
-		
-				$form['vis_settings']['ignore_textareas'] = array(
-					'#type' => 'textarea',
-					'#title' => t('Ignore Textareas'),
-					'#default_value' => isset($profile['ignore_textareas']) ? $profile['ignore_textareas'] : DOJO_DEFAULT_EDITOR_IGNORE_TEXTAREAS,
-					'#description' => t('Enter one textarea name per line.')
-				);
-			}
+			$form['vis_settings']['visibility'] = array(
+				'#type' => 'radios',
+				'#title' => t('Show editor on specific pages'),
+				'#options' => $options,
+				'#default_value' => isset($profile['visibility']) ? $profile['visibility'] : 1
+			);
+	
+			$form['vis_settings']['pages'] = array(
+				'#type' => 'textarea',
+				'#title' => t('Pages'),
+				'#default_value' => isset($profile['pages']) ? $profile['pages'] : DOJO_DEFAULT_EDITOR_PAGES,
+				'#description' => $description
+			);
+	
+			$form['vis_settings']['ignore_textareas'] = array(
+				'#type' => 'textarea',
+				'#title' => t('Ignore Textareas'),
+				'#default_value' => isset($profile['ignore_textareas']) ? $profile['ignore_textareas'] : DOJO_DEFAULT_EDITOR_IGNORE_TEXTAREAS,
+				'#description' => t('Enter one textarea name per line.')
+			);
 
 			$form['toolbar_cmds'] = array(
 				'#type' => 'fieldset',
@@ -323,14 +314,17 @@ function _dojo_editor_profiles_form(&$form, $action = 'add', $profile_name = NUL
 }
 
 /**
- * Loads the editor profile based on the current user's access
+ * Loads the editor profile based on the current user's access.
  */
 function _dojo_editor_profiles_detect() {
 	static $profile = NULL;
 
 	if (!$profile) {
 		global $user;
-		$results = db_query('SELECT P.name, P.settings FROM {dojo_editor_profiles} P JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) ORDER BY P.weight LIMIT 1', implode(',', array_keys($user->roles)));
+
+		// TODO: All editor profiles this user has access to should be cached and then queried based on rid!!!
+		$results = db_query('SELECT P.name, P.settings FROM {dojo_editor_profiles} P JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) GROUP BY P.name, P.settings ORDER BY P.weight, P.name LIMIT 1', implode(',', array_keys($user->roles)));
+
 		if ($data = db_fetch_object($results)) {
 			$profile = unserialize($data->settings);
 		}

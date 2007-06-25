@@ -21,8 +21,7 @@ For the latest version and documentation, please visit:
 *******************************************************************************
 Compatibility
 *******************************************************************************
-This module has been developed and tested on Drupal 5.1, PHP 5.1.6, MySQL
-5.0.24, and Apache 2.0.55 on Linux 2.6.17 kernel.
+This module has been developed and tested on Drupal 5.1 and PHP 5.1.6 on Linux.
 
 This module also includes a front-end to the Dojo Subversion repository.  In
 order for this functionality to work, you must have the Subversion command-line
@@ -31,9 +30,9 @@ client installed.  This feature has only been tested with the Linux version.
 *******************************************************************************
 Install
 *******************************************************************************
-1. Extract the Dojo Toolkit module into your Drupal modules directory.
+1. Extract the Dojo Toolkit Module into your Drupal modules directory.
 
-2. Enable the Dojo Toolkit module on the [Administer > Site building > Modules]
+2. Enable the Dojo Toolkit Module on the [Administer > Site building > Modules]
    page.
 
 3. Go to the [Administer > Site configuration > Dojo Toolkit] page to define

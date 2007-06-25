@@ -115,13 +115,18 @@ function _dojo_process_textarea_check_page($profile = NULL) {
 	if (!strlen($pages)) {
 		return TRUE;
 	}
-	$access = isset($profile['access']) ? $profile['access'] : 1;
-	if ($access < 2) {
-		$dest = drupal_get_destination();
-		$path = urldecode(substr($dest, strpos($dest, '=') + 1));
+
+	$visibility = isset($profile['visibility']) ? $profile['visibility'] : 0;
+	if ($visibility < 2) {
+		$path = drupal_get_path_alias($_GET['q']);
 		$regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote($pages, '/')) .')$/';
-		return !($access xor preg_match($regexp, $path));
+		$page_match = preg_match($regexp, $path);
+		if (!$page_match && $path != $_GET['q']) {
+			$page_match = preg_match($regexp, $_GET['q']);
+		}
+		return !($visibility xor $page_match);
 	}
+
 	return drupal_eval($pages);
 }
 

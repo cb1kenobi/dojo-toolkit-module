@@ -6,11 +6,14 @@
  * Dojo config profiles related functions.
  */
 
-define('DOJO_JS', 'http://o.aolcdn.com/dojo/0.4.2/dojo.js');
+define('DOJO_JS', 'http://o.aolcdn.com/dojo/0.4.3/dojo.js');
 
 // Array of all xdomain hosting providers
 global $dojo_xdomain_urls;
-$dojo_xdomain_urls = array('http://o.aolcdn.com/dojo/0.4.2/dojo.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 0.4.2');
+$dojo_xdomain_urls = array(
+	'http://o.aolcdn.com/dojo/0.4.3/dojo.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 0.4.3',
+	'http://o.aolcdn.com/dojo/0.4.2/dojo.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 0.4.2'
+);
 
 /**
  * Defines config profiles specific menu items.
@@ -38,7 +41,7 @@ function _dojo_config_profiles_load($profile_name = NULL) {
 	}
 
 	global $user;
-	$results = db_query('SELECT P.name, P.weight, P.settings, R.rid FROM {dojo_config_profiles} P JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight", implode(',', array_keys($user->roles)));
+	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_config_profiles} P LEFT JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN dojo_config_roles R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight, P.name", implode(',', array_keys($user->roles)));
 
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {
@@ -92,7 +95,7 @@ function _dojo_config_profiles_list(&$form) {
 	} else {
 		global $dojo_xdomain_urls;
 		$form['config_profiles']['no_config_profiles'] = array(
-			'#value' => t('<div class="messages status"><p>No config profiles found.</p><p>A default profile will be used for all access roles where the following settings are applied:<ul><li>Load both Dojo and jQuery</li><li>Dojo build: $dojo_js</li><li>Enable debugging: <em>False</em></li><li>Debug at all costs: <em>False</em></li><li>Parse widgets: <em>False</em></li></ul></p></div>', array('$dojo_js' => $dojo_xdomain_urls[DOJO_JS]))
+			'#value' => t('<div class="messages status"><p>No config profiles found.</p><p>A default profile will be used for all access roles where the following settings are applied:<ul><li>Load both Dojo and jQuery</li><li>Dojo build: $dojo_js</li><li>Enable debugging: <em>False</em></li><li>Parse widgets: <em>False</em></li></ul></p></div>', array('$dojo_js' => $dojo_xdomain_urls[DOJO_JS]))
 		);
 	}
 }
@@ -201,6 +204,34 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 				'#description' =>  t('Weight of this access role.')
 			);
 
+			$form['vis_settings'] = array(
+				'#type' => 'fieldset',
+				'#title' => t('Visibility'),
+				'#description' => t('You can define the pages in which this config profile should be applied.'),
+				'#collapsible' => TRUE
+			);
+
+			$options = array(
+				t('Show on every page except the listed pages.'),
+				t('Show on only the listed pages.'),
+				t('Show if the following PHP code returns <code>TRUE</code> (PHP-mode, experts only).')
+			);
+			$description = t("Enter one page per line as Drupal paths. The '*' character is a wildcard. Example paths are %blog for the blog page and %blog-wildcard for every personal blog. %front is the front page. If the PHP-mode is chosen, enter PHP code between %php. Note that executing incorrect PHP-code can break your Drupal site.", array('%blog' => 'blog', '%blog-wildcard' => 'blog/*', '%front' => '<front>', '%php' => '<?php ?>'));
+
+			$form['vis_settings']['visibility'] = array(
+				'#type' => 'radios',
+				'#title' => t('Apply this config profile on specific pages'),
+				'#options' => $options,
+				'#default_value' => isset($profile['visibility']) ? $profile['visibility'] : 0
+			);
+	
+			$form['vis_settings']['pages'] = array(
+				'#type' => 'textarea',
+				'#title' => t('Pages'),
+				'#default_value' => $profile['pages'],
+				'#description' => $description
+			);
+
 			$form['toolkits'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Toolkit Loading'),
@@ -240,7 +271,7 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 			$builds = array('Local Builds' => _dojo_config_profiles_scan_build_dirs(), 'XDomain Builds' => $dojo_xdomain_urls);
 
 			if (!count($builds['Local Builds'])) {
-				$desc = '<p>NOTE: No local Dojo builds found.  There are circumstances where you may want to host the Dojo Javascript files on this server.  You can download a Dojo build from <a href="http://download.dojotoolkit.org" target="_blank">http://download.dojotoolkit.org</a>.  It is recommended to use the <a href="http://download.dojotoolkit.org/release-0.4.2/dojo-0.4.2-editor.tar.gz">Dojo 0.4.2 Editor</a> build.</p>';
+				$desc = '<p>NOTE: No local Dojo builds found.  There are circumstances where you may want to host the Dojo Javascript files on this server.  You can download a Dojo build from <a href="http://download.dojotoolkit.org" target="_blank">http://download.dojotoolkit.org</a>.  It is recommended to use the <a href="http://download.dojotoolkit.org/release-0.4.3/dojo-0.4.3-editor.tar.gz">Dojo 0.4.3 Editor</a> build.</p>';
 			}
 
 			$form['build']['dojo_js'] = array(
@@ -264,14 +295,6 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 				'#default_value' => isset($profile['is_debug']) ? $profile['is_debug'] : 0,
 				'#options' => array(t('Disabled'), t('Enabled')),
 				'#description' => t('Displays Dojo debug messages.'),
-			);
-
-			$form['djconfig']['debug_at_all_costs'] = array(
-				'#type' => 'radios',
-				'#title' => t('Debug At All Costs'),
-				'#default_value' => isset($profile['debug_at_all_costs']) ? $profile['debug_at_all_costs'] : 0,
-				'#options' => array(t('Disabled'), t('Enabled')),
-				'#description' => t('Changes the way the Dojo\'s packaging system loads packages.  May be helpful when debugging Mozilla based browsers. Visit <a href="' . DOJO_URL_DEBUGGING . '" target="_blank">Debugging Javascript</a> for more information.'),
 			);
 
 			$form['djconfig']['parse_widgets'] = array(
@@ -382,16 +405,43 @@ function _dojo_config_profiles_scan_module_helper($path) {
 }
 
 /**
- * Loads the config profile based on the current user's access
+ * Loads the config profile based on the current user's access.
+ * It will try to find the first profile to match the page visibility.
+ * If no exact match is found, the last profile is returned, otherwise
+ * if there are no results, then NULL is returned.
  */
 function _dojo_config_profiles_detect() {
 	static $profile = NULL;
 
 	if (!$profile) {
 		global $user;
-		$results = db_query('SELECT P.name, P.settings FROM {dojo_config_profiles} P JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) ORDER BY P.weight LIMIT 1', implode(',', array_keys($user->roles)));
-		if ($data = db_fetch_object($results)) {
+
+		$results = db_query('SELECT P.name, P.settings FROM {dojo_config_profiles} P JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) GROUP BY P.name, P.settings ORDER BY P.weight, P.name', implode(',', array_keys($user->roles)));
+
+		while ($data = db_fetch_object($results)) {
 			$profile = unserialize($data->settings);
+
+			// if the profile isn't associated to any pages, then just break
+			if (!isset($profile['pages']) || !strlen($profile['pages'])) {
+				break;
+			}
+
+			$pages = $profile['pages'];
+			$visibility = isset($profile['visibility']) ? $profile['visibility'] : 0;
+
+			if ($visibility < 2) {
+				$path = drupal_get_path_alias($_GET['q']);
+				$regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote($pages, '/')) .')$/';
+				$page_match = preg_match($regexp, $path);
+				if (!$page_match && $path != $_GET['q']) {
+					$page_match = preg_match($regexp, $_GET['q']);
+				}
+				if (!($visibility xor $page_match)) {
+					break;
+				}
+			} else if (drupal_eval($pages)) {
+				break;
+			}
 		}
 	}
 
@@ -431,9 +481,6 @@ function _dojo_config_profiles_config_handler() {
 
 	if (isset($profile['is_debug']) && $profile['is_debug'] == 1) {
 		echo ',isDebug:true';
-	}
-	if (isset($profile['debug_at_all_costs']) && $profile['debug_at_all_costs'] == 1) {
-		echo ',debugAtAllCosts:true';
 	}
 	if (isset($profile['parse_widgets']) && $profile['parse_widgets'] == 1) {
 		echo ',parseWidgets:false';
