@@ -135,11 +135,13 @@ function _dojo_process_textarea_check_page($profile = NULL) {
  */
 function _dojo_process_textarea_check_field($element, $profile = NULL) {
 	$ignore_textareas = isset($profile['ignore_textareas']) ? $profile['ignore_textareas'] : DOJO_DEFAULT_EDITOR_IGNORE_TEXTAREAS;
+
 	if (!strlen($ignore_textareas)) {
 		return TRUE;
 	}
 	$regexp = '/^('. preg_replace(array('/(\r\n?|\n)/'), array('|'), preg_quote($ignore_textareas, '/')) .')$/';
-	return !preg_match($regexp, substr($element['#id'], strpos($element['#id'], '-') + 1));
+	$id = substr($element['#id'], strpos($element['#id'], '-') + 1);
+	return !preg_match($regexp, str_replace('-', '_', $id));
 }
 
 /**
