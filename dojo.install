@@ -77,6 +77,7 @@ function dojo_uninstall() {
 	db_query('DROP TABLE {dojo_config_roles}');
 	db_query('DROP TABLE {dojo_editor_profiles}');
 	db_query('DROP TABLE {dojo_editor_roles}');
+	db_query("DELETE FROM {menu} WHERE path = 'admin/settings/dojo'");
 	variable_del('dojo_svn_bin');
 	variable_del('dojo_svn_url');
 }
