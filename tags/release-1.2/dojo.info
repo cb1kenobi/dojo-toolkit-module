@@ -1,0 +1,3 @@
+name = "Dojo Toolkit"
+description = "Enhances Drupal using the Dojo Javascript toolkit."
+version = "5.x-1.2-dev"
