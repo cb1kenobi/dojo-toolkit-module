@@ -25,7 +25,7 @@ dojo.widget.defineWidget(
 		_tbody: null,
 		_saveField: null,
 
-		postCreate: function(/*object*/args, /*object*/frag) {
+		postCreate: function(args, frag) {
 			var node = this.getFragNodeRef(frag);
 
 			this._saveField.name = node.name;
@@ -44,7 +44,7 @@ dojo.widget.defineWidget(
 			this._displayTable();
 		},
 
-		_buildRow: function(/*string*/key, /*string*/url) {
+		_buildRow: function(key, url) {
 			var idx = this._keys.length;
 
 			var tdHttp = document.createElement("td");
@@ -79,7 +79,7 @@ dojo.widget.defineWidget(
 			this._keys.push({idx: idx, key: key, url: url, row: tr});
 		},
 
-		_buildInput: function(/*string*/fieldType, /*string*/value, /*int*/idx) {
+		_buildInput: function(fieldType, value, idx) {
 			var i = document.createElement("input");
 			i.className = "form-text";
 			i.type = "text";
@@ -90,13 +90,13 @@ dojo.widget.defineWidget(
 			return i;
 		},
 
-		_addKey: function(/*object*/evt) {
+		_addKey: function(evt) {
 			dojo.event.browser.stopEvent(evt);
 			this._buildRow("", "");
 			this._displayTable();
 		},
 
-		_deleteKey: function(/*object*/evt) {
+		_deleteKey: function(evt) {
 			dojo.event.browser.stopEvent(evt);
 
 			var idx = evt.target.idx;
@@ -111,7 +111,7 @@ dojo.widget.defineWidget(
 			dojo.html.setDisplay(this._table, this._keys.length > 0);
 		},
 
-		_updateKey: function(/*object*/evt) {
+		_updateKey: function(/*object* /evt) {
 			var t = evt.target;
 			this._keys[t.idx][t.fieldType] = dojo.string.trim(t.value);
 			this._serialize();
