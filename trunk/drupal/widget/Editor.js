@@ -1,4 +1,4 @@
-dojo.provide("drupal.widget.Editor");
+/*dojo.provide("drupal.widget.Editor");
 
 dojo.require("dojo.event.*");
 dojo.require("dojo.html.common");
@@ -113,7 +113,7 @@ dojo.widget.defineWidget(
 			}
 		},
 
-		_toggleEditor: function(/*object*/evt) {
+		_toggleEditor: function(/*object* /evt) {
 			if (evt) {
 				dojo.event.browser.stopEvent(evt);
 			}
@@ -157,13 +157,13 @@ dojo.widget.defineWidget(
 			this.domNode.value = s.replace(/contenteditable="true"/ig, "");
 		},
 
-		_setToggleLink: function(/*string*/str) {
+		_setToggleLink: function(/*string* /str) {
 			if (this._toggleLink) {
 				this._toggleLink.innerHTML = str;
 			}
 		},
 
-		_startDrag: function(/*object*/evt) {
+		_startDrag: function(/*object* /evt) {
 			dojo.event.browser.stopEvent(evt);
 
 			this._offset = dojo.html.getContentBox(this.domNode).height - evt.pageY;
@@ -173,7 +173,7 @@ dojo.widget.defineWidget(
 			dojo.event.connect(document, "onmouseup", this, "_endDrag");
 		},
 
-		_onDrag: function(/*object*/evt) {
+		_onDrag: function(/*object* /evt) {
 			this.domNode.style.height = Math.max(32, this._offset + evt.pageY) + "px";
 		},
 
@@ -185,3 +185,4 @@ dojo.widget.defineWidget(
 		}
 	}
 );
+*/
