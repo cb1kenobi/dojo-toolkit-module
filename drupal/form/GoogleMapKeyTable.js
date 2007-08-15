@@ -1,23 +1,18 @@
-dojo.provide("drupal.widget.GoogleMapKeyTable");
+if(!dojo._hasResource["drupal.form.GoogleMapKeyTable"]){
+dojo._hasResource["drupal.form.GoogleMapKeyTable"] = true;
+dojo.provide("drupal.form.GoogleMapKeyTable");
 
-dojo.require("dojo.event.*");
-dojo.require("dojo.string.common");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.HtmlWidget");
+dojo.require("dijit.form._FormWidget");
+dojo.require("dijit._Templated");
 
-dojo.widget.defineWidget(
-	"drupal.widget.GoogleMapKeyTable",
-	dojo.widget.HtmlWidget,
+dojo.declare(
+	"drupal.form.GoogleMapKeyTable",
+	[dijit.form._FormWidget, dijit._Templated],
 	{
-		isContainer: false,
-		widgetType: "GoogleMapKeyTable",
-
 		templateString: '<div><table class="DojoGoogleMapsKeyTable" dojoAttachPoint="_table"><thead><th colspan="2">URL</th><th>Key</th></thead><tbody dojoAttachPoint="_tbody"></tbody></table><div><a dojoAttachEvent="onclick:_addKey" href="#">Add new key</a></div><input type="hidden" dojoAttachPoint="_saveField" /></div>',
 
 		// private vars
-		_name: "",
-		_id: "",
-		_keyCounter: 0,
+		_counter: 0,
 		_keys: [],
 
 		// attach points
@@ -25,8 +20,8 @@ dojo.widget.defineWidget(
 		_tbody: null,
 		_saveField: null,
 
-		postCreate: function(args, frag) {
-			var node = this.getFragNodeRef(frag);
+		postCreate: function() {
+			var node = this.srcNodeRef;
 
 			this._saveField.name = node.name;
 			this._saveField.id = node.id;
@@ -44,8 +39,10 @@ dojo.widget.defineWidget(
 			this._displayTable();
 		},
 
+		_fillContent: function() { },
+
 		_buildRow: function(key, url) {
-			var idx = this._keys.length;
+			var idx = this._counter++;
 
 			var tdHttp = document.createElement("td");
 			tdHttp.innerHTML = "http:// ";
@@ -63,18 +60,18 @@ dojo.widget.defineWidget(
 			a.href = "#";
 			a.idx = idx;
 			a.innerHTML = "delete";
-			dojo.event.connect(a, "onclick", this, "_deleteKey");
+			dojo.connect(a, "onclick", this, "_deleteKey");
 			tdDel.appendChild(a);
 
 			var tr = document.createElement("tr");
-			tr.className = ++this._keyCounter % 2 == 0 ? "even" : "odd";
+			tr.className = idx % 2 == 0 ? "even" : "odd";
 			tr.appendChild(tdHttp);
 			tr.appendChild(tdUrl);
 			tr.appendChild(tdKey);
 			tr.appendChild(tdDel);
 
 			this._tbody.appendChild(tr);
-			setTimeout(function() { dojo.html.lastElement(tdUrl).focus(); }, 100);
+			setTimeout(function() { dojo.query(":last-child", tdUrl)[0].focus(); }, 100);
 
 			this._keys.push({idx: idx, key: key, url: url, row: tr});
 		},
@@ -86,35 +83,46 @@ dojo.widget.defineWidget(
 			i.value = value;
 			i.fieldType = fieldType;
 			i.idx = idx;
-			dojo.event.connect(i, "onblur", this, "_updateKey");
+			dojo.connect(i, "onblur", this, "_updateKey");
 			return i;
 		},
 
 		_addKey: function(evt) {
-			dojo.event.browser.stopEvent(evt);
+			dojo.stopEvent(evt);
 			this._buildRow("", "");
 			this._displayTable();
 		},
 
 		_deleteKey: function(evt) {
-			dojo.event.browser.stopEvent(evt);
+			dojo.stopEvent(evt);
 
-			var idx = evt.target.idx;
-			dojo.html.destroyNode(this._keys[idx].row);
-			this._keyCounter--;
-			this._keys.splice(idx, 1);
+			for (var i = 0; i < this._keys.length; i++) {
+				if (this._keys[i].idx == evt.target.idx) {
+					dojo._destroyElement(this._keys[i].row);
+					this._keys.splice(i, 1);
+				}
+			}
+
+			var j = 0;
+			dojo.query("tr", this._tbody).forEach(function(e) { e.className = j++ % 2 == 0 ? "even" : "odd"; });
+
 			this._serialize();
 			this._displayTable();
 		},
 
 		_displayTable: function() {
-			dojo.html.setDisplay(this._table, this._keys.length > 0);
+			dojo.style(this._table, 'display', this._keys.length > 0 ? '' : 'none');
 		},
 
-		_updateKey: function(/*object* /evt) {
+		_updateKey: function(evt) {
 			var t = evt.target;
-			this._keys[t.idx][t.fieldType] = dojo.string.trim(t.value);
-			this._serialize();
+			for (var i = 0; i < this._keys.length; i++) {
+				if (this._keys[i].idx == t.idx) {
+					this._keys[i][t.fieldType] = dojo.string.trim(t.value);
+					this._serialize();
+					break;
+				}
+			}
 		},
 
 		_serialize: function() {
@@ -130,3 +138,5 @@ dojo.widget.defineWidget(
 		}
 	}
 );
+
+}

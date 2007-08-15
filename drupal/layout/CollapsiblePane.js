@@ -1,13 +1,12 @@
-if(!dojo._hasResource["drupal.widget.CollapsiblePane"]){
-dojo._hasResource["drupal.widget.CollapsiblePane"] = true;
-dojo.provide("drupal.widget.CollapsiblePane");
+if(!dojo._hasResource["drupal.layout.CollapsiblePane"]){
+dojo._hasResource["drupal.layout.CollapsiblePane"] = true;
+dojo.provide("drupal.layout.CollapsiblePane");
 
 dojo.require("dijit._Widget");
 dojo.require("dojo.fx");
-dojo.require("dijit.util.place");
 
 dojo.declare(
-	"drupal.widget.CollapsiblePane",
+	"drupal.layout.CollapsiblePane",
 	dijit._Widget,
 	{
 		_wrapper: null,
@@ -34,6 +33,7 @@ dojo.declare(
 
 			var d = document.createElement("div");
 			d.className = "fieldset-wrapper";
+			dojo.style(d, "display", dojo.hasClass(this.domNode, "collapsed") ? "none" : "");
 
 			var children = this.domNode.childNodes;
 			for (var j = 0; j < children.length; j++) {
@@ -48,9 +48,9 @@ dojo.declare(
 
 		_toggleFieldset: function() {
 			var n = this.domNode;
-			if (n.className.indexOf("collapsed") != -1) {
+			if (dojo.hasClass(n, "collapsed")) {
 				n.className = n.className.replace(/ collapsed/i, "");
-				var anim = dojo.fx.slideIn({
+				var anim = dojo.fx.wipeIn({
 					node: this._wrapper,
 					duration: 300
 				});
@@ -62,7 +62,7 @@ dojo.declare(
 				dojo.connect(anim, "onAnimate", this, "_scrollIntoView");
 				anim.play();
 			} else {
-				var anim = dojo.fx.slideOut({
+				var anim = dojo.fx.wipeOut({
 					node: this._wrapper,
 					duration: 300
 				});
@@ -76,7 +76,7 @@ dojo.declare(
 
 		_scrollIntoView: function() {
 			var n = this.domNode;
-			var vh = dijit.util.getViewport().height;
+			var vh = dijit.getViewport().height;
 			var c = dojo.coords(n, true);
 			var ny = c.y;
 			var nh = c.height;

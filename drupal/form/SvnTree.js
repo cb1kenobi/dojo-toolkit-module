@@ -1,6 +1,12 @@
-dojo.provide("drupal.widget.SvnTree");
+if(!dojo._hasResource["drupal.form.SvnTree"]){
+dojo._hasResource["drupal.form.SvnTree"] = true;
+dojo.provide("drupal.form.SvnTree");
 
-dojo.require("dojo.event.*");
+dojo.require("dojo.data.ItemFileReadStore");
+dojo.require("dijit.Tree");
+dojo.require("dijit.Tooltip");
+
+/*dojo.require("dojo.event.*");
 dojo.require("dojo.html.style");
 dojo.require("dojo.string.extras");
 dojo.require("dojo.widget.*");
@@ -11,19 +17,16 @@ dojo.require("dojo.widget.TreeNodeV3");
 dojo.require("dojo.widget.TreeLoadingControllerV3");
 dojo.require("dojo.widget.TreeDocIconExtension");
 dojo.require("dojo.widget.TreeSelectorV3");
-dojo.require("dojo.widget.TreeEmphasizeOnSelect");
+dojo.require("dojo.widget.TreeEmphasizeOnSelect");*/
 
-dojo.widget.defineWidget(
-	"drupal.widget.SvnTree",
-	dojo.widget.HtmlWidget,
+dojo.declare(
+	"drupal.form.SvnTree",
+	dijit._Widget,
 	{
-		isContainer: true,
-		widgetType: "SvnTree",
-
-		data: [],
 		_tree: null,
 
 		postCreate: function() {
+			/*
 			var controller = dojo.widget.createWidget("TreeLoadingControllerV3", { RpcUrl: "/dojo/svn" });
 			var docIcons = dojo.widget.createWidget("TreeDocIconExtension");
 			var selector = dojo.widget.createWidget("TreeSelectorV3");
@@ -31,19 +34,42 @@ dojo.widget.defineWidget(
 
 			dojo.event.connect("around", controller, "loadProcessResponse", this, "_onExpandResponse");
 			dojo.event.topic.subscribe(selector.eventNames.select, this, "_onNodeSelect");
+			*/
 
-			this._tree = dojo.widget.createWidget("TreeV3", { listeners: [controller.widgetId, docIcons.widgetId, selector.widgetId] });
+			var d = document.createElement("div");
+			dojo.place(d, this.domNode, "after");
 
+			/*
+			[
+				{ "type": "dir", "name": "branches", "revision": "9790", "author": "jaredj", "date": "July 25, 2007, 9:57 am" },
+				{ "type": "dir", "name": "dijit", "revision": "9976", "author": "dante", "date": "August 6, 2007, 8:14 am" },
+				{ "type": "dir", "name": "dojo", "revision": "9975", "author": "alex", "date": "August 6, 2007, 7:40 am" },
+				{ "type": "dir", "name": "dojox", "revision": "9977", "author": "jaredj", "date": "August 6, 2007, 8:34 am" },
+				{ "type": "dir", "name": "packages", "revision": "7557", "author": "dmachi", "date": "March 8, 2007, 4:31 pm" },
+				{ "type": "dir", "name": "tags", "revision": "9464", "author": "jburke", "date": "July 3, 2007, 7:42 pm" },
+				{ "type": "dir", "name": "trunk", "revision": "8887", "author": "alex", "date": "June 3, 2007, 3:37 pm" },
+				{ "type": "dir", "name": "util", "revision": "9975", "author": "alex", "date": "August 6, 2007, 7:40 am" },
+				{ "type": "dir", "name": "view", "revision": "7633", "author": "alex", "date": "March 17, 2007, 11:38 pm" }
+			]
+			*/
+
+			var store = new dojo.data.ItemFileReadStore({data: { items: this.data } });
+			this._tree = new dijit.Tree({store: store}, d); // { listeners: [controller.widgetId, docIcons.widgetId, selector.widgetId] });
+
+			/*
 			dojo.html.insertAfter(this._tree.domNode, this.domNode);
 			dojo.html.addClass(this._tree.domNode, "DojoSvnTree");
 
 			dojo.event.topic.subscribe(this._tree.eventNames.afterAddChild, this, "_onAddNode");
 			this._tree.setChildren(this._buildNodes(this.data));
+			*/
 		},
 
-		_buildNodes: function(/*array*/data, /*string*/parentObjectId) {
-			if (!parentObjectId)
+ 		/*
+		_buildNodes: function(data, parentObjectId) {
+			if (!parentObjectId) {
 				parentObjectId = "";
+			}
 			var nodes = [];
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].type == "dir") {
@@ -60,17 +86,18 @@ dojo.widget.defineWidget(
 			return nodes;
 		},
 
-		_onExpandResponse: function(/*object*/invocation) {
+		_onExpandResponse: function(invocation) {
 			invocation.args[1] = this._buildNodes(invocation.args[1], invocation.args[0].objectId);
 			invocation.proceed();
 		},
+		*/
 
-		_onNodeSelect: function(/*object*/message) {
-			this.domNode.value = message.node.objectId;
+		_onNodeSelect: function(msg) {
+			this.domNode.value = msg.node.objectId;
 		},
 
-		_onAddNode: function(/*object*/message) {
-			var node = message.child;
+		_onAddNode: function(msg) {
+			var node = msg.child;
 
 			var str = "<div><strong>" + node.objectId + "</strong></div>";
 			str += "<div>Revision: " + node.revision + "</div>";
@@ -82,9 +109,11 @@ dojo.widget.defineWidget(
 
 			var d = document.createElement("div");
 			d.innerHTML = str;
-			dojo.html.setDisplay(d, false);
-			dojo.html.insertAfter(d, this.domNode);
-			var tooltip = dojo.widget.createWidget("Tooltip", { connectId: id }, d);
+			dojo.style(d, 'display', 'none');
+			dojo.place(d, this.domNode, "after");
+			var t = new dijit.Tooltip({ connectId: id }, d);
 		}
 	}
 );
+
+}

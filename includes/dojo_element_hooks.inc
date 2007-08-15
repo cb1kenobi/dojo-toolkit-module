@@ -18,8 +18,8 @@ function _dojo_process_fieldset($element) {
 			break;
 		}
 
-		dojo_require_js('drupal.widget.CollapsiblePane');
-		dojo_create_widget_js($element, 'drupal:CollapsiblePane');
+		dojo_require_js('drupal.layout.CollapsiblePane');
+		dojo_create_widget_js($element, 'drupal.layout.CollapsiblePane');
 
 		if (!isset($element['#attributes']['class'])) {
 			$element['#attributes']['class'] = '';
@@ -38,12 +38,12 @@ function _dojo_process_fieldset($element) {
  */
 function _dojo_process_hidden($element) {
 	if ($element['#svnTree']) {
-		dojo_require_js('drupal.widget.SvnTree');
-		dojo_create_widget_js($element, 'drupal:SvnTree', $element['#svnData']);
+		dojo_require_js('drupal.form.SvnTree');
+		dojo_create_widget_js($element, 'drupal.form.SvnTree', $element['#svnData']);
 	} else if ($element['#toolbar']) {
 		global $dojo_toolbar_buttons;
-		dojo_require_js('drupal.widget.CustomizeToolbar');
-		dojo_create_widget_js($element, 'drupal:CustomizeToolbar', array('toolbarButtons' => $dojo_toolbar_buttons));
+		dojo_require_js('drupal.form.CustomizeToolbar');
+		dojo_create_widget_js($element, 'drupal.form.CustomizeToolbar', array('toolbarButtons' => $dojo_toolbar_buttons));
 		$element['#value'] = $element['#selected_toolbar_buttons'];
 	}
 	return $element;
@@ -55,8 +55,8 @@ function _dojo_process_hidden($element) {
 function _dojo_process_submit($element) {
 	if ($element['#please_wait']) {
 		$element['#id'] .= '_' + md5(mt_rand());
-		dojo_require_js('drupal.widget.PleaseWait');
-		dojo_create_widget_js($element, 'drupal:PleaseWait');
+		dojo_require_js('drupal.PleaseWait');
+		dojo_create_widget_js($element, 'drupal.PleaseWait');
 	}
 	return $element;
 }
@@ -66,9 +66,10 @@ function _dojo_process_submit($element) {
  */
 function _dojo_process_textarea($element) {
 	if ($element['#googleMapKeyTable']) {
-		dojo_require_js('drupal.widget.GoogleMapKeyTable');
-		dojo_create_widget_js($element, 'drupal:GoogleMapKeyTable');
+		dojo_require_js('drupal.form.GoogleMapKeyTable');
+		dojo_create_widget_js($element, 'drupal.form.GoogleMapKeyTable');
 		$element['#resizable'] = FALSE;
+	/*
 	} elseif ($element['#resizable'] !== FALSE) {
 		foreach (_dojo_config_profiles_load() as $config_profile_name => $config_profile) {
 			if (!isset($config_profile['override_jquery']) || array_search('editor', $config_profile['override_jquery']) === FALSE) {
@@ -86,8 +87,8 @@ function _dojo_process_textarea($element) {
 				$show_toggle = !isset($editor_profile['show_toggle']) || $editor_profile['show_toggle'] == 1;
 				$default_state = isset($editor_profile['default_state']) && $editor_profile['default_state'] == 1;
 
-				dojo_require_js('drupal.widget.Editor');
-				dojo_create_widget_js($element, 'drupal:Editor', array('showToggle' => $show_toggle, 'defaultState' => $default_state));
+				dojo_require_js('drupal.form.Editor');
+				dojo_create_widget_js($element, 'drupal.form.Editor', array('showToggle' => $show_toggle, 'defaultState' => $default_state));
 
 				$element['#resizable'] = FALSE;
 				return $element;
@@ -100,10 +101,10 @@ function _dojo_process_textarea($element) {
 			$show_toggle = FALSE;
 		}
 
-		dojo_require_js('drupal.widget.Editor');
-		dojo_create_widget_js($element, 'drupal:Editor', array('showToggle' => $show_toggle, 'defaultState' => FALSE));
+		dojo_require_js('drupal.form.Editor');
+		dojo_create_widget_js($element, 'drupal.form.Editor', array('showToggle' => $show_toggle, 'defaultState' => FALSE));
+	*/
 	}
-
 	return $element;
 }
 
@@ -156,8 +157,8 @@ function _dojo_process_textfield($element) {
 			break;
 		}
 
-		dojo_require_js('drupal.widget.AutoComplete');
-		dojo_create_widget_js($element, 'drupal:AutoComplete', array('url' => check_url(url($element['#autocomplete_path']))));
+		dojo_require_js('drupal.form.AutoComplete');
+		dojo_create_widget_js($element, 'drupal.form.AutoComplete', array('url' => check_url(url($element['#autocomplete_path']))));
 		$element['#autocomplete_path'] = FALSE;
 		$element['#attributes']['class'] .= ' form-autocomplete';
 	}
