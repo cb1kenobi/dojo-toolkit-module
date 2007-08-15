@@ -1,17 +1,15 @@
-dojo.provide("drupal.widget.PleaseWait");
+if(!dojo._hasResource["drupal.PleaseWait"]){
+dojo._hasResource["drupal.PleaseWait"] = true;
+dojo.provide("drupal.PleaseWait");
 
-dojo.require("dojo.event.*");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.HtmlWidget");
-dojo.require("dojo.widget.Dialog");
+dojo.require("dijit._Widget");
+dojo.require("dijit._Templated");
+dojo.require("dijit.Dialog");
 
-dojo.widget.defineWidget(
-	"drupal.widget.PleaseWait",
-	dojo.widget.HtmlWidget,
+dojo.declare(
+	"drupal.PleaseWait",
+	[dijit._Widget, dijit._Templated],
 	{
-		isContainer: false,
-		widgetType: "PleaseWait",
-
 		templateString: '<span id="Shib"><input dojoAttachPoint="_button" type="button" /><div dojoAttachPoint="_contents"><span class="Indicator">Please wait...</span></div></span>',
 
 		_button: null,
@@ -19,7 +17,7 @@ dojo.widget.defineWidget(
 		_dialog: null,
 		_form: null,
 
-		postCreate: function(/*object*/frag) {
+		postCreate: function() {
 			var n = this.domNode;
 			while (n && n.parentNode && n.tagName.toLowerCase() != "form") {
 				n = n.parentNode;
@@ -28,20 +26,20 @@ dojo.widget.defineWidget(
 				this._form = n;
 			}
 
-			var node = this.getFragNodeRef(frag);
+			var node = this.srcNodeRef;
 			this._button.id = node.id;
 			this._button.name = node.name;
 			this._button.value = node.value;
 			this._button.className = node.className;
-			dojo.event.connect(this._button, "onclick", this, "_showDialog");
+			dojo.connect(this._button, "onclick", this, "_showDialog");
 
-			this._dialog = dojo.widget.createWidget("Dialog", {}, this._contents);
+			this._dialog = new dijit.Dialog({}, this._contents);
 		},
 
 		_showDialog: function(evt) {
-			dojo.event.browser.stopEvent(evt);
+			dojo.stopEvent(evt);
 			this._dialog.show();
-			dojo.lang.setTimeout(this, "_submitForm", 500);
+			setTimeout(dojo.hitch(this, "_submitForm"), 500);
 		},
 
 		_submitForm: function() {
@@ -51,3 +49,5 @@ dojo.widget.defineWidget(
 		}
 	}
 );
+
+}

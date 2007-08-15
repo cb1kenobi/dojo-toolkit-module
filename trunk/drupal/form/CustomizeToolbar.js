@@ -1,20 +1,16 @@
-dojo.provide("drupal.widget.CustomizeToolbar");
+if(!dojo._hasResource["drupal.form.CustomizeToolbar"]){
+dojo._hasResource["drupal.form.CustomizeToolbar"] = true;
+dojo.provide("drupal.form.CustomizeToolbar");
 
-dojo.require("dojo.collections.ArrayList");
-dojo.require("dojo.event.*");
-dojo.require("dojo.html.common");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.HtmlWidget");
+dojo.require("dijit.form._FormWidget");
+dojo.require("dijit._Templated");
+dojo.require("dojox.collections.ArrayList");
 
-dojo.widget.defineWidget(
-	"drupal.widget.CustomizeToolbar",
-	dojo.widget.HtmlWidget,
+dojo.declare(
+	"drupal.form.CustomizeToolbar",
+	[dijit.form._FormWidget, dijit._Templated],
 	{
-		isContainer: false,
-		widgetType: "CustomizeToolbar",
-
-		templatePath: dojo.uri.moduleUri("drupal.widget", "templates/CustomizeToolbar.html"),
-		templateCssPath: dojo.uri.moduleUri("dojo.widget", "templates/EditorToolbar.css"),
+		templatePath: dojo.moduleUrl("drupal.form", "templates/CustomizeToolbar.html"),
 
 		// attach points
 		_inputField: null,
@@ -31,8 +27,8 @@ dojo.widget.defineWidget(
 		// members
 		_selectedItem: null,
 
-		postCreate: function(/*object*/frag) {
-			var node = this.getFragNodeRef(frag);
+		postCreate: function() {
+			var node = this.srcNodeRef;
 			this._inputField.id = node.id;
 			this._inputField.name = node.name;
 			this._inputField.value = node.value;
@@ -40,7 +36,7 @@ dojo.widget.defineWidget(
 			this._disableButtons();
 
 			// populate the available items list
-			var selectedItems = new dojo.collections.ArrayList(node.value.split(','));
+			var selectedItems = new dojox.collections.ArrayList(node.value.split(','));
 			for (var i = 0; i < this.toolbarButtons.length; i++) {
 				if (i == 0 || !selectedItems.contains(i)) {
 					this._availableList.appendChild(this._createListItem(i));
@@ -52,25 +48,21 @@ dojo.widget.defineWidget(
 				this._selectedList.appendChild(this._createListItem(selectedItems.item(i)));
 			}
 
-			dojo.event.connect(this._addButton, "onclick", this, "_addItem");
-			dojo.event.connect(this._removeButton, "onclick", this, "_removeItem");
-			dojo.event.connect(this._moveUpButton, "onclick", this, "_moveItemUp");
-			dojo.event.connect(this._moveDownButton, "onclick", this, "_moveItemDown");
+			dojo.connect(this._addButton, "onclick", this, "_addItem");
+			dojo.connect(this._removeButton, "onclick", this, "_removeItem");
+			dojo.connect(this._moveUpButton, "onclick", this, "_moveItemUp");
+			dojo.connect(this._moveDownButton, "onclick", this, "_moveItemDown");
 		},
 
-		_createListItem: function(/*int*/idx) {
+		_createListItem: function(idx) {
 			var button = this.toolbarButtons[idx];
 
 			var icon = document.createElement("span");
-			icon.className = (button.label ? '' : "dojoE2TBIcon") + (button["class"] ? ' ' + button["class"] : '');
+			icon.className = (button.label ? '' : "Icon") + (button["class"] ? ' ' + button["class"] : '');
 			if (button.style) {
 				icon.cssText = button.style;
 			}
 			icon.innerHTML = button.label ? button.label : "&nbsp;";
-
-			var iconOuter = document.createElement("span");
-			iconOuter.className = "iconContainer dojoEditorToolbarItem";
-			iconOuter.appendChild(icon);
 
 			var label = document.createElement("span");
 			label.innerHTML = button.description;
@@ -78,9 +70,9 @@ dojo.widget.defineWidget(
 			var li = document.createElement("li");
 			li.idx = idx;
 			li.style.clear = "both";
-			li.appendChild(iconOuter);
+			li.appendChild(icon);
 			li.appendChild(label);
-			dojo.event.connect(li, "onmousedown", this, "_onClick");
+			dojo.connect(li, "onmousedown", this, "_onClick");
 
 			return li;
 		},
@@ -92,14 +84,14 @@ dojo.widget.defineWidget(
 			this._moveDownButton.disabled = true;
 		},
 
-		_enableButtons: function(/*bool*/isSelectedList) {
+		_enableButtons: function(isSelectedList) {
 			this._addButton.disabled = isSelectedList;
 			this._removeButton.disabled = !isSelectedList;
 			this._moveUpButton.disabled = !isSelectedList;
 			this._moveDownButton.disabled = !isSelectedList;
 		},
 
-		_onClick: function(/*object*/evt) {
+		_onClick: function(evt) {
 			var li = evt.target;
 			while (li && li.parentNode && li.tagName.toLowerCase() != "li") {
 				li = li.parentNode;
@@ -119,7 +111,7 @@ dojo.widget.defineWidget(
 			this._enableButtons(li.parentNode == this._selectedList);
 		},
 
-		_scrollToBottom: function(/*object*/node) {
+		_scrollToBottom: function(node) {
 			while (node && node.parentNode && node.tagName.toLowerCase() != "div") {
 				node = node.parentNode;
 			}
@@ -133,7 +125,7 @@ dojo.widget.defineWidget(
 				if (this._selectedItem.idx == 0) {
 					var cloned = this._selectedItem.cloneNode(true);
 					cloned.idx = 0;
-					dojo.event.connect(cloned, "onmousedown", this, "_onClick");
+					dojo.connect(cloned, "onmousedown", this, "_onClick");
 
 					this._selectedItem.className = "";
 					this._selectedItem = cloned;
@@ -150,7 +142,7 @@ dojo.widget.defineWidget(
 		_removeItem: function() {
 			if (this._selectedItem) {
 				if (this._selectedItem.idx == 0) {
-					dojo.dom.destroyNode(this._selectedItem);
+					dojo._destroyElement(this._selectedItem);
 					this._selectedItem = null;
 					this._disableButtons();
 				} else {
@@ -164,9 +156,12 @@ dojo.widget.defineWidget(
 
 		_moveItemUp: function() {
 			if (this._selectedItem) {
-				var prev = dojo.dom.prevElement(this._selectedItem);
+				var prev = this._selectedItem;
+				do {
+					prev = prev.previousSibling;
+				} while (prev && prev.nodeType != 1);
 				if (prev) {
-					dojo.dom.insertBefore(this._selectedItem, prev);
+					dojo.place(this._selectedItem, prev, "before");
 					this._serializeSelected();
 				}
 			}
@@ -174,9 +169,12 @@ dojo.widget.defineWidget(
 
 		_moveItemDown: function() {
 			if (this._selectedItem) {
-				var next = dojo.dom.nextElement(this._selectedItem);
+				var next = this._selectedItem;
+				do {
+					next = next.nextSibling;
+				} while (next && next.nodeType != 1);
 				if (next) {
-					dojo.dom.insertAfter(this._selectedItem, next);
+					dojo.place(this._selectedItem, next, "after");
 					this._serializeSelected();
 				}
 			}
@@ -194,3 +192,5 @@ dojo.widget.defineWidget(
 		}
 	}
 );
+
+}

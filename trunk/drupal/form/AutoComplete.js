@@ -1,21 +1,19 @@
-dojo.provide("drupal.widget.AutoComplete");
+if(!dojo._hasResource["drupal.form.AutoComplete"]){
+dojo._hasResource["drupal.form.AutoComplete"] = true;
+dojo.provide("drupal.form.AutoComplete");
 
-dojo.require("dojo.event.*");
-dojo.require("dojo.lfx.*");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.HtmlWidget");
+dojo.require("dijit._Widget");
+dojo.require("dojo.fx");
 
-dojo.widget.defineWidget(
-	"drupal.widget.AutoComplete",
-	dojo.widget.HtmlWidget,
+dojo.declare(
+	"drupal.form.AutoComplete",
+	dijit._Widget,
 	{
-		isContainer: true,
-		widgetType: "AutoComplete",
-
 		url: "",
 		cacheItemsCap: 9, // if the handler returns 9 items or less, cache them and locally filter
 
 		_popup: null,
+		_toggler: null,
 		_xhr: null,
 		_anim: null,
 		_selected: null,
@@ -26,32 +24,35 @@ dojo.widget.defineWidget(
 				this.url += '/';
 			}
 
+			var d = document.createElement("div");
+			d.id = "autocomplete";
+			dojo.style(d, "display", "none");
+			dojo.style(d, "opacity", 0);
+			dojo.place(d, this.domNode, "before");
+			this._popup = d;
+			this._toggler = new dojo.fx.Toggler({
+			    node: d,
+			    hideDuration: 300
+			});
+
 			var n = this.domNode;
-			dojo.event.connect(n, "onkeydown", this, "_onKeyDown");
-			dojo.event.connect(n, "onkeypress", this, "_onKeyPress");
-			dojo.event.connect(n, "onkeyup", this, "_onKeyUp");
-			dojo.event.connect(n, "onblur", this, "_hidePopup");
+			dojo.connect(n, "onkeydown", this, "_onKeyDown");
+			dojo.connect(n, "onkeypress", this, "_onKeyPress");
+			dojo.connect(n, "onkeyup", this, "_onKeyUp");
+			dojo.connect(n, "onblur", this, "_hidePopup");
 		},
 
-		_insert: function(evt) {
-			if (evt || this._selected) {
-				var n = evt ? evt.target : this._selected;
-				this.domNode.value = n.val;
-				this._hidePopup();
-			}
-		},
-
-		_onKeyDown: function(/*object*/evt) {
+		_onKeyDown: function(evt) {
 			if (this._popup) {
 				var k = evt.keyCode;
 				if (k == 13) {
-					dojo.event.browser.stopEvent(evt);
+					dojo.stopEvent(evt);
 					this._insert();
 					return false;
 				} else if (k == 9) {
 					this._insert();
 				} else if (k == 38 || k == 40) {
-					dojo.event.browser.stopEvent(evt);
+					dojo.stopEvent(evt);
 					this._moveSelect(evt, k == 38);
 					return false;
 				}
@@ -59,19 +60,19 @@ dojo.widget.defineWidget(
 			return true;
 		},
 
-		_onKeyPress: function(/*object*/evt) {
+		_onKeyPress: function(evt) {
 			if (evt.keyCode == 13) {
-				dojo.event.browser.stopEvent(evt);
+				dojo.stopEvent(evt);
 				return false;
 			}
 			return true;
 		},
 
-		_onKeyUp: function(/*object*/evt) {
+		_onKeyUp: function(evt) {
 			var k = evt.keyCode;
 
 			if (k == 3 || (k > 8 && k < 32) || (k > 32 && k < 46) || (k > 90 && k < 94) || (k > 111 && k < 146)) {
-				dojo.event.browser.stopEvent(evt);
+				dojo.stopEvent(evt);
 				if (k == 27) {
 					this._hidePopup();
 				}
@@ -88,14 +89,14 @@ dojo.widget.defineWidget(
 			return true;
 		},
 
-		_query: function(/*string*/str) {
+		_query: function(str) {
 			this._selected = null;
-
+/*
 			if (this._xhr != null) {
 				this._xhr.abort();
 				this._xhr = null;
 			}
-
+*/
 			// check if we already have it cached
 			if (this._cache[str]) {
 				this._showPopup(str);
@@ -108,7 +109,7 @@ dojo.widget.defineWidget(
 				if (n && n.length <= this.cacheItemsCap) {
 					var d = [];
 					for (var i = 0; i < n.length; i++) {
-						if (dojo.string.startsWith(n[i], str, true)) {
+						if (n[i].toLowerCase().indexOf(str.toLowerCase()) == 0) {
 							d.push(n[i]);
 						}
 					}
@@ -121,25 +122,21 @@ dojo.widget.defineWidget(
 			this._throb(true);
 
 			var self = this;
-			this._xhr = dojo.io.bind({
+			this._xhr = dojo.xhrGet({
 				url: this.url + escape(str),
-				async: true,
-				method: "get",
-				load: function(type, data) {
+				handleAs: "json",
+				load: function(response, ioArgs) {
 					var d = [];
-					for (var i in data) {
-						d.push(data[i]);
+					for (var i in response) {
+						d.push(response[i]);
 					}
 					self._cache[str] = d;
 					self._showPopup(str);
-				},
-				error: function() { dojo.debug("error!"); },
-				mimetype: "text/json",
-				transport: "XMLHTTPTransport"
+				}
 			});
 		},
 
-		_showPopup: function(/*string*/str) {
+		_showPopup: function(str) {
 			this._throb(false);
 			var data = this._cache[str];
 
@@ -148,65 +145,41 @@ dojo.widget.defineWidget(
 				return;
 			}
 
-			var fadeIn = false;
+			var show = dojo.style(this._popup, "display") == "none";
 			var d = this._popup;
-			if (d) {
-				dojo.html.removeChildren(d);
-			} else {
-				var dim = dojo.html.getMarginBox(this.domNode);
-
-				d = this._popup = document.createElement("div");
-				d.id = "autocomplete";
-				d.style.marginTop = dim.height + "px";
-				d.style.width = (dim.width - 4) + "px";
-
-				dojo.html.setOpacity(d, 0);
-				dojo.html.insertBefore(d, this.domNode);
-
-				fadeIn = true;
+			while (d.firstChild) {
+				dojo._destroyElement(d.firstChild);
 			}
 
 			var ul = document.createElement("ul");
-			d.appendChild(ul);
-
 			for (var i = 0; i < data.length; i++) {
 				var li = document.createElement("li");
 				li.val = data[i];
 				li.innerHTML = data[i];
 				ul.appendChild(li);
 
-				dojo.event.connect(li, "onmousedown", this, "_insert");
-				dojo.event.connect(li, "onmouseover", dojo.lang.hitch(this, function(evt) { this._highlight(evt.target); }));
-				dojo.event.connect(li, "onmouseout", dojo.lang.hitch(this, function(evt) { this._unhighlight(evt.target); }));
+				dojo.connect(li, "onmousedown", this, "_insert");
+				dojo.connect(li, "onmouseover", this, "_highlight");
+				dojo.connect(li, "onmouseout", this, "_unhighlight");
 			}
+			d.appendChild(ul);
 
-			if (fadeIn) {
-				if (this._anim) {
-					this._anim.stop();
-				}
-				this._anim = dojo.lfx.fadeIn(d, 200, dojo.lfx.easeInOut,
-					dojo.lang.hitch(this, function() {
-						this._anim = null;
-					})).play();
+			if (show) {
+				var dim = dojo.coords(this.domNode);
+				d.style.marginTop = dim.h + "px";
+				d.style.width = (dim.w - 4) + "px";
+				dojo.style(d, "display", "");
+				this._toggler.show();
 			}
 		},
 
 		_hidePopup: function() {
-			if (this._popup) {
-				if (this._anim) {
-					this._anim.stop();
-				}
-				this._anim = dojo.lfx.fadeOut(this._popup, 200, dojo.lfx.easeInOut,
-					dojo.lang.hitch(this, function() {
-						dojo.html.removeNode(this._popup);
-						this._popup = null;
-						this._anim = null;
-						this._selected = null;
-					})).play();
-			}
+			this._toggler.hide();
+			dojo.style(this._popup, "display", "none");
 		},
 
-		_moveSelect: function(/*object*/evt, /*bool*/up) {
+		_moveSelect: function(evt, up) {
+/*
 			if (this._popup) {
 				if (up) {
 					var prev = this._selected ? dojo.html.prevElement(this._selected, "li") : null;
@@ -225,27 +198,41 @@ dojo.widget.defineWidget(
 					}
 				}
 			}
+*/
 		},
 
-		_highlight: function(/*object*/n) {
-			if (this._selected) {
-				dojo.html.removeClass(this._selected, "selected");
+		_insert: function(evt) {
+			if (evt || this._selected) {
+				var n = evt ? evt.target : this._selected;
+				this.domNode.value = n.val;
+				this._hidePopup();
 			}
-			dojo.html.addClass(n, "selected");
+		},
+
+		_highlight: function(n) {
+			var s = this._selected;
+			if (s && dojo.hasClass(s, "selected")) {
+				dojo.removeClass(s, "selected");
+			}
+			dojo.addClass(n, "selected");
 			this._selected = n;
 		},
 
-		_unhighlight: function(/*object*/n) {
-			dojo.html.removeClass(n, "selected");
+		_unhighlight: function(n) {
+			dojo.removeClass(n, "selected");
 			this._selected = null;
 		},
 
-		_throb: function(/*bool*/throbIt) {
+		_throb: function(throbIt) {
 			var n = this.domNode;
-			dojo.html.removeClass(n, "throbbing");
-			if (throbIt) {
-				dojo.html.addClass(n, "throbbing");
+			var b = dojo.hasClass(n, "throbbing");
+			if (b && !throbIt) {
+				dojo.removeClass(n, "throbbing");
+			} else if (!b && throbIt) {
+				dojo.addClass(n, "throbbing");
 			}
 		}
 	}
 );
+
+}

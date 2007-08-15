@@ -48,9 +48,9 @@ function dojo_elements() {
 	// each callback is defined in includes/dojo_element_hooks.inc
 	return array(
 		'fieldset' => array('#process' => array('_dojo_process_fieldset' => array())),
+		'textarea' => array('#process' => array('_dojo_process_textarea' => array())),
 		'hidden' => array('#process' => array('_dojo_process_hidden' => array())),
 		'submit' => array('#process' => array('_dojo_process_submit' => array())),
-		'textarea' => array('#process' => array('_dojo_process_textarea' => array())),
 		'textfield' => array('#process' => array('_dojo_process_textfield' => array()))
 	);
 }
@@ -75,6 +75,8 @@ function dojo_menu($may_cache) {
 		$dojo_module_path = drupal_get_path('module', 'dojo');
 		$profile = _dojo_config_profiles_detect();
 		$build = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
+		$theme_path = substr($build, 1, strrpos($build, '/') - 1);
+		drupal_add_css(substr($theme_path, 0, strrpos($theme_path, '/')) . '/dijit/themes/tundra/tundra.css', 'core');
 		drupal_add_css($dojo_module_path . '/dojo-styles.css', 'core');
 		dojo_add_js('dojo/config/' . (isset($profile['revision']) ? $profile['revision'] : '0'), 'core');
 
@@ -86,7 +88,8 @@ function dojo_menu($may_cache) {
 		}
 
 		dojo_add_js('document.documentElement.className="js";', 'inline');
-		dojo_require_js('dojo.widget.*');
+		dojo_add_js('dojo.addOnLoad(function(){dojo.addClass(dojo.body(),"' . (isset($profile['theme']) ? $profile['theme'] : DEFAULT_DIJIT_THEME) . '");});', 'inline');
+		dojo_require_js('dojo.parser');
 	}
 
 	_dojo_profiles_menu($items, $may_cache);
@@ -141,7 +144,7 @@ function dojo_create_widget_js(&$element, $type, $params = NULL) {
 	$params = drupal_to_js($params);
 	$element['#suffix'] .= <<<EOD
 <script type="text/javascript">
-dojo.addOnLoad(function(){dojo.widget.createWidget("$type", $params, dojo.byId("$id"));});
+dojo.addOnLoad(function(){var w = new $type($params, dojo.byId("$id"));});
 </script>
 EOD;
 }

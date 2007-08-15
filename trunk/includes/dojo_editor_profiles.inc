@@ -15,29 +15,48 @@ global $dojo_toolbar_buttons;
 $dojo_toolbar_buttons = array(
 	array('description' => 'Separator', 'separator' => TRUE),
 	array('description' => 'HTML Source', 'name' => 'htmltoggle', 'style' => 'background-image: none; width: 30px;', 'label' => '&lt;h&gt;'),
-	array('description' => 'Copy', 'name' => 'copy', 'class' => 'dojoE2TBIcon_Copy'),
-	array('description' => 'Paste', 'name' => 'paste', 'class' => 'dojoE2TBIcon_Paste'),
-	array('description' => 'Undo', 'name' => 'undo', 'class' => 'dojoE2TBIcon_Undo'),
-	array('description' => 'Redo', 'name' => 'redo', 'class' => 'dojoE2TBIcon_Redo'),
-	array('description' => 'Insert/Edit Link', 'name' => 'createlink', 'class' => 'dojoE2TBIcon_Link'),
-	array('description' => 'Insert/Edit Image', 'name' => 'insertimage', 'class' => 'dojoE2TBIcon_Image'),
-	array('description' => 'Horizontal Rule', 'name' => 'inserthorizontalrule', 'class' => 'dojoE2TBIcon_HorizontalLine'),
-	array('description' => 'Bold', 'name' => 'bold', 'class' => 'dojoE2TBIcon_Bold'),
-	array('description' => 'Italic', 'name' => 'italic', 'class' => 'dojoE2TBIcon_Italic'),
-	array('description' => 'Underline', 'name' => 'underline', 'class' => 'dojoE2TBIcon_Underline'),
-	array('description' => 'Strikethrough', 'name' => 'strikethrough', 'class' => 'dojoE2TBIcon_StrikeThrough'),
-	array('description' => 'Bullet List', 'name' => 'insertunorderedlist', 'class' => 'dojoE2TBIcon_BulletedList'),
-	array('description' => 'Numbered List', 'name' => 'insertorderedlist', 'class' => 'dojoE2TBIcon_NumberedList'),
-	array('description' => 'Indent', 'name' => 'indent', 'class' => 'dojoE2TBIcon_Indent', 'unselectable' => TRUE),
-	array('description' => 'Outdent', 'name' => 'outdent', 'class' => 'dojoE2TBIcon_Outdent', 'unselectable' => TRUE),
-	array('description' => 'Foreground Color', 'name' => 'forecolor', 'class' => 'dojoE2TBIcon_TextColor', 'unselectable' => TRUE),
-	array('description' => 'Background Color', 'name' => 'hilitecolor', 'class' => 'dojoE2TBIcon_BackgroundColor', 'unselectable' => TRUE),
-	array('description' => 'Align Left', 'name' => 'justifyleft', 'class' => 'dojoE2TBIcon_LeftJustify'),
-	array('description' => 'Align Center', 'name' => 'justifycenter', 'class' => 'dojoE2TBIcon_CenterJustify'),
-	array('description' => 'Align Right', 'name' => 'justifyright', 'class' => 'dojoE2TBIcon_RightJustify'),
-	array('description' => 'Justify', 'name' => 'justifyfull', 'class' => 'dojoE2TBIcon_BlockJustify'),
+	array('description' => 'Copy', 'name' => 'copy', 'class' => 'dijitEditorIconCopy'),
+	array('description' => 'Paste', 'name' => 'paste', 'class' => 'dijitEditorIconPaste'),
+	array('description' => 'Undo', 'name' => 'undo', 'class' => 'dijitEditorIconUndo'),
+	array('description' => 'Redo', 'name' => 'redo', 'class' => 'dijitEditorIconRedo'),
+	array('description' => 'Insert/Edit Link', 'name' => 'createlink', 'class' => 'dijitEditorIconCreateLink'),
+	array('description' => 'Insert/Edit Image', 'name' => 'insertimage', 'class' => 'dijitEditorIconInsertImage'),
+	array('description' => 'Horizontal Rule', 'name' => 'inserthorizontalrule', 'class' => 'dijitEditorIconInsertHorizontalRule'),
+	array('description' => 'Bold', 'name' => 'bold', 'class' => 'dijitEditorIconBold'),
+	array('description' => 'Italic', 'name' => 'italic', 'class' => 'dijitEditorIconItalic'),
+	array('description' => 'Underline', 'name' => 'underline', 'class' => 'dijitEditorIconUnderline'),
+	array('description' => 'Strikethrough', 'name' => 'strikethrough', 'class' => 'dijitEditorIconStrikethrough'),
+	array('description' => 'Bullet List', 'name' => 'insertunorderedlist', 'class' => 'dijitEditorIconInsertUnorderedList'),
+	array('description' => 'Numbered List', 'name' => 'insertorderedlist', 'class' => 'dijitEditorIconInsertOrderedList'),
+	array('description' => 'Indent', 'name' => 'indent', 'class' => 'dijitEditorIconIndent', 'unselectable' => TRUE),
+	array('description' => 'Outdent', 'name' => 'outdent', 'class' => 'dijitEditorIconOutdent', 'unselectable' => TRUE),
+	array('description' => 'Foreground Color', 'name' => 'forecolor', 'class' => 'dijitEditorIconForeColor', 'unselectable' => TRUE),
+	array('description' => 'Background Color', 'name' => 'hilitecolor', 'class' => 'dijitEditorIconHiliteColor', 'unselectable' => TRUE),
+	array('description' => 'Align Left', 'name' => 'justifyleft', 'class' => 'dijitEditorIconJustifyleft'),
+	array('description' => 'Align Center', 'name' => 'justifycenter', 'class' => 'dijitEditorIconJustifycenter'),
+	array('description' => 'Align Right', 'name' => 'justifyright', 'class' => 'dijitEditorIconJustifyright'),
+	array('description' => 'Justify', 'name' => 'justifyfull', 'class' => 'dijitEditorIconJustifyfull'),
 	array('description' => 'Style', 'name' => 'plainformatblock', 'stylelist' => TRUE)
 );
+
+/*
+dijitEditorIconCancel
+dijitEditorIconCut
+dijitEditorIconDelete
+dijitEditorIconInsertTable
+dijitEditorIconLeftToRight
+dijitEditorIconListBulletIndent
+dijitEditorIconListBulletOutdent
+dijitEditorIconListNumIndent
+dijitEditorIconListNumOutdent
+dijitEditorIconRemoveFormat
+dijitEditorIconRightToLeft
+dijitEditorIconSave
+dijitEditorIconSpace
+dijitEditorIconSubscript
+dijitEditorIconSuperscript
+dijitEditorIconWikiword
+*/
 
 /**
  * Defines editor profiles specific menu items.
@@ -65,7 +84,7 @@ function _dojo_editor_profiles_load($profile_name = NULL) {
 	}
 
 	global $user;
-	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_editor_profiles} P LEFT JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN dojo_config_roles R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight", implode(',', array_keys($user->roles)));
+	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_editor_profiles} P LEFT JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN {dojo_config_roles} R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight", implode(',', array_keys($user->roles)));
 
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {

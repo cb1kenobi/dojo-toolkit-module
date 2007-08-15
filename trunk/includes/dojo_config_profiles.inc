@@ -6,6 +6,7 @@
  * Dojo config profiles related functions.
  */
 
+define('DEFAULT_DIJIT_THEME', 'tundra');
 define('DOJO_JS', 'http://o.aolcdn.com/dojo/0.4.3/dojo.js');
 
 // Array of all xdomain hosting providers
@@ -41,7 +42,7 @@ function _dojo_config_profiles_load($profile_name = NULL) {
 	}
 
 	global $user;
-	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_config_profiles} P LEFT JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN dojo_config_roles R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight, P.name", implode(',', array_keys($user->roles)));
+	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_config_profiles} P LEFT JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN {dojo_config_roles} R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight, P.name", implode(',', array_keys($user->roles)));
 
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {
@@ -95,7 +96,7 @@ function _dojo_config_profiles_list(&$form) {
 	} else {
 		global $dojo_xdomain_urls;
 		$form['config_profiles']['no_config_profiles'] = array(
-			'#value' => t('<div class="messages status"><p>No config profiles found.</p><p>A default profile will be used for all access roles where the following settings are applied:<ul><li>Load both Dojo and jQuery</li><li>Dojo build: $dojo_js</li><li>Enable debugging: <em>False</em></li><li>Parse widgets: <em>False</em></li></ul></p></div>', array('$dojo_js' => $dojo_xdomain_urls[DOJO_JS]))
+			'#value' => t('<div class="messages status"><p>No config profiles found.</p><p>A default profile will be used for all access roles where the following settings are applied:<ul><li>Load both Dojo and jQuery</li><li>Dojo build: $dojo_js</li><li>Enable debugging: <em>False</em></li></ul></p></div>', array('$dojo_js' => $dojo_xdomain_urls[DOJO_JS]))
 		);
 	}
 }
@@ -204,6 +205,19 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 				'#description' =>  t('Weight of this access role.')
 			);
 
+			$form['dijit_theme'] = array(
+				'#type' => 'fieldset',
+				'#title' => t('Dijit Theme'),
+				'#description' => t('Enter the theme to apply to all Dijit widgets.  Dijit provides two built-in themes: <code>tundra</code> and <code>noir</code>.'),
+				'#collapsible' => TRUE
+			);
+
+			$form['dijit_theme']['theme'] = array(
+				'#type' => 'textfield',
+				'#title' => t('Theme'),
+				'#default_value' => isset($profile['theme']) ? $profile['theme'] : DEFAULT_DIJIT_THEME
+			);
+
 			$form['vis_settings'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Visibility'),
@@ -295,14 +309,6 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 				'#default_value' => isset($profile['is_debug']) ? $profile['is_debug'] : 0,
 				'#options' => array(t('Disabled'), t('Enabled')),
 				'#description' => t('Displays Dojo debug messages.'),
-			);
-
-			$form['djconfig']['parse_widgets'] = array(
-				'#type' => 'radios',
-				'#title' => t('Parse Widgets'),
-				'#default_value' => isset($profile['parse_widgets']) ? $profile['parse_widgets'] : 0,
-				'#options' => array(t('Disabled'), t('Enabled')),
-				'#description' => t('Tells Dojo to scan the DOM tree for widget placeholders.  Disabling the parser will speed up the page load time, but only widgets instantiated via dojo.widget.createWidget() will be created.'),
 			);
 
 			$form['djconfig']['google_map_key'] = array(
@@ -456,6 +462,10 @@ function _dojo_config_profiles_config_handler() {
 
 	$dojo_js = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
 	$dojo_module_path = drupal_get_path('module', 'dojo');
+	$dojo_src_path = substr($dojo_js, 0, strrpos($dojo_js, '/'));
+	if (file_exists($dojo_src_path . '/src')) {
+		$dojo_src_path .= '/src';
+	}
 
 	// set the headers
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time() + (24 * 60 * 60)) . ' GMT');
@@ -466,7 +476,7 @@ function _dojo_config_profiles_config_handler() {
 	echo 'var host=location.protocol+"//"+location.host;';
 
 	// render the djConfig
-	echo 'var djConfig={modulePaths:{"dojo":"' . substr($dojo_js, 0, strrpos($dojo_js, '/')) . '/src",';
+	echo 'var djConfig={modulePaths:{"dojo":"' . $dojo_src_path . '",';
 	echo '"drupal":host+"/' . $dojo_module_path . '/drupal"';
 
 	// scan the site folder for any dojo module paths we should include
@@ -481,9 +491,6 @@ function _dojo_config_profiles_config_handler() {
 
 	if (isset($profile['is_debug']) && $profile['is_debug'] == 1) {
 		echo ',isDebug:true';
-	}
-	if (isset($profile['parse_widgets']) && $profile['parse_widgets'] == 1) {
-		echo ',parseWidgets:false';
 	}
 	if (isset($profile['google_map_key']) && strlen($profile['google_map_key'])) {
 		$doc = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
