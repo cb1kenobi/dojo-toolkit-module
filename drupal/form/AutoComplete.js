@@ -91,12 +91,12 @@ dojo.declare(
 
 		_query: function(str) {
 			this._selected = null;
-/*
+
 			if (this._xhr != null) {
-				this._xhr.abort();
+				this._xhr.cancel();
 				this._xhr = null;
 			}
-*/
+
 			// check if we already have it cached
 			if (this._cache[str]) {
 				this._showPopup(str);
