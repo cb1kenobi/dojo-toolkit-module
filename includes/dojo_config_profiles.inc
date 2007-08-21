@@ -7,13 +7,12 @@
  */
 
 define('DEFAULT_DIJIT_THEME', 'tundra');
-define('DOJO_JS', 'http://o.aolcdn.com/dojo/0.4.3/dojo.js');
+define('DOJO_JS', 'http://o.aolcdn.com/dojo/0.9.0/dojo/dojo.xd.js');
 
 // Array of all xdomain hosting providers
 global $dojo_xdomain_urls;
 $dojo_xdomain_urls = array(
-	'http://o.aolcdn.com/dojo/0.4.3/dojo.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 0.4.3',
-	'http://o.aolcdn.com/dojo/0.4.2/dojo.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 0.4.2'
+	'http://o.aolcdn.com/dojo/0.9.0/dojo/dojo.xd.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 0.9.0'
 );
 
 /**
