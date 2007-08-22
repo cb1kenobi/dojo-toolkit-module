@@ -1,13 +1,14 @@
-<div class="CustomizeToolbar">
-	<input dojoAttachPoint="_inputField" type="hidden" />
-	<div class="List"><ul dojoAttachPoint="_availableList"></ul></div>
-	<div class="ButtonColumn">
-		<input type="button" class="Button" dojoAttachPoint="_addButton" value="Add &gt;" /><br />
-		<input type="button" class="Button" dojoAttachPoint="_removeButton" value="&lt; Remove" />
+<div class="dojoCustomizeToolbar">
+	<input dojoAttachPoint="_inputField" type="hidden"/>
+	<div class="list"><ul dojoAttachPoint="_availableList"></ul></div>
+	<div class="buttonColumn">
+		<input type="button" class="button" dojoAttachPoint="_addButton" dojoAttachEvent="onclick:_addItem" value="Add &gt;"/><br/>
+		<input type="button" class="button" dojoAttachPoint="_removeButton" dojoAttachEvent="onclick:_removeItem" value="&lt; Remove"/><br/>
+		<input type="button" class="button" dojoAttachEvent="onclick:_restoreDefaults" value="Defaults"/>
 	</div>
-	<div class="List"><ul dojoAttachPoint="_selectedList"></ul></div>
-	<div class="ButtonColumn">
-		<input type="button" class="Button" dojoAttachPoint="_moveUpButton" value="Move Up" /><br />
-		<input type="button" class="Button" dojoAttachPoint="_moveDownButton" value="Move Down" />
+	<div class="list"><ul dojoAttachPoint="_selectedList"></ul></div>
+	<div class="buttonColumn">
+		<input type="button" class="button" dojoAttachPoint="_moveUpButton" dojoAttachEvent="onclick:_moveItemUp" value="Move Up"/><br/>
+		<input type="button" class="button" dojoAttachPoint="_moveDownButton" dojoAttachEvent="onclick:_moveItemDown" value="Move Down"/>
 	</div>
 </div>

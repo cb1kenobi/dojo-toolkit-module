@@ -22,22 +22,30 @@ dojo.declare(
 		_moveDownButton: null,
 
 		// params
-		toolbarButtons: [],
+		toolbarPlugins: [],
+		defaultPlugins: [],
 
 		// members
 		_selectedItem: null,
 
 		postCreate: function() {
-			var node = this.srcNodeRef;
-			this._inputField.id = node.id;
-			this._inputField.name = node.name;
-			this._inputField.value = node.value;
+			var n = this.srcNodeRef;
+			this._inputField.id = n.id;
+			this._inputField.name = n.name;
+			this._inputField.value = n.value;
 
 			this._disableButtons();
+			this._populateLists();
+		},
 
+		_populateLists: function() {
 			// populate the available items list
-			var selectedItems = new dojox.collections.ArrayList(node.value.split(','));
-			for (var i = 0; i < this.toolbarButtons.length; i++) {
+			var selectedItems = new dojox.collections.ArrayList(this._inputField.value.split(','));
+
+			dojo.query("li", this._availableList).forEach(function(n) { dojo._destroyElement(n); });
+			dojo.query("li", this._selectedList).forEach(function(n) { dojo._destroyElement(n); });
+
+			for (var i = 0; i < this.toolbarPlugins.length; i++) {
 				if (i == 0 || !selectedItems.contains(i)) {
 					this._availableList.appendChild(this._createListItem(i));
 				}
@@ -47,18 +55,13 @@ dojo.declare(
 			for (var i = 0; i < selectedItems.count; i++) {
 				this._selectedList.appendChild(this._createListItem(selectedItems.item(i)));
 			}
-
-			dojo.connect(this._addButton, "onclick", this, "_addItem");
-			dojo.connect(this._removeButton, "onclick", this, "_removeItem");
-			dojo.connect(this._moveUpButton, "onclick", this, "_moveItemUp");
-			dojo.connect(this._moveDownButton, "onclick", this, "_moveItemDown");
 		},
 
 		_createListItem: function(idx) {
-			var button = this.toolbarButtons[idx];
+			var button = this.toolbarPlugins[idx];
 
 			var icon = document.createElement("span");
-			icon.className = (button.label ? '' : "Icon") + (button["class"] ? ' ' + button["class"] : '');
+			icon.className = (button.label || button.stylelist ? '' : "dijitEditorIcon") + (button["class"] ? ' ' + button["class"] : '');
 			if (button.style) {
 				icon.cssText = button.style;
 			}
@@ -91,6 +94,11 @@ dojo.declare(
 			this._moveDownButton.disabled = !isSelectedList;
 		},
 
+		_restoreDefaults: function() {
+			this._inputField.value = this.defaultPlugins;
+			this._populateLists();
+		},
+
 		_onClick: function(evt) {
 			var li = evt.target;
 			while (li && li.parentNode && li.tagName.toLowerCase() != "li") {
@@ -107,7 +115,7 @@ dojo.declare(
 			}
 
 			this._selectedItem = li;
-			li.className = "Selected";
+			li.className = "selected";
 			this._enableButtons(li.parentNode == this._selectedList);
 		},
 

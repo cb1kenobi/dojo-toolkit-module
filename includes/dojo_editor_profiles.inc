@@ -8,69 +8,36 @@
 
 define('DOJO_DEFAULT_EDITOR_PAGES', "node*\nuser/*\ncomment/*\nadmin/build/block/*");
 define('DOJO_DEFAULT_EDITOR_IGNORE_TEXTAREAS', "access_pages\ncaption\ndescription\nignore_textareas\nimg_assist_pages\nlog\npages\nsynonyms\nuser_mail_approval_body\nuser_mail_pass_body\nuser_mail_welcome_body");
-define('DOJO_DEFAULT_EDITOR_TOOLBAR', '6,7,8,9,10,11,12,0,13,14,0,15,16,0,17,18,0,19,20,21,22,23');
+define('DOJO_DEFAULT_EDITOR_TOOLBAR', '1,2,0,3,4,5,0,6,7,8,9,0,10,11,12,13,0,14,15,16,17,0,18');
 
 // Array of all available toolbar buttons
-global $dojo_toolbar_buttons;
-$dojo_toolbar_buttons = array(
-	array('description' => 'Separator', 'separator' => TRUE),
-	array('description' => 'HTML Source', 'name' => 'htmltoggle', 'style' => 'background-image: none; width: 30px;', 'label' => '&lt;h&gt;'),
-	array('description' => 'Copy', 'name' => 'copy', 'class' => 'dijitEditorIconCopy'),
-	array('description' => 'Paste', 'name' => 'paste', 'class' => 'dijitEditorIconPaste'),
-	array('description' => 'Undo', 'name' => 'undo', 'class' => 'dijitEditorIconUndo'),
-	array('description' => 'Redo', 'name' => 'redo', 'class' => 'dijitEditorIconRedo'),
-	array('description' => 'Insert/Edit Link', 'name' => 'createlink', 'class' => 'dijitEditorIconCreateLink'),
-	array('description' => 'Insert/Edit Image', 'name' => 'insertimage', 'class' => 'dijitEditorIconInsertImage'),
-	array('description' => 'Horizontal Rule', 'name' => 'inserthorizontalrule', 'class' => 'dijitEditorIconInsertHorizontalRule'),
-	array('description' => 'Bold', 'name' => 'bold', 'class' => 'dijitEditorIconBold'),
-	array('description' => 'Italic', 'name' => 'italic', 'class' => 'dijitEditorIconItalic'),
-	array('description' => 'Underline', 'name' => 'underline', 'class' => 'dijitEditorIconUnderline'),
-	array('description' => 'Strikethrough', 'name' => 'strikethrough', 'class' => 'dijitEditorIconStrikethrough'),
-	array('description' => 'Bullet List', 'name' => 'insertunorderedlist', 'class' => 'dijitEditorIconInsertUnorderedList'),
-	array('description' => 'Numbered List', 'name' => 'insertorderedlist', 'class' => 'dijitEditorIconInsertOrderedList'),
-	array('description' => 'Indent', 'name' => 'indent', 'class' => 'dijitEditorIconIndent', 'unselectable' => TRUE),
-	array('description' => 'Outdent', 'name' => 'outdent', 'class' => 'dijitEditorIconOutdent', 'unselectable' => TRUE),
-	array('description' => 'Foreground Color', 'name' => 'forecolor', 'class' => 'dijitEditorIconForeColor', 'unselectable' => TRUE),
-	array('description' => 'Background Color', 'name' => 'hilitecolor', 'class' => 'dijitEditorIconHiliteColor', 'unselectable' => TRUE),
-	array('description' => 'Align Left', 'name' => 'justifyleft', 'class' => 'dijitEditorIconJustifyleft'),
-	array('description' => 'Align Center', 'name' => 'justifycenter', 'class' => 'dijitEditorIconJustifycenter'),
-	array('description' => 'Align Right', 'name' => 'justifyright', 'class' => 'dijitEditorIconJustifyright'),
-	array('description' => 'Justify', 'name' => 'justifyfull', 'class' => 'dijitEditorIconJustifyfull'),
-	array('description' => 'Style', 'name' => 'plainformatblock', 'stylelist' => TRUE)
+global $dojo_toolbar_plugins;
+$dojo_toolbar_plugins = array(
+	array('description' => 'Separator', 'plugin' => '|', 'separator' => TRUE),
+	array('description' => 'Undo', 'plugin' => 'undo', 'class' => 'dijitEditorIconUndo'),
+	array('description' => 'Redo', 'plugin' => 'redo', 'class' => 'dijitEditorIconRedo'),
+	array('description' => 'Cut', 'plugin' => 'cut', 'class' => 'dijitEditorIconCut'),
+	array('description' => 'Copy', 'plugin' => 'copy', 'class' => 'dijitEditorIconCopy'),
+	array('description' => 'Paste', 'plugin' => 'paste', 'class' => 'dijitEditorIconPaste'),
+	array('description' => 'Bold', 'plugin' => 'bold', 'class' => 'dijitEditorIconBold'),
+	array('description' => 'Italic', 'plugin' => 'italic', 'class' => 'dijitEditorIconItalic'),
+	array('description' => 'Underline', 'plugin' => 'underline', 'class' => 'dijitEditorIconUnderline'),
+	array('description' => 'Strikethrough', 'plugin' => 'strikethrough', 'class' => 'dijitEditorIconStrikethrough'),
+	array('description' => 'Numbered List', 'plugin' => 'insertOrderedList', 'class' => 'dijitEditorIconInsertOrderedList'),
+	array('description' => 'Bullet List', 'plugin' => 'insertUnorderedList', 'class' => 'dijitEditorIconInsertUnorderedList'),
+	array('description' => 'Indent', 'plugin' => 'indent', 'class' => 'dijitEditorIconIndent', 'unselectable' => TRUE),
+	array('description' => 'Outdent', 'plugin' => 'outdent', 'class' => 'dijitEditorIconOutdent', 'unselectable' => TRUE),
+	array('description' => 'Align Left', 'plugin' => 'justifyLeft', 'class' => 'dijitEditorIconJustifyLeft'),
+	array('description' => 'Align Center', 'plugin' => 'justifyCenter', 'class' => 'dijitEditorIconJustifyCenter'),
+	array('description' => 'Align Right', 'plugin' => 'justifyRight', 'class' => 'dijitEditorIconJustifyRight'),
+	array('description' => 'Justify', 'plugin' => 'justifyFull', 'class' => 'dijitEditorIconJustifyFull'),
+	array('description' => 'Insert/Edit Link', 'plugin' => array('name' => 'dijit._editor.plugins.LinkDialog'), 'class' => 'dijitEditorIconCreateLink')
 );
-
-/*
-dijitEditorIconCancel
-dijitEditorIconCut
-dijitEditorIconDelete
-dijitEditorIconInsertTable
-dijitEditorIconLeftToRight
-dijitEditorIconListBulletIndent
-dijitEditorIconListBulletOutdent
-dijitEditorIconListNumIndent
-dijitEditorIconListNumOutdent
-dijitEditorIconRemoveFormat
-dijitEditorIconRightToLeft
-dijitEditorIconSave
-dijitEditorIconSpace
-dijitEditorIconSubscript
-dijitEditorIconSuperscript
-dijitEditorIconWikiword
-*/
 
 /**
  * Defines editor profiles specific menu items.
  */
 function _dojo_editor_profiles_menu(&$items, $may_cache) {
-	if ($may_cache) {
-		$items[] = array(
-			'path' => 'dojo/toolbar',
-			'title' => t('Dojo Editor Toolbar Handler'),
-			'callback' => '_dojo_editor_profiles_toolbar_handler',
-			'type' => MENU_CALLBACK,
-			'access' => TRUE
-		);
-	}
 }
 
 /**
@@ -84,7 +51,7 @@ function _dojo_editor_profiles_load($profile_name = NULL) {
 	}
 
 	global $user;
-	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_editor_profiles} P LEFT JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN {dojo_config_roles} R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . " ORDER BY P.weight", implode(',', array_keys($user->roles)));
+	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_editor_profiles} P LEFT JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN {dojo_editor_roles} R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight', implode(',', array_keys($user->roles)));
 
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {
@@ -350,64 +317,4 @@ function _dojo_editor_profiles_detect() {
 	}
 
 	return $profile;
-}
-
-/**
- * Builds the editor toolbar based on the profile name passed in or loads
- * the default toolbar.
- */
-function _dojo_editor_profiles_toolbar_handler() {
-	echo '<div class="EditorToolbarDomNode EditorToolbarSmallBg">';
-	echo '<table cellpadding="1" cellspacing="0" border="0">';
-	echo '<tbody>';
-	echo '<tr valign="top" align="left">';
-	echo "\n";
-
-	$selected_buttons = explode(',', DOJO_DEFAULT_EDITOR_TOOLBAR);
-
-	$profile = _dojo_editor_profiles_detect();
-	if ($profile) {
-		$selected_buttons = explode(',', $profile['toolbar']);
-	}
-
-	global $dojo_toolbar_buttons;
-	for ($i = 0; $i < count($selected_buttons); $i++) {
-		$button = $dojo_toolbar_buttons[$selected_buttons[$i]];
-
-		if ($button['separator']) {
-			echo '<td isSpacer="true">';
-			echo '<span class="iconContainer">';
-			echo '<span class="dojoE2TBIcon dojoE2TBIcon_Sep"	style="width: 5px; min-width: 5px;"></span>';
-			echo '</span>';
-			echo "</td>\n";
-		} else if ($button['stylelist']) {
-			echo '<td>';
-			echo '<select class="dojoEditorToolbarItem" dojoETItemName="plainformatblock">';
-			echo '<option value="">-- format --</option>';
-			echo '<option value="p">Normal</option>';
-			echo '<option value="pre">Fixed Font</option>';
-			echo '<option value="h1">Main Heading</option>';
-			echo '<option value="h2">Section Heading</option>';
-			echo '<option value="h3">Sub-Heading</option>';
-			echo '</select>';
-			echo "</td>\n";
-		} else {
-			echo '<td>';
-			echo '<span class="iconContainer dojoEditorToolbarItem" dojoETItemName="' . $button['name'] . '">';
-			echo '<span class="dojoE2TBIcon' . (isset($button['class']) ? ' ' . $button['class'] : '') . '"';
-			if (isset($button['unselectable']))
-				echo ' unselectable="on"';
-			if (isset($button['style']))
-				echo ' style="' . $button['style'] . '"';
-			echo '>' . (isset($button['label']) ? $button['label'] : '&nbsp;') . '</span>';
-			echo '</span>';
-			echo "</td>\n";
-		}
-	}
-
-	echo '<td width="*">&nbsp;</td>';
-	echo '</tr>';
-	echo '</tbody>';
-	echo '</table>';
-	echo '</div>';
 }

@@ -187,7 +187,7 @@ function _dojo_svn_form($form_values = NULL) {
 			$form['dojo_svn_done']['dojo_svn_output'] = array(
 				'#type' => 'item',
 				'#title' => 'Subversion Output',
-				'#value' => '<div class="DojoSvnOutput">' . implode('<br/>', _dojo_svn_execute_checkout($dir, $local_dir)) . '</div>'
+				'#value' => '<div class="dojoSvnOutput">' . implode('<br/>', _dojo_svn_execute_checkout($dir, $local_dir)) . '</div>'
 			);
 			break;
 	}

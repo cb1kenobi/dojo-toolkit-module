@@ -6,19 +6,6 @@ dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dijit.Tree");
 dojo.require("dijit.Tooltip");
 
-/*dojo.require("dojo.event.*");
-dojo.require("dojo.html.style");
-dojo.require("dojo.string.extras");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.HtmlWidget");
-dojo.require("dojo.widget.Tooltip");
-dojo.require("dojo.widget.TreeV3");
-dojo.require("dojo.widget.TreeNodeV3");
-dojo.require("dojo.widget.TreeLoadingControllerV3");
-dojo.require("dojo.widget.TreeDocIconExtension");
-dojo.require("dojo.widget.TreeSelectorV3");
-dojo.require("dojo.widget.TreeEmphasizeOnSelect");*/
-
 dojo.declare(
 	"drupal.form.SvnTree",
 	dijit._Widget,
@@ -58,7 +45,7 @@ dojo.declare(
 
 			/*
 			dojo.html.insertAfter(this._tree.domNode, this.domNode);
-			dojo.html.addClass(this._tree.domNode, "DojoSvnTree");
+			dojo.html.addClass(this._tree.domNode, "dojoSvnTree");
 
 			dojo.event.topic.subscribe(this._tree.eventNames.afterAddChild, this, "_onAddNode");
 			this._tree.setChildren(this._buildNodes(this.data));
