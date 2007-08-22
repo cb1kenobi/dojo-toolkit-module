@@ -69,7 +69,6 @@ function _dojo_process_textarea($element) {
 		dojo_require_js('drupal.form.GoogleMapKeyTable');
 		dojo_create_widget_js($element, 'drupal.form.GoogleMapKeyTable');
 		$element['#resizable'] = FALSE;
-	/*
 	} elseif ($element['#resizable'] !== FALSE) {
 		foreach (_dojo_config_profiles_load() as $config_profile_name => $config_profile) {
 			if (!isset($config_profile['override_jquery']) || array_search('editor', $config_profile['override_jquery']) === FALSE) {
@@ -103,7 +102,6 @@ function _dojo_process_textarea($element) {
 
 		dojo_require_js('drupal.form.Editor');
 		dojo_create_widget_js($element, 'drupal.form.Editor', array('showToggle' => $show_toggle, 'defaultState' => FALSE));
-	*/
 	}
 	return $element;
 }
