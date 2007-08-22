@@ -8,20 +8,24 @@ fieldset legend {
 	display: block;
 }
 
-.DojoEditor {
+.dijitEditorInner body {
+	background: none;
+}
+
+.dijitEditor {
 	border: solid 1px #999;
 }
 
-.DojoEditor table {
+.dijitEditor table {
 	margin: 0;
 	width: auto;
 }
 
-.DojoEditor td, th {
+.dijitEditor td, th {
 	padding: 0;
 }
 
-table.DojoGoogleMapsKeyTable input {
+table.dojoGoogleMapsKeyTable input {
 	width: 100%;
 }
 
@@ -31,17 +35,17 @@ span > table {
 	width: auto;
 }
 
-.DojoSvnTree {
+.dojoSvnTree {
 	border: solid 1px #666;
 	height: 250px;
 	overflow: auto;
 }
 
-.DojoSvnTree table {
+.dojoSvnTree table {
 	margin: 0;
 }
 
-.DojoSvnOutput {
+.dojoSvnOutput {
 	border: solid 1px #666;
 	height: 300px;
 	overflow: auto;
@@ -66,35 +70,35 @@ span > table {
 	overflow: hidden;
 }
 
-.CustomizeToolbar:after {
+.dojoCustomizeToolbar:after {
 	clear: both;
 }
 
-.CustomizeToolbar div {
+.dojoCustomizeToolbar div {
 	float: left;
 	margin-right: 10px;
 }
 
-.CustomizeToolbar .List {
+.dojoCustomizeToolbar .list {
 	border: solid 1px #999;
 	height: 260px;
 	overflow: auto;
 	width: 175px;
 }
 
-.CustomizeToolbar .Icon {
+.dojoCustomizeToolbar .dijitEditorIcon {
 	display: block;
 	float: left;
 	margin-right: 5px;
 }
 
-.CustomizeToolbar ul {
+.dojoCustomizeToolbar ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 1px;
 }
 
-.CustomizeToolbar li {
+.dojoCustomizeToolbar li {
 	background: none;
 	cursor: pointer;
 	list-style-type: none;
@@ -103,18 +107,18 @@ span > table {
 	padding: 1px 1px 1px 5px;
 }
 
-.CustomizeToolbar li.Selected {
+.dojoCustomizeToolbar li.selected {
 	background-color: #3366ff;
 	border: dotted 1px #fff;
 	color: #FFF;
 	padding: 0px 0px 0px 4px;
 }
 
-.CustomizeToolbar .ButtonColumn {
+.dojoCustomizeToolbar .buttonColumn {
 	padding-top: 100px;
 }
 
-.CustomizeToolbar .Button {
+.dojoCustomizeToolbar .button {
 	margin-bottom: 10px;
 	width: 90px;
 }

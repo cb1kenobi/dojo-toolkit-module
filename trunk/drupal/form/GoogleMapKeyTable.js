@@ -9,7 +9,7 @@ dojo.declare(
 	"drupal.form.GoogleMapKeyTable",
 	[dijit.form._FormWidget, dijit._Templated],
 	{
-		templateString: '<div><table class="DojoGoogleMapsKeyTable" dojoAttachPoint="_table"><thead><th colspan="2">URL</th><th>Key</th></thead><tbody dojoAttachPoint="_tbody"></tbody></table><div><a dojoAttachEvent="onclick:_addKey" href="#">Add new key</a></div><input type="hidden" dojoAttachPoint="_saveField" /></div>',
+		templateString: '<div><table class="dojoGoogleMapsKeyTable" dojoAttachPoint="_table"><thead><th colspan="2">URL</th><th>Key</th></thead><tbody dojoAttachPoint="_tbody"></tbody></table><div><a dojoAttachEvent="onclick:_addKey" href="#">Add new key</a></div><input type="hidden" dojoAttachPoint="_saveField" /></div>',
 
 		// private vars
 		_counter: 0,

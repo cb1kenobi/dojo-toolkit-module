@@ -41,9 +41,9 @@ function _dojo_process_hidden($element) {
 		dojo_require_js('drupal.form.SvnTree');
 		dojo_create_widget_js($element, 'drupal.form.SvnTree', $element['#svnData']);
 	} else if ($element['#toolbar']) {
-		global $dojo_toolbar_buttons;
+		global $dojo_toolbar_plugins;
 		dojo_require_js('drupal.form.CustomizeToolbar');
-		dojo_create_widget_js($element, 'drupal.form.CustomizeToolbar', array('toolbarButtons' => $dojo_toolbar_buttons));
+		dojo_create_widget_js($element, 'drupal.form.CustomizeToolbar', array('toolbarPlugins' => $dojo_toolbar_plugins, 'defaultPlugins' => DOJO_DEFAULT_EDITOR_TOOLBAR));
 		$element['#value'] = $element['#selected_toolbar_buttons'];
 	}
 	return $element;
@@ -86,8 +86,25 @@ function _dojo_process_textarea($element) {
 				$show_toggle = !isset($editor_profile['show_toggle']) || $editor_profile['show_toggle'] == 1;
 				$default_state = isset($editor_profile['default_state']) && $editor_profile['default_state'] == 1;
 
+				$indexes = explode(',', DOJO_DEFAULT_EDITOR_TOOLBAR);
+				if ($editor_profile['toolbar']) {
+					$indexes = explode(',', $editor_profile['toolbar']);
+				}
+
+				global $dojo_toolbar_plugins;
+				$plugins = array();
+				for ($i = 0; $i < count($indexes); $i++) {
+					$plugins[] = $dojo_toolbar_plugins[$indexes[$i]]['plugin'];
+				}
+
 				dojo_require_js('drupal.form.Editor');
-				dojo_create_widget_js($element, 'drupal.form.Editor', array('showToggle' => $show_toggle, 'defaultState' => $default_state));
+				dojo_create_widget_js($element, 'drupal.form.Editor',
+					array(
+						'showToggle' => $show_toggle,
+						'defaultState' => $default_state,
+						'plugins' => $plugins
+					)
+				);
 
 				$element['#resizable'] = FALSE;
 				return $element;

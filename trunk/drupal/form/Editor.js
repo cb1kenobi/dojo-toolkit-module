@@ -4,21 +4,10 @@ dojo.provide("drupal.form.Editor");
 
 dojo.require("dijit._Widget");
 dojo.require("dijit.Editor");
-/*
-dojo.require("dojo.fx");
-dojo.require("dojo.event.*");
-dojo.require("dojo.html.common");
-dojo.require("dojo.html.style");
-dojo.require("dojo.lang.common");
-dojo.require("dojo.lang.extras");
-dojo.require("dojo.string.common");
-dojo.require("dojo.widget.*");
-dojo.require("dojo.widget.Button");
-dojo.require("dojo.widget.Editor2");
-dojo.require("dojo.widget.Editor2Plugin.CreateLinkDialog");
-dojo.require("dojo.widget.Editor2Plugin.InsertImageDialog");
-dojo.require("dojo.widget.HtmlWidget");
-*/
+dojo.require("dijit._editor.plugins.AlwaysShowToolbar");
+dojo.require("dijit._editor.plugins.EnterKeyHandling");
+dojo.require("dijit._editor.plugins.LinkDialog");
+
 dojo.declare(
 	"drupal.form.Editor",
 	dijit._Widget,
@@ -26,6 +15,7 @@ dojo.declare(
 		// params
 		showToggle: true,
 		defaultState: false,
+		plugins: null,
 
 		// members
 		_styleSheets: null,
@@ -77,12 +67,6 @@ dojo.declare(
 				this._styleSheets.push(host + k);
 			}
 
-			/* TODO: fix this...
-			if (djConfig["useXDomain"]) {
-				dojo.widget.Editor2CreateLinkDialog.prototype.templatePath = djConfig["dojoCreateLinkUrl"]; dojo.widget.Editor2InsertImageDialog.prototype.templatePath = djConfig["dojoInsertImageUrl"];
-			}
-			*/
-
 			this._textareaID = this.domNode.id;
 
 			var cta = document.createElement("div");
@@ -97,7 +81,7 @@ dojo.declare(
 			dojo.connect(grip, "onmousedown", this, "_startDrag");
 
 			var ce = document.createElement("div");
-			ce.className = "DojoEditor";
+			ce.className = "dijitEditor";
 			dojo.place(ce, cta, "after");
 			dojo.style(ce, 'display', 'none');
 			this._containerEditor = ce;
@@ -140,18 +124,20 @@ dojo.declare(
 				dojo.style(this._containerEditor, "display", "");
 
 				this._editor = new dijit.Editor(
-					{ 	shareToolbar: false, 
-						toolbarAlwaysVisible: true,
+					{ 	toolbarAlwaysVisible: true,
 						focusOnLoad: true,
-						minHeight: "10em",
-						//editingAreaStyleSheets: this._styleSheets,
-						//toolbarTemplatePath: "/dojo/toolbar",
+						minHeight: "15em", 
+						height: "",
+						plugins: this.plugins,
+						extraPlugins: ['dijit._editor.plugins.AlwaysShowToolbar'],
+						editingAreaStyleSheets: this._styleSheets,
 						contentPreFilters: [ function(txt) { return txt.replace(/\n/g, "<br/>"); } ],
 						contentPostFilters: [ function(txt) { return txt.replace(/\<br\s*\/?\>/ig, "\n"); } ]
 					},
 					this._containerEditor
 				);
 
+				dojo.query("html", this._editor.document)[0].className = "dijitEditorInner";
 				dojo.connect(this._editor, "onBlur", this, "_onEditorBlur");
 				setTimeout(dojo.hitch(this, function() { this._editor.onClick(); } ), 1000);
 
