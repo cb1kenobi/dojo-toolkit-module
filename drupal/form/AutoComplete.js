@@ -159,10 +159,12 @@ dojo.declare(
 				ul.appendChild(li);
 
 				dojo.connect(li, "onmousedown", this, "_insert");
-				dojo.connect(li, "onmouseover", this, "_highlight");
-				dojo.connect(li, "onmouseout", this, "_unhighlight");
+				dojo.connect(li, "onmouseover", dojo.hitch(this, function(evt) { this._highlight(evt.target); }));
+				dojo.connect(li, "onmouseout", dojo.hitch(this, function(evt) { this._unhighlight(evt.target); }));
 			}
 			d.appendChild(ul);
+
+			this._highlight(dojo.query("li", ul)[0]);
 
 			if (show) {
 				var dim = dojo.coords(this.domNode);
@@ -179,30 +181,30 @@ dojo.declare(
 		},
 
 		_moveSelect: function(evt, up) {
-/*
 			if (this._popup) {
-				if (up) {
-					var prev = this._selected ? dojo.html.prevElement(this._selected, "li") : null;
-					if (prev) {
-						this._highlight(prev);
-					}
-				} else if (!up) {
-					var next = this._selected ? dojo.html.nextElement(this._selected, "li") : null;
-					if (next) {
-						this._highlight(next);
-					} else {
-						var lis = this._popup.getElementsByTagName("li");
-						if (lis.length) {
-							this._highlight(lis[0]);
+				if (!this._selected) {
+					this._highlight(dojo.query("li:first-child", ul)[0]);
+				} else {
+					var lis = dojo.query("li", this._selected.parentNode);
+					for (var i = 0; i < lis.length; i++) {
+						if (lis[i] == this._selected) {
+							if (up && i > 0) {
+								this._highlight(lis[--i]);
+							} else if (!up && i + 1 < lis.length) {
+								this._highlight(lis[++i]);
+							}
+							break;
 						}
 					}
 				}
 			}
-*/
 		},
 
 		_insert: function(evt) {
 			if (evt || this._selected) {
+				if (evt) {
+					dojo.stopEvent(evt);
+				}
 				var n = evt ? evt.target : this._selected;
 				this.domNode.value = n.val;
 				this._hidePopup();
