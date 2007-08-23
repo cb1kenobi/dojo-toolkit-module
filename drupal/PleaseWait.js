@@ -33,7 +33,9 @@ dojo.declare(
 			this._button.className = node.className;
 			dojo.connect(this._button, "onclick", this, "_showDialog");
 
-			this._dialog = new dijit.Dialog({}, this._contents);
+			this._dialog = new dijit.Dialog({
+				templateString: "<div class=\"dijitDialogBox\"><div dojoAttachPoint=\"containerNode\"></div></div>",
+			}, this._contents);
 		},
 
 		_showDialog: function(evt) {
