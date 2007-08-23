@@ -52,14 +52,16 @@ span > table {
 	white-space: nowrap;
 }
 
-.dijitDialog {
-	background: #fff;
+.dijitDialogBox {
+	background-color: #fff;
 	border: 1px solid #999;
 	-moz-border-radius: 8px;
 	padding: 12px;
+	position: absolute;
+	z-index: 999;
 }
 
-.dijitDialog span.Indicator {
+.dijitDialogBox span.Indicator {
 	color: #666;
 	background: url(indicator.gif) no-repeat left 0;
 	display: block;
