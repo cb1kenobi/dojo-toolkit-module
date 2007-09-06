@@ -103,11 +103,11 @@ function _dojo_editor_profiles_list(&$form) {
 			'#value' => theme('table', $header, $rows)
 		);
 	} else {
-		global $dojo_toolbar_buttons;
+		global $dojo_toolbar_plugins;
 		$default_toolbar = explode(',', DOJO_DEFAULT_EDITOR_TOOLBAR);
 		$toolbar = array();
 		for ($i = 0; $i < count($default_toolbar); $i++) {
-			$toolbar[] = $dojo_toolbar_buttons[$default_toolbar[$i]]['description'];
+			$toolbar[] = $dojo_toolbar_plugins[$default_toolbar[$i]]['description'];
 		}
 
 		$form['editor_profiles']['no_editor_profiles'] = array(

@@ -39,7 +39,7 @@ function _dojo_process_fieldset($element) {
 function _dojo_process_hidden($element) {
 	if ($element['#svnTree']) {
 		dojo_require_js('drupal.form.SvnTree');
-		dojo_create_widget_js($element, 'drupal.form.SvnTree', $element['#svnData']);
+		dojo_create_widget_js($element, 'drupal.form.SvnTree');
 	} else if ($element['#toolbar']) {
 		global $dojo_toolbar_plugins;
 		dojo_require_js('drupal.form.CustomizeToolbar');
