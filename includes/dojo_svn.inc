@@ -158,8 +158,7 @@ function _dojo_svn_form($form_values = NULL) {
 
 			$form['dojo_svn_folders']['dojo_svn_folder'] = array(
 				'#type' => 'hidden',
-				'#svnTree' => TRUE,
-				'#svnData' => array('data' => _dojo_svn_execute_list())
+				'#svnTree' => TRUE
 			);
 
 			$form['back'] = array(
@@ -215,19 +214,24 @@ class _dojo_svn_listing {
 	function _start($parser, $tag, $attrs) {
 		switch (strtolower($tag)) {
 			case 'commit':
-				if ($this->current_item)
+				if ($this->current_item) {
 					$this->current_item->revision = strtolower($attrs['REVISION']);
+				}
 				break;
 			case 'entry':
-				$this->current_item = new StdClass;
-				$this->current_item->type = strtolower($attrs['KIND']);
+				$type = strtolower($attrs['KIND']);
+				if ($type == 'dir') {
+					$this->current_item = new StdClass;
+					$this->current_item->type = strtolower($attrs['KIND']);
+				}
 				break;
 		}
 	}
 
 	function _end($parser, $tag) {
-		if (!$this->current_item)
+		if (!$this->current_item) {
 			return;
+		}
 
 		$tag = strtolower($tag); 
 
@@ -245,6 +249,8 @@ class _dojo_svn_listing {
 				$this->listing[] = $this->current_item;
 				$this->current_item = null;
 				break;
+			case 'name':
+				$this->current_item->children = array(array('name' => $this->current_data, 'type' => 'stub'));
 			default:
 				$this->current_item->$tag = $this->current_data;
 				break;
@@ -253,8 +259,9 @@ class _dojo_svn_listing {
 	}
 
 	function _data($parser, $data) {
-		if ($this->current_item)
+		if ($this->current_item) {
 			$this->current_data .= $data;
+		}
 	}
 }
 
@@ -330,16 +337,19 @@ function _dojo_parse_svn_objectid($json) {
  * Ajax handler for the folder tree
  */
 function _dojo_svn_folder_handler() {
-	switch ($_GET['action']) {
-		case 'getChildren':
-			$objectId = _dojo_parse_svn_objectid($_GET['data']);
-			if (strlen($objectId)) {
-				echo '(' . drupal_to_js(_dojo_svn_execute_list($objectId)) . ')';
-				break;
-			}
-		default:
-			echo '([])';
-	}
+	echo '{';
+	if ($_GET['action'] == 'getChildren') {
+		$objectId = _dojo_parse_svn_objectid($_GET['data']);
+		if (strlen($objectId)) {
+			echo 'identifier: "name", label: "name", items: ' . drupal_to_js(_dojo_svn_execute_list($objectId));
+		}
+	} else {
+		echo 'identifier: "name", label: "name", items: '; // . drupal_to_js(_dojo_svn_execute_list());
+		echo '[ { "type": "dir", "name": "branches", "revision": "10067", "author": "sjmiles", "date": "August 9, 2007, 7:04 pm", "children": [] }, { "type": "dir", "name": "dijit", "revision": "10388", "author": "doughays", "date": "August 29, 2007, 5:36 pm" }, { "type": "dir", "name": "dojo", "revision": "10356", "author": "jburke", "date": "August 24, 2007, 10:41 pm" }, { "type": "dir", "name": "dojox", "revision": "10387", "author": "BryanForbes", "date": "August 29, 2007, 4:29 pm" }, { "type": "dir", "name": "packages", "revision": "7557", "author": "dmachi", "date": "March 8, 2007, 4:31 pm" }, { "type": "dir", "name": "tags", "revision": "10315", "author": "alex", "date": "August 20, 2007, 12:37 pm" }, { "type": "dir", "name": "trunk", "revision": "8887", "author": "alex", "date": "June 3, 2007, 3:37 pm" }, { "type": "dir", "name": "util", "revision": "10357", "author": "elazutkin", "date": "August 24, 2007, 11:52 pm" }, { "type": "dir", "name": "view", "revision": "7633", "author": "alex", "date": "March 17, 2007, 11:38 pm" } ]';
 
+/*
+		echo '{identifier: "name", label: "name", items: [ { "type": "dir", "children": [ { "name": "_branches", "type": "stub" } ], "name": "branches", "revision": "10067", "author": "sjmiles", "date": "August 9, 2007, 7:04 pm" }, { "type": "dir", "children": [ { "name": "_dijit", "type": "stub" } ], "name": "dijit", "revision": "10388", "author": "doughays", "date": "August 29, 2007, 5:36 pm" }, { "type": "dir", "children": [ { "name": "_dojo", "type": "stub" } ], "name": "dojo", "revision": "10356", "author": "jburke", "date": "August 24, 2007, 10:41 pm" }, { "type": "dir", "children": [ { "name": "_dojox", "type": "stub" } ], "name": "dojox", "revision": "10387", "author": "BryanForbes", "date": "August 29, 2007, 4:29 pm" }, { "type": "dir", "children": [ { "name": "_packages", "type": "stub" } ], "name": "packages", "revision": "7557", "author": "dmachi", "date": "March 8, 2007, 4:31 pm" }, { "type": "dir", "children": [ { "name": "_tags", "type": "stub" } ], "name": "tags", "revision": "10315", "author": "alex", "date": "August 20, 2007, 12:37 pm" }, { "type": "dir", "children": [ { "name": "_trunk", "type": "stub" } ], "name": "trunk", "revision": "8887", "author": "alex", "date": "June 3, 2007, 3:37 pm" }, { "type": "dir", "children": [ { "name": "_util", "type": "stub" } ], "name": "util", "revision": "10357", "author": "elazutkin", "date": "August 24, 2007, 11:52 pm" }, { "type": "dir", "children": [ { "name": "_view", "type": "stub" } ], "name": "view", "revision": "7633", "author": "alex", "date": "March 17, 2007, 11:38 pm" } ]}';
+*/	}
+	echo '}';
 	exit();
 }
