@@ -146,10 +146,6 @@ function _dojo_svn_form($form_values = NULL) {
 			}
 			*/
 
-			$form['tree_icons'] = array(
-				'#value' => '<div style="display:none"><img src="' . $image_path . 'i.gif"><img src="' . $image_path . 'i_half.gif"><img src="' . $image_path . 'expand_minus.gif"><img src="' . $image_path . 'expand_plus.gif"><img src="' . $image_path . 'expand_leaf.gif"><img src="' . $image_path . 'i_long.gif"><img src="' . $image_path . 'document.gif"><img src="' . $image_path . 'open.gif"><img src="' . $image_path . 'closed.gif"></div>'
-			);
-
 			$form['dojo_svn_folders'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Subversion Settings'),
