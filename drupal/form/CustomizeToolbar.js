@@ -1,7 +1,4 @@
-if(!dojo._hasResource["drupal.form.CustomizeToolbar"]){
-dojo._hasResource["drupal.form.CustomizeToolbar"] = true;
 dojo.provide("drupal.form.CustomizeToolbar");
-
 dojo.require("dijit.form._FormWidget");
 dojo.require("dijit._Templated");
 dojo.require("dojox.collections.ArrayList");
@@ -200,5 +197,3 @@ dojo.declare(
 		}
 	}
 );
-
-}

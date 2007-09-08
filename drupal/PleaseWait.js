@@ -1,7 +1,4 @@
-if(!dojo._hasResource["drupal.PleaseWait"]){
-dojo._hasResource["drupal.PleaseWait"] = true;
 dojo.provide("drupal.PleaseWait");
-
 dojo.require("dijit._Widget");
 dojo.require("dijit._Templated");
 dojo.require("dijit.Dialog");
@@ -51,5 +48,3 @@ dojo.declare(
 		}
 	}
 );
-
-}
