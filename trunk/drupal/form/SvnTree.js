@@ -1,9 +1,5 @@
-if(!dojo._hasResource["drupal.form.SvnTree"]){
-dojo._hasResource["drupal.form.SvnTree"] = true;
 dojo.provide("drupal.form.SvnTree");
-
-dojo.require("dojox.data.demos.stores.LazyLoadJSIStore");
-//dojo.require("dojo.data.ItemFileReadStore");
+dojo.require("drupal.data.SvnStore");
 dojo.require("dijit.Tree");
 dojo.require("dijit.Tooltip");
 
@@ -31,7 +27,7 @@ dojo.declare(
 				query: { type: "dir" },
 				labelAttr: "name",
 				typeAttr: "type",
-				store: new dojox.data.demos.stores.LazyLoadJSIStore({ url: "/dojo/svn" })
+				store: new drupal.data.SvnStore({ url: "/dojo/svn" })
 			}, d);
 
 			// { listeners: [controller.widgetId, docIcons.widgetId, selector.widgetId] });
@@ -94,5 +90,3 @@ dojo.declare(
 		}
 	}
 );
-
-}

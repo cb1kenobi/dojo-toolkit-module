@@ -1,7 +1,4 @@
-if(!dojo._hasResource["drupal.form.GoogleMapKeyTable"]){
-dojo._hasResource["drupal.form.GoogleMapKeyTable"] = true;
 dojo.provide("drupal.form.GoogleMapKeyTable");
-
 dojo.require("dijit.form._FormWidget");
 dojo.require("dijit._Templated");
 
@@ -138,5 +135,3 @@ dojo.declare(
 		}
 	}
 );
-
-}

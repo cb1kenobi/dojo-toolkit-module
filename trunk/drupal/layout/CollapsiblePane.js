@@ -1,7 +1,4 @@
-if(!dojo._hasResource["drupal.layout.CollapsiblePane"]){
-dojo._hasResource["drupal.layout.CollapsiblePane"] = true;
 dojo.provide("drupal.layout.CollapsiblePane");
-
 dojo.require("dijit._Widget");
 dojo.require("dojo.fx");
 
@@ -86,5 +83,3 @@ dojo.declare(
 		}
 	}
 );
-
-}

@@ -1,7 +1,4 @@
-if(!dojo._hasResource["drupal.form.AutoComplete"]){
-dojo._hasResource["drupal.form.AutoComplete"] = true;
 dojo.provide("drupal.form.AutoComplete");
-
 dojo.require("dijit._Widget");
 dojo.require("dojo.fx");
 
@@ -236,5 +233,3 @@ dojo.declare(
 		}
 	}
 );
-
-}

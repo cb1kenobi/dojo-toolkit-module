@@ -1,7 +1,4 @@
-if(!dojo._hasResource["drupal.form.Editor"]){
-dojo._hasResource["drupal.form.Editor"] = true;
 dojo.provide("drupal.form.Editor");
-
 dojo.require("dijit._Widget");
 dojo.require("dijit.Editor");
 dojo.require("dijit._editor.plugins.AlwaysShowToolbar");
@@ -177,5 +174,3 @@ dojo.declare(
 		}
 	}
 );
-
-}
