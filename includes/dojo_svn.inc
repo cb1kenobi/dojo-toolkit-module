@@ -140,12 +140,6 @@ function _dojo_svn_form($form_values = NULL) {
 			$build = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
 			$image_path = substr($build, 0, strrpos($build, '/', (strrpos($build, '/') - 1) - strlen($build))) . '/dijit/themes/tundra/images/';
 
-			/* TODO: fix this once the Dojo 0.9 CDN stuff is sorted out
-			if (stripos($build, 'http') !== FALSE || (strlen($build) > 1 && !file_exists(substr($build, 1)))) {
-				$image_path = str_replace('dojo.js', 'src/widget/templates/images/TreeV3/', $build);
-			}
-			*/
-
 			$form['dojo_svn_folders'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Subversion Settings'),
@@ -194,11 +188,11 @@ function _dojo_svn_form($form_values = NULL) {
  * Helper class for parsing the xml response from Subversion
  */
 class _dojo_svn_listing {
-	function parse($data, $dir) {
+	function parse($data, $path) {
 		$this->listing = array();
 		$this->current_item = null;
 		$this->current_data = '';
-		$this->path = $dir == '/' ? '' : $dir;
+		$this->path = $path == '/' ? '' : $path;
 
 		$parser = xml_parser_create();
 		xml_set_object($parser, $this);
@@ -247,10 +241,8 @@ class _dojo_svn_listing {
 				$this->current_item = null;
 				break;
 			case 'name':
-				$stub = array('name' => '_' . $this->current_data, 'type' => 'stub');
-				if (strlen($this->path)) {
-					$stub['path'] = $this->path;
-				}
+				$this->current_item->id = $this->path . '/' . $this->current_data;
+				$stub = array('id' => uniqid(), 'name' => $this->current_data . '_stub', 'type' => 'stub', 'path' => $this->path . '/' . $this->current_data);
 				$this->current_item->children = array($stub);
 			default:
 				$this->current_item->$tag = $this->current_data;
@@ -283,6 +275,7 @@ function _dojo_svn_execute_list($dir = '/') {
 	} else if (substr($url, -1, 1) != '/' && substr($dir, 0, 1) != '/') {
 		$url .= '/';
 	}
+
 	$cmd[] = escapeshellarg($url . $dir);
 	$cmd[] = "2>&1";
 
@@ -314,6 +307,7 @@ function _dojo_svn_execute_checkout($dir, $local_dir) {
 	} else if (substr($url, -1, 1) != '/' && substr($dir, 0, 1) != '/') {
 		$url .= '/';
 	}
+
 	$cmd[] = escapeshellarg($url . $dir);
 	$cmd[] = escapeshellarg($local_dir);
 	$cmd[] = "2>&1";
@@ -334,24 +328,8 @@ function _dojo_svn_folder_handler() {
 	if (strlen($path)) {
 		echo drupal_to_js(_dojo_svn_execute_list('/' . $path));
 	} else {
-		echo '{';
-		echo 'identifier: "name", label: "name", items: ' . drupal_to_js(_dojo_svn_execute_list());
-/*		echo 'identifier: "name", label: "name", items: ';
-		echo '[ ';
-		echo '{ "type": "dir", "name": "branches", "revision": "10067", "author": "sjmiles", "date": "August 9, 2007, 7:04 pm", "children": [ ';
-		echo	'{ "name": "_branches", "type": "stub" }';
-		echo '] }, ';
-		echo '{ "type": "dir", "name": "dijit", "revision": "10388", "author": "doughays", "date": "August 29, 2007, 5:36 pm", "children": [ { "name": "_dijit", "type": "stub" } ] }, ';
-		echo '{ "type": "dir", "name": "dojo", "revision": "10356", "author": "jburke", "date": "August 24, 2007, 10:41 pm", "children": [ { "name": "_dojo", "type": "stub" } ] }, ';
-		echo '{ "type": "dir", "name": "dojox", "revision": "10387", "author": "BryanForbes", "date": "August 29, 2007, 4:29 pm", "children": [ { "name": "_dojox", "type": "stub" } ] }, ';
-		echo '{ "type": "dir", "name": "packages", "revision": "7557", "author": "dmachi", "date": "March 8, 2007, 4:31 pm", "children": [ { "name": "_packages", "type": "stub" } ] }, ';
-		echo '{ "type": "dir", "name": "tags", "revision": "10315", "author": "alex", "date": "August 20, 2007, 12:37 pm", "children": [ { "name": "_tags", "type": "stub" } ] }, ';
-		echo '{ "type": "dir", "name": "trunk", "revision": "8887", "author": "alex", "date": "June 3, 2007, 3:37 pm", "children": [ { "name": "_trunk", "type": "stub" } ] }, ';
-		echo '{ "type": "dir", "name": "util", "revision": "10357", "author": "elazutkin", "date": "August 24, 2007, 11:52 pm", "children": [ { "name": "_util", "type": "stub" } ] }, ';
-		echo '{ "type": "dir", "name": "view", "revision": "7633", "author": "alex", "date": "March 17, 2007, 11:38 pm", "children": [ { "name": "_view", "type": "stub" } ] }';
-		echo ' ]';
-		*/
-		echo '}';
+		echo '{identifier: "id", label: "name", items: ' . drupal_to_js(_dojo_svn_execute_list()) . '}';
 	}
+
 	exit();
 }
