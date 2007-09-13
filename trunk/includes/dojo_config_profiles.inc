@@ -65,7 +65,7 @@ function _dojo_config_profiles_list(&$form) {
 	$form['config_profiles'] = array(
 		'#type' => 'fieldset',
 		'#title' => t('Dojo Config Profiles'),
-		'#description' => t('<p>Config profiles allow you to associate Dojo configurations to specific pages, fields, and access roles.</p><p><a href="dojo/config/add">Add new config profile</a></p>')
+		'#description' => t('<p>Config profiles allow you to associate Dojo configurations to specific pages, fields, and access roles.</p><p><a href="!add_url">Add new config profile</a></p>', array('!add_url' => url('admin/settings/dojo/config/add')))
 	);
 
 	$profiles = _dojo_config_profiles_load();
@@ -276,7 +276,7 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 			$form['build'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Dojo Build'),
-				'#description' => t('<p>Dojo\'s source can be compiled into a build containing only the packages that you need. There are several pre-compiled builds that vary on the included packages.  You can make your own build on the <a href="/admin/settings/dojo/build">Create Custom Build</a> page.</p>'),
+				'#description' => t('<p>Dojo\'s source can be compiled into a build containing only the packages that you need. You can make your own build using the build scripts included with .</p>'),
 				'#collapsible' => TRUE
 			);
 
@@ -284,7 +284,7 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 			$builds = array('Local Builds' => _dojo_config_profiles_scan_build_dirs(), 'XDomain Builds' => $dojo_xdomain_urls);
 
 			if (!count($builds['Local Builds'])) {
-				$desc = '<p>NOTE: No local Dojo builds found.  There are circumstances where you may want to host the Dojo Javascript files on this server.  You can download a Dojo build from <a href="http://download.dojotoolkit.org" target="_blank">http://download.dojotoolkit.org</a>.  It is recommended to use the <a href="http://download.dojotoolkit.org/release-0.4.3/dojo-0.4.3-editor.tar.gz">Dojo 0.4.3 Editor</a> build.</p>';
+				$desc = '<p>No local Dojo builds found. There are circumstances where you may want to host the Dojo Javascript files on this server.  You can download a Dojo build from <a href="http://download.dojotoolkit.org" target="_blank">http://download.dojotoolkit.org</a>.  It is recommended to use the <a href="http://download.dojotoolkit.org/release-0.9.0/dojo-release-0.9.0.tar.gz">Dojo 0.9.0</a> release.</p>';
 			}
 
 			$form['build']['dojo_js'] = array(
