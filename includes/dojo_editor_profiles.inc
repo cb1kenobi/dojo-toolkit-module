@@ -75,7 +75,7 @@ function _dojo_editor_profiles_list(&$form) {
 	$form['editor_profiles'] = array(
 		'#type' => 'fieldset',
 		'#title' => t('Dojo Editor Profiles'),
-		'#description' => t('<p>Editor profiles allow you associate editor settings to specific pages, fields and access roles.  Editor settings include which toolbar commands are visible and visibility options.</p><p><a href="dojo/editor/add">Add new editor profile</a></p>')
+		'#description' => t('<p>Editor profiles allow you associate editor settings to specific pages, fields and access roles.  Editor settings include which toolbar commands are visible and visibility options.</p><p><a href="!add_url">Add new editor profile</a></p>', array('!add_url' => url('admin/settings/dojo/editor/add')))
 	);
 
 	$profiles = _dojo_editor_profiles_load();
