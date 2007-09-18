@@ -14,7 +14,7 @@ dependencies = {
 			]
 		},
 		{
-			name: "../../drupal.js",
+			name: "../../../../drupal/dojo-module.js",
 			resourceName: "drupal.drupal",
 			layerDependencies: [
 				"temp.layer"
