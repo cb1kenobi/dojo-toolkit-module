@@ -34,12 +34,34 @@ Save the file in the Dojo Module's directory, then extract the files:
   $ tar xvfz dojo-release-0.9.0-src.tar.gz
 
 *******************************************************************************
+Checking the Dojo Module Source
+*******************************************************************************
+
+In the /dojo/drupal directory, are four files called:
+
+  dojo-module-main.js
+  dojo-module-main.original.js
+  dojo-module-admin.js
+  dojo-module-admin.original.js
+
+When you perform a build, the original dojo-module-main.js and
+dojo-module-admin.js are destroyed and replaced with the new builds.  If you
+try to run a build again, it will fail.  Delete the dojo-module-main.js and the
+dojo-module-admin.js, then copy the dojo-module-main.build.js and
+dojo-module-admin.build.js and remove the ".original" from the file name.
+
+*******************************************************************************
 Building The dojo-0.9.0 Profile
 *******************************************************************************
 
 Go to the buildscripts directory:
 
   $ cd dojo-release-0.9.0-src/util/buildscripts
+
+Then execute the build:
+
+  $ ./build.sh profileFile=../../../profiles/dojo-0.9.0.profile.js \
+    releaseName=delete-me action=clean,release version=0.9.0-2.0
 
 *******************************************************************************
 Building The dojo-module Profile

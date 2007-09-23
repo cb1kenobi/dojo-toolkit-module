@@ -1,4 +1,5 @@
 dojo.provide("drupal.form.AutoComplete");
+
 dojo.require("dijit._Widget");
 dojo.require("dojo.fx");
 
