@@ -14,13 +14,23 @@ dependencies = {
 			]
 		},
 		{
-			name: "../../../../drupal/dojo-module.js",
-			resourceName: "drupal.drupal",
+			name: "../../../../drupal/dojo-module-main.js",
+			resourceName: "drupal.dojo-module-main",
 			layerDependencies: [
 				"temp.layer"
 			],
 			dependencies: [
-				"drupal.drupal"
+				"drupal.dojo-module-main"
+			]
+		},
+		{
+			name: "../../../../drupal/dojo-module-admin.js",
+			resourceName: "drupal.dojo-module-admin",
+			layerDependencies: [
+				"temp.layer"
+			],
+			dependencies: [
+				"drupal.dojo-module-admin"
 			]
 		}
 	],

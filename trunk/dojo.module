@@ -75,15 +75,18 @@ function dojo_menu($may_cache) {
 		$dojo_module_path = drupal_get_path('module', 'dojo');
 		$profile = _dojo_config_profiles_detect();
 		$build = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
-		$theme_path = substr($build, 1, strrpos($build, '/') - 1);
-		drupal_add_css(substr($theme_path, 0, strrpos($theme_path, '/')) . '/dijit/themes/tundra/tundra.css', 'core');
+		$theme_path = substr($build, 0, strrpos($build, '/'));
+		$theme_path = substr($theme_path, 0, strrpos($theme_path, '/')) . '/dijit/themes/tundra/tundra.css';
+
 		drupal_add_css($dojo_module_path . '/dojo-styles.css', 'core');
 		dojo_add_js('dojo/config/' . (isset($profile['revision']) ? $profile['revision'] : '0'), 'core');
 
 		// if the $build starts with "http", then treat it like a external script
 		if (stripos($build, 'http') !== FALSE || (strlen($build) > 1 && !file_exists(substr($build, 1)))) {
+			dojo_add_js('document.write("<style type=\"text/css\" media=\"all\">@import \"' . $theme_path . '\";</style>");', 'inline');
 			dojo_add_js('document.write("<scr"+"ipt type=\"text/javascript\" src=\"' . $build . '\"></scr"+"ipt>");', 'inline');
 		} else {
+			drupal_add_css($theme_path, 'core');
 			dojo_add_js($build, 'core');
 		}
 

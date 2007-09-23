@@ -207,7 +207,7 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 			$form['dijit_theme'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Dijit Theme'),
-				'#description' => t('Enter the theme to apply to all Dijit widgets.  Dijit provides two built-in themes: <code>tundra</code> and <code>noir</code>.'),
+				'#description' => t('Enter the theme to apply to all Dijit widgets.'),
 				'#collapsible' => TRUE
 			);
 
@@ -355,7 +355,7 @@ function _dojo_config_profiles_scan_builds_helper($path, $depth) {
 		$match = FALSE;
 		while ($file = readdir($dir)) {
 			$full_path = $path . '/' . $file;
-			if (is_file($full_path) && ereg('dojo.*\.js', $file)) {
+			if (is_file($full_path) && ereg('dojo.*\.js', $file) && strrpos($file, '~') != strlen($file) - 1) {
 				$builds['/' . $full_path] = '/' . $full_path;
 				$match = TRUE;
 			}
@@ -462,9 +462,7 @@ function _dojo_config_profiles_config_handler() {
 	$dojo_js = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
 	$dojo_module_path = drupal_get_path('module', 'dojo');
 	$dojo_src_path = substr($dojo_js, 0, strrpos($dojo_js, '/'));
-	if (file_exists($dojo_src_path . '/src')) {
-		$dojo_src_path .= '/src';
-	}
+	$dojo_src_path = substr($dojo_src_path, 0, strrpos($dojo_src_path, '/'));
 
 	// set the headers
 	header('Expires: ' . gmdate('D, d M Y H:i:s', time() + (24 * 60 * 60)) . ' GMT');
@@ -475,7 +473,10 @@ function _dojo_config_profiles_config_handler() {
 	echo 'var host=location.protocol+"//"+location.host;';
 
 	// render the djConfig
-	echo 'var djConfig={modulePaths:{"dojo":"' . $dojo_src_path . '",';
+	echo 'var djConfig={modulePaths:{';
+	echo '"dojo":"' . $dojo_src_path . '/dojo",';
+	echo '"dijit":"' . $dojo_src_path . '/dijit",';
+	echo '"dojox":"' . $dojo_src_path . '/dojox",';
 	echo '"drupal":host+"/' . $dojo_module_path . '/drupal"';
 
 	// scan the site folder for any dojo module paths we should include

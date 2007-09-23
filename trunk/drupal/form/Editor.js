@@ -1,4 +1,5 @@
 dojo.provide("drupal.form.Editor");
+
 dojo.require("dijit._Widget");
 dojo.require("dijit.Editor");
 dojo.require("dijit._editor.plugins.AlwaysShowToolbar");
@@ -120,6 +121,9 @@ dojo.declare(
 				dojo.style(this._containerTextArea, "display", "none");
 				dojo.style(this._containerEditor, "display", "");
 
+				var a = function(txt) { return txt.replace(/\n/g, "<br/>"); };
+				var b = function(txt) { return txt.replace(/\<br\s*\/?\>/ig, "\n"); };
+
 				this._editor = new dijit.Editor(
 					{ 	toolbarAlwaysVisible: true,
 						focusOnLoad: true,
@@ -128,8 +132,8 @@ dojo.declare(
 						plugins: this.plugins,
 						extraPlugins: ['dijit._editor.plugins.AlwaysShowToolbar'],
 						editingAreaStyleSheets: this._styleSheets,
-						contentPreFilters: [ function(txt) { return txt.replace(/\n/g, "<br/>"); } ],
-						contentPostFilters: [ function(txt) { return txt.replace(/\<br\s*\/?\>/ig, "\n"); } ]
+						contentPreFilters: [ a ],
+						contentPostFilters: [ b ]
 					},
 					this._containerEditor
 				);
