@@ -1,4 +1,4 @@
-dojo.provide("drupal.dojo-module-admin");
+dojo.provide("drupal.DojoModuleAdmin");
 
 dojo.require("drupal.PleaseWait");
 dojo.require("drupal.data.SvnStore");

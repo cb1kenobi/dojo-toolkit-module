@@ -5,32 +5,41 @@ dependencies = {
 			resourceName: "temp.layer",
 			discard: true,
 			dependencies: [
+				"dojo.fx",
+				"dojox.collections.ArrayList",
+				"dijit._Widget",
+				"dijit._Templated",
+				"dijit.form._FormWidget",
 				"dijit._editor.plugins.AlwaysShowToolbar",
 				"dijit._editor.plugins.EnterKeyHandling",
 				"dijit._editor.plugins.LinkDialog",
+				"dijit.Dialog",
+				"dijit.Tooltip",
 				"dijit.Tree",
 				"dojo.data.ItemFileWriteStore",
 				"dojox.collections.ArrayList"
 			]
 		},
 		{
-			name: "../../../../drupal/dojo-module-main.js",
-			resourceName: "drupal.dojo-module-main",
+			name: "../../../../drupal/DojoModuleMain.js",
+			resourceName: "drupal.DojoModuleMain",
 			layerDependencies: [
 				"temp.layer"
 			],
 			dependencies: [
-				"drupal.dojo-module-main"
+				"drupal.DojoModuleMainRequires",
+				"drupal.DojoModuleMain"
 			]
 		},
 		{
-			name: "../../../../drupal/dojo-module-admin.js",
-			resourceName: "drupal.dojo-module-admin",
+			name: "../../../../drupal/DojoModuleAdmin.js",
+			resourceName: "drupal.DojoModuleAdmin",
 			layerDependencies: [
 				"temp.layer"
 			],
 			dependencies: [
-				"drupal.dojo-module-admin"
+				"drupal.DojoModuleAdminRequires",
+				"drupal.DojoModuleAdmin"
 			]
 		}
 	],

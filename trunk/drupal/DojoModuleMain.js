@@ -1,4 +1,4 @@
-dojo.provide("drupal.dojo-module-main");
+dojo.provide("drupal.DojoModuleMain");
 
 dojo.require("drupal.form.AutoComplete");
 dojo.require("drupal.form.Editor");
