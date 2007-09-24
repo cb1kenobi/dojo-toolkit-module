@@ -1,6 +1,7 @@
 *******************************************************************************
 Dojo Toolkit Module
 *******************************************************************************
+
 The Dojo Toolkit (http://dojotoolkit.org) is the open source Javascript toolkit
 that makes professional web development better, easier, and faster. This module
 enhances Drupal by allowing content and modules to use the Dojo Toolkit to
@@ -21,6 +22,7 @@ For the latest version and documentation, please visit:
 *******************************************************************************
 Compatibility
 *******************************************************************************
+
 This module has been developed and tested on Drupal 5.1 and PHP 5.1.6 on Linux.
 
 This module also includes a front-end to the Dojo Subversion repository.  In
@@ -30,6 +32,7 @@ client installed.  This feature has only been tested with the Linux version.
 *******************************************************************************
 Install
 *******************************************************************************
+
 1. Extract the Dojo Toolkit Module into your Drupal modules directory.
 
 2. Enable the Dojo Toolkit Module on the [Administer > Site building > Modules]
@@ -42,6 +45,7 @@ Install
 *******************************************************************************
 Patching Dojo
 *******************************************************************************
+
 Not everything is perfect including the Dojo 0.9 release.  If you download a
 local copy of Dojo, and want the SVN repository to work, you need to manually
 patch the file /dojo-release-0.9.0/dijit/_tree/Controller.js.
@@ -71,8 +75,17 @@ with
     }
 
 *******************************************************************************
+Custom Builds
+*******************************************************************************
+
+You can perform a custom build of Dojo which will greatly improve the speed of
+your site on pages that use Dojo.  Please refer to the README.txt file in the
+"profiles" directory for instructions.
+
+*******************************************************************************
 License
 *******************************************************************************
+
 The Dojo Toolkit Module is licensed under GPL version 2.  This module does
 *not* include the actual Dojo Toolkit code, which is licensed under the
 Academic Free License v2.1.
@@ -80,5 +93,6 @@ Academic Free License v2.1.
 *******************************************************************************
 Credits
 *******************************************************************************
+
 Developed by Chris Barber <chris at cb1inc dot com>
 CB1, INC. http://cb1inc.com
