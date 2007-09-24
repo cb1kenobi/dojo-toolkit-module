@@ -24,7 +24,8 @@ dependencies = {
 			name: "../../../../drupal/DojoModuleMain.js",
 			resourceName: "drupal.DojoModuleMain",
 			layerDependencies: [
-				"temp.layer"
+				"temp.layer",
+				"drupal.DojoModuleMainRequires"
 			],
 			dependencies: [
 				"drupal.DojoModuleMainRequires",

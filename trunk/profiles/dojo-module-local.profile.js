@@ -1,17 +1,17 @@
 dependencies = {
 	layers: [
 		{
-			name: "../../../../drupal/dojo-module-main.js",
-			resourceName: "drupal.dojo-module-main",
+			name: "../../../../drupal/DojoModuleMain.js",
+			resourceName: "drupal.DojoModuleMain",
 			dependencies: [
-				"drupal.dojo-module-main"
+				"drupal.DojoModuleMain"
 			]
 		},
 		{
-			name: "../../../../drupal/dojo-module-admin.js",
-			resourceName: "drupal.dojo-module-admin",
+			name: "../../../../drupal/DojoModuleAdmin.js",
+			resourceName: "drupal.DojoModuleAdmin",
 			dependencies: [
-				"drupal.dojo-module-admin"
+				"drupal.DojoModuleAdmin"
 			]
 		}
 	],

@@ -366,7 +366,7 @@ function _dojo_config_profiles_scan_builds_helper($path, $depth) {
 			rewinddir($dir);
 			while ($file = readdir($dir)) {
 				$full_path = $path . '/' . $file;
-				if (!$match && $file[0] != '.' && is_dir($full_path)) {
+				if (!$match && $file != 'drupal' && $file != 'profiles' && $file[0] != '.' && is_dir($full_path)) {
 					$builds = array_merge($builds, _dojo_config_profiles_scan_builds_helper($full_path, $depth - 1));
 				}
 			}
