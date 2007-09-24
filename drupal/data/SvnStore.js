@@ -1,4 +1,5 @@
 dojo.provide("drupal.data.SvnStore");
+
 dojo.require("dojo.data.ItemFileWriteStore");
 
 dojo.declare(

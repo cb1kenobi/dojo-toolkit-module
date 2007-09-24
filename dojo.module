@@ -77,6 +77,9 @@ function dojo_menu($may_cache) {
 		$build = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
 		$theme_path = substr($build, 0, strrpos($build, '/'));
 		$theme_path = substr($theme_path, 0, strrpos($theme_path, '/')) . '/dijit/themes/tundra/tundra.css';
+		if (strpos($theme_path, '/') == 0) {
+			$theme_path = substr($theme_path, 1);
+		}
 
 		drupal_add_css($dojo_module_path . '/dojo-styles.css', 'core');
 		dojo_add_js('dojo/config/' . (isset($profile['revision']) ? $profile['revision'] : '0'), 'core');

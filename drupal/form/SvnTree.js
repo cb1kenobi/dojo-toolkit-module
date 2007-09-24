@@ -1,4 +1,5 @@
 dojo.provide("drupal.form.SvnTree");
+
 dojo.require("drupal.data.SvnStore");
 dojo.require("dijit.Tree");
 dojo.require("dijit.Tooltip");
