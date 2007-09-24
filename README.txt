@@ -43,12 +43,14 @@ Install
    information about how to configure and use the Dojo Toolkit module.
 
 *******************************************************************************
-Patching Dojo
+Patching Dojo - Dijit Tree Controller Bug
 *******************************************************************************
 
-Not everything is perfect including the Dojo 0.9 release.  If you download a
-local copy of Dojo, and want the SVN repository to work, you need to manually
-patch the file /dojo-release-0.9.0/dijit/_tree/Controller.js.
+Not everything is perfect including the Dojo 0.9 release.  If you use the CDN
+build, the SVN repository functionality will not work.  If you wish to use the
+SVN repository front-end, you will need to download Dojo, extract the files to
+the Dojo Module's directory, and then manually patch the file
+/dojo-release-0.9.0/dijit/_tree/Controller.js.
 
 Find and replace
 
