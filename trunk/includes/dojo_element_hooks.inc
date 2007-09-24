@@ -18,7 +18,7 @@ function _dojo_process_fieldset($element) {
 			break;
 		}
 
-		dojo_require_js('drupal.dojo-module-main');
+		dojo_require_js('drupal.DojoModuleMain');
 		dojo_create_widget_js($element, 'drupal.layout.CollapsiblePane');
 
 		if (!isset($element['#attributes']['class'])) {
@@ -38,11 +38,11 @@ function _dojo_process_fieldset($element) {
  */
 function _dojo_process_hidden($element) {
 	if ($element['#svnTree']) {
-		dojo_require_js('drupal.dojo-module-admin');
+		dojo_require_js('drupal.DojoModuleAdmin');
 		dojo_create_widget_js($element, 'drupal.form.SvnTree');
 	} else if ($element['#toolbar']) {
 		global $dojo_toolbar_plugins;
-		dojo_require_js('drupal.dojo-module-admin');
+		dojo_require_js('drupal.DojoModuleAdmin');
 		dojo_create_widget_js($element, 'drupal.form.CustomizeToolbar', array('toolbarPlugins' => $dojo_toolbar_plugins, 'defaultPlugins' => DOJO_DEFAULT_EDITOR_TOOLBAR));
 		$element['#value'] = $element['#selected_toolbar_buttons'];
 	}
@@ -55,7 +55,7 @@ function _dojo_process_hidden($element) {
 function _dojo_process_submit($element) {
 	if ($element['#please_wait']) {
 		$element['#id'] .= '_' + md5(mt_rand());
-		dojo_require_js('drupal.dojo-module-admin');
+		dojo_require_js('drupal.DojoModuleAdmin');
 		dojo_create_widget_js($element, 'drupal.PleaseWait');
 	}
 	return $element;
@@ -66,7 +66,7 @@ function _dojo_process_submit($element) {
  */
 function _dojo_process_textarea($element) {
 	if ($element['#googleMapKeyTable']) {
-		dojo_require_js('drupal.dojo-module-admin');
+		dojo_require_js('drupal.DojoModuleAdmin');
 		dojo_create_widget_js($element, 'drupal.form.GoogleMapKeyTable');
 		$element['#resizable'] = FALSE;
 	} elseif ($element['#resizable'] !== FALSE) {
@@ -97,7 +97,7 @@ function _dojo_process_textarea($element) {
 					$plugins[] = $dojo_toolbar_plugins[$indexes[$i]]['plugin'];
 				}
 
-				dojo_require_js('drupal.dojo-module-main');
+				dojo_require_js('drupal.DojoModuleMain');
 				dojo_create_widget_js($element, 'drupal.form.Editor',
 					array(
 						'showToggle' => $show_toggle,
@@ -117,7 +117,7 @@ function _dojo_process_textarea($element) {
 			$show_toggle = FALSE;
 		}
 
-		dojo_require_js('drupal.dojo-module-main');
+		dojo_require_js('drupal.DojoModuleMain');
 		dojo_create_widget_js($element, 'drupal.form.Editor', array('showToggle' => $show_toggle, 'defaultState' => FALSE));
 	}
 	return $element;
@@ -172,7 +172,7 @@ function _dojo_process_textfield($element) {
 			break;
 		}
 
-		dojo_require_js('drupal.dojo-module-main');
+		dojo_require_js('drupal.DojoModuleMain');
 		dojo_create_widget_js($element, 'drupal.form.AutoComplete', array('url' => check_url(url($element['#autocomplete_path']))));
 		$element['#autocomplete_path'] = FALSE;
 		$element['#attributes']['class'] .= ' form-autocomplete';
