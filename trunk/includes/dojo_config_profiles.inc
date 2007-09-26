@@ -477,7 +477,13 @@ function _dojo_config_profiles_config_handler() {
 	echo '"dojo":"' . $dojo_src_path . '/dojo",';
 	echo '"dijit":"' . $dojo_src_path . '/dijit",';
 	echo '"dojox":"' . $dojo_src_path . '/dojox",';
-	echo '"drupal":host+"/' . $dojo_module_path . '/drupal"';
+
+	// if we are using the CDN, we need to specify the full url of the drupal module directory
+	if (stripos($dojo_src_path, 'http') !== FALSE || !file_exists($dojo_src_path . '/drupal')) {
+		echo '"drupal":host+"/' . $dojo_module_path . '/drupal"';
+	} else {
+		echo '"drupal":"' . $dojo_src_path . '/drupal"';
+	}
 
 	// scan the site folder for any dojo module paths we should include
 	foreach (_dojo_config_profiles_scan_module_dirs() as $folder => $full_path) {

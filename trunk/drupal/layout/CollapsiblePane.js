@@ -1,7 +1,5 @@
 dojo.provide("drupal.layout.CollapsiblePane");
-
-dojo.require("dijit._Widget");
-dojo.require("dojo.fx");
+dojo.require("drupal.DojoModuleMainDeps");
 
 dojo.declare(
 	"drupal.layout.CollapsiblePane",

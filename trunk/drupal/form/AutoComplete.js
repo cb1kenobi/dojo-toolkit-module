@@ -1,7 +1,5 @@
 dojo.provide("drupal.form.AutoComplete");
-
-dojo.require("dijit._Widget");
-dojo.require("dojo.fx");
+dojo.require("drupal.DojoModuleMainDeps");
 
 dojo.declare(
 	"drupal.form.AutoComplete",

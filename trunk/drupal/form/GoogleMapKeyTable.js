@@ -1,7 +1,5 @@
 dojo.provide("drupal.form.GoogleMapKeyTable");
-
-dojo.require("dijit.form._FormWidget");
-dojo.require("dijit._Templated");
+dojo.require("drupal.DojoModuleAdminDeps");
 
 dojo.declare(
 	"drupal.form.GoogleMapKeyTable",
