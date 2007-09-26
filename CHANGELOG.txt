@@ -1,3 +1,7 @@
+Dojo Toolkit Module 2.0, 2007-09-24
+---------------------------------------
+- TODO!!!
+
 Dojo Toolkit Module 1.2, 2007-07-12
 ---------------------------------------
 - added uninstall logic

@@ -1,10 +1,5 @@
 dojo.provide("drupal.form.Editor");
-
-dojo.require("dijit._Widget");
-dojo.require("dijit.Editor");
-dojo.require("dijit._editor.plugins.AlwaysShowToolbar");
-dojo.require("dijit._editor.plugins.EnterKeyHandling");
-dojo.require("dijit._editor.plugins.LinkDialog");
+dojo.require("drupal.DojoModuleMainDeps");
 
 dojo.declare(
 	"drupal.form.Editor",
@@ -62,7 +57,7 @@ dojo.declare(
 			var host = location.protocol + "//" + location.host;
 			this._styleSheets = [];
 			for (var k in ss) {
-				this._styleSheets.push(host + k);
+				this._styleSheets.push((k.toLowerCase().indexOf("http") != -1 ? "" : host) + k);
 			}
 
 			this._textareaID = this.domNode.id;

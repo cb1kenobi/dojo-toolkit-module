@@ -1,8 +1,5 @@
 dojo.provide("drupal.form.CustomizeToolbar");
-
-dojo.require("dijit.form._FormWidget");
-dojo.require("dijit._Templated");
-dojo.require("dojox.collections.ArrayList");
+dojo.require("drupal.DojoModuleAdminDeps");
 
 dojo.declare(
 	"drupal.form.CustomizeToolbar",
