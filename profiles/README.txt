@@ -22,23 +22,6 @@ Save the file in the Dojo Module's directory, then extract the files:
   $ tar xvfz dojo-release-0.9.0-src.tar.gz
 
 *******************************************************************************
-Before Running a Build
-*******************************************************************************
-
-In the /dojo/drupal directory, are four files called:
-
-  DojoModuleMain.js
-  DojoModuleMain.original.js
-  DojoModuleAdmin.js
-  DojoModuleAdmin.original.js
-
-When you perform a build, the original DojoModuleMain.js and DojoModuleAdmin.js
-are destroyed and replaced with the new builds.  If you try to run a build a
-second time, it will fail.  Delete the DojoModuleMain.js and the
-DojoModuleAdmin.js, then copy the DojoModuleMain.original.js and
-DojoModuleAdmin.original.js and remove the ".original" from the file name.
-
-*******************************************************************************
 Building The dojo-module-local Profile
 *******************************************************************************
 
@@ -49,30 +32,12 @@ Go to the buildscripts directory:
 Then execute the build:
 
   $ ./build.sh profileFile=../../../profiles/dojo-module-local.profile.js \
-     action=clean,release version=0.9.0-2.0 releaseDir=../../../ releaseName=MyBuild
+     action=clean,release version=0.9.0-2.0 releaseDir=../../../ \
+     releaseName=MyBuild
 
-This will put the following files in the dojo-release-0.9.0-src/release
-directory:
-
-  nls      <dir>
-  DojoModuleAdmin.js
-  DojoModuleAdmin.js.uncompressed.js
-  DojoModuleMain.js
-  DojoModuleMain.js.uncompressed.js
-
-Since we only care about the compressed versions, we are interested in:
-
-  nls      <dir>
-  DojoModuleAdmin.js
-  DojoModuleMain.js
-
-Move the nls directory, DojoModuleAdmin.js, and DojoModuleMain.js files to the
-"drupal" directory in the Dojo Module directory.  You may delete the "release"
-directory in the dojo-release-0.9.0-src directory.
-
-From a web browser, go to the Dojo Toolit Module settings page, then update your
-build profile to select the build.  The "xd" files are used for the CDN and will
-be automatically loaded when a CDN Dojo build is selected.
+You can change the "releaseName" to whatever you like, but don't use spaces.
+When the build completes, go to the Dojo Module settings page and create a
+build profile.  From the Dojo Build field, select your new build from the menu.
 
 *******************************************************************************
 Building The dojo-module-cdn Profile
@@ -175,6 +140,5 @@ DojoModuleMain.xd.js files to the "drupal" directory in the Dojo Module
 directory.  You may delete the "release" directory in the
 dojo-release-0.9.0-src directory.
 
-From a web browser, go to the Dojo Toolit Module settings page, then update your
-build profile to select the build.  The "xd" files are used for the CDN and will
-be automatically loaded when a CDN Dojo build is selected.
+When the build completes, go to the Dojo Module settings page and create a
+build profile.  From the Dojo Build field, select your new build from the menu.
