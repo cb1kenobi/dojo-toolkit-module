@@ -1,6 +1,9 @@
-Dojo Toolkit Module 2.0, 2007-09-24
+Dojo Toolkit Module 2.0, 2007-09-27
 ---------------------------------------
-- TODO!!!
+- added support for Dojo 0.9.0
+- added support for defining a Dijit theme
+- includes build profiles for local and CDN custom builds
+- fixed bug with support for prefixed table names
 
 Dojo Toolkit Module 1.2, 2007-07-12
 ---------------------------------------
