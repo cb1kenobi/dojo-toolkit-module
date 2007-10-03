@@ -77,6 +77,8 @@ function _dojo_process_textarea($element) {
 			break;
 		}
 
+		global $dojo_toolbar_plugins;
+
 		$editor_profiles = _dojo_editor_profiles_load();
 		$element['#resizable'] = FALSE;
 
@@ -91,7 +93,6 @@ function _dojo_process_textarea($element) {
 					$indexes = explode(',', $editor_profile['toolbar']);
 				}
 
-				global $dojo_toolbar_plugins;
 				$plugins = array();
 				for ($i = 0; $i < count($indexes); $i++) {
 					$plugins[] = $dojo_toolbar_plugins[$indexes[$i]]['plugin'];
@@ -117,8 +118,20 @@ function _dojo_process_textarea($element) {
 			$show_toggle = FALSE;
 		}
 
+		$indexes = explode(',', DOJO_DEFAULT_EDITOR_TOOLBAR);
+		$plugins = array();
+		for ($i = 0; $i < count($indexes); $i++) {
+			$plugins[] = $dojo_toolbar_plugins[$indexes[$i]]['plugin'];
+		}
+
 		dojo_require_js('drupal.DojoModuleMain');
-		dojo_create_widget_js($element, 'drupal.form.Editor', array('showToggle' => $show_toggle, 'defaultState' => FALSE));
+		dojo_create_widget_js($element, 'drupal.form.Editor',
+			array(
+				'showToggle' => $show_toggle,
+				'defaultState' => FALSE,
+				'plugins' => $plugins
+			)
+		);
 	}
 	return $element;
 }

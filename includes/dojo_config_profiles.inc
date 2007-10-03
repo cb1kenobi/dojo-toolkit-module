@@ -491,13 +491,11 @@ function _dojo_config_profiles_config_handler() {
 	}
 
 	echo '}';
-	echo ',dojoRichTextFrameUrl:host+"/' . $dojo_module_path . '/drupal/richtextframe.html"';
-	echo ',dojoCreateLinkUrl:host+"/' . $dojo_module_path . '/drupal/createlink.html"';
-	echo ',dojoInsertImageUrl:host+"/' . $dojo_module_path . '/drupal/insertimage.html"';
 
 	if (isset($profile['is_debug']) && $profile['is_debug'] == 1) {
 		echo ',isDebug:true';
 	}
+
 	if (isset($profile['google_map_key']) && strlen($profile['google_map_key'])) {
 		$doc = $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
 		$keys = explode('|', $profile['google_map_key']);
@@ -511,6 +509,7 @@ function _dojo_config_profiles_config_handler() {
 			}
 		}
 	}
+
 	echo '};';
 
 	exit();
