@@ -23,11 +23,17 @@ For the latest version and documentation, please visit:
 Compatibility
 *******************************************************************************
 
-This module has been developed and tested on Drupal 5.1 and PHP 5.1.6 on Linux.
+This module has been developed and tested on the following configuration:
+ - Drupal 5.1 and PHP 5.1.8 on Linux
+ - Drupal 5.2 and PHP 5.2.1 on Linux
+
+It has not been tested with Windows, so it is very possible it won't work.
+There are portions of PHP code that rely on PHP 5, but with minor changes
+should work with PHP 4.
 
 This module also includes a front-end to the Dojo Subversion repository.  In
 order for this functionality to work, you must have the Subversion command-line
-client installed.  This feature has only been tested with the Linux version.
+client installed.
 
 *******************************************************************************
 Install
