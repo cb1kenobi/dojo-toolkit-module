@@ -479,7 +479,7 @@ function _dojo_config_profiles_config_handler() {
 	echo '"dojox":"' . $dojo_src_path . '/dojox",';
 
 	// if we are using the CDN, we need to specify the full url of the drupal module directory
-	if (stripos($dojo_src_path, 'http') !== FALSE || !file_exists($dojo_src_path . '/drupal')) {
+	if (stripos($dojo_src_path, 'http') !== FALSE || !file_exists(substr($dojo_src_path, 1) . '/drupal')) {
 		echo '"drupal":host+"/' . $dojo_module_path . '/drupal"';
 	} else {
 		echo '"drupal":"' . $dojo_src_path . '/drupal"';
