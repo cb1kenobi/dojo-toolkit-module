@@ -8,7 +8,7 @@ dojo.declare(
 		// params
 		showToggle: true,
 		defaultState: false,
-		plugins: null,
+		plugins: [],
 
 		// members
 		_styleSheets: null,
