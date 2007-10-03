@@ -1,6 +1,12 @@
 dependencies = {
 	layers: [
 		{
+			name: "dojo.js",
+			dependencies: [
+				"dojo.parser"
+			]
+		},
+		{
 			name: "../drupal/DojoModuleMain.js",
 			resourceName: "drupal.DojoModuleMain",
 			dependencies: [
