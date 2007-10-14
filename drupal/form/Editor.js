@@ -134,7 +134,7 @@ dojo.declare(
 				);
 
 				dojo.query("html", this._editor.document)[0].className = "dijitEditorInner";
-				dojo.connect(this._editor, "onBlur", this, "_onEditorBlur");
+				dojo.connect(this._editor, "_onBlur", this, "_onEditorBlur");
 				setTimeout(dojo.hitch(this, function() { this._editor.onClick(); } ), 1000);
 
 				this._setToggleLink("Disable rich text editor");
