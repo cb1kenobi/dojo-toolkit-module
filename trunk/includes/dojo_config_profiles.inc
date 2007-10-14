@@ -310,6 +310,14 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 				'#description' => t('Displays Dojo debug messages.'),
 			);
 
+			$form['djconfig']['parse_onload'] = array(
+				'#type' => 'radios',
+				'#title' => t('Debug'),
+				'#default_value' => isset($profile['parse_onload']) ? $profile['parse_onload'] : 0,
+				'#options' => array(t('Disabled'), t('Enabled')),
+				'#description' => t('Parse widgets and declarations onload'),
+			);
+
 			$form['djconfig']['google_map_key'] = array(
 				'#type' => 'textarea',
 				'#googleMapKeyTable' => TRUE,
@@ -494,6 +502,10 @@ function _dojo_config_profiles_config_handler() {
 
 	if (isset($profile['is_debug']) && $profile['is_debug'] == 1) {
 		echo ',isDebug:true';
+	}
+
+	if (isset($profile['parse_onload']) && $profile['parse_onload'] == 1) {
+		echo ',parseOnLoad:true';
 	}
 
 	if (isset($profile['google_map_key']) && strlen($profile['google_map_key'])) {
