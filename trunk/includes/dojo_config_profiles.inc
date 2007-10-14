@@ -312,7 +312,7 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 
 			$form['djconfig']['parse_onload'] = array(
 				'#type' => 'radios',
-				'#title' => t('Debug'),
+				'#title' => t('Parse Onload'),
 				'#default_value' => isset($profile['parse_onload']) ? $profile['parse_onload'] : 0,
 				'#options' => array(t('Disabled'), t('Enabled')),
 				'#description' => t('Parse widgets and declarations onload'),
