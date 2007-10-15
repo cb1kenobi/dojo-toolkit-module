@@ -11,13 +11,13 @@ Once this module is enabled, you can immediately benefit from Dojo's rich text
 editor.  To better control settings, you can define Config Profiles and Editor
 Profiles and associate them to access roles.
 
-After the Dojo Toolkit module is configured, you can use Dojo in your content,
+After the Dojo Toolkit Module is configured, you can use Dojo in your content,
 modules or themes.  But wait, there's more!  Now you can also start using other
 Drupal modules and themes that benefit from Dojo!
 
 For the latest version and documentation, please visit:
 
-  http://cb1inc.com/projects/drupal/dojo-module
+  http://cb1inc.com/open-source/dojo-toolkit-module
 
 *******************************************************************************
 Compatibility
@@ -46,7 +46,21 @@ Install
 
 3. Go to the [Administer > Site configuration > Dojo Toolkit] page to define
    your config and editor profiles.  Refer to the online documentation for more
-   information about how to configure and use the Dojo Toolkit module.
+   information about how to configure and use the Dojo Toolkit Module.
+
+*******************************************************************************
+Upgrading
+*******************************************************************************
+
+1. Backup your existing "dojo" module directory.
+
+2. Extract the Dojo Toolkit Module into your Drupal modules directory.
+
+3. Go to the [Administer > Site configuration > Dojo Toolkit] page, then
+   re-save each build profile.  Next, re-save each editor profile, but before
+   saving, restore the default toolbar settings and redefine them.  Refer to
+   the online documentation for more information about how to configure and use
+   the Dojo Toolkit Module.
 
 *******************************************************************************
 Patching Dojo - Dijit Tree Controller Bug
@@ -94,13 +108,10 @@ your site on pages that use Dojo.  Please refer to the README.txt file in the
 License
 *******************************************************************************
 
-The Dojo Toolkit Module is licensed under GPL version 2.  This module does
-*not* include the actual Dojo Toolkit code, which is licensed under the
-Academic Free License v2.1.
+The Dojo Toolkit Module is licensed under the AFL and BSD licenses.  This
+code does *not* include the actual Dojo Toolkit code.  Please refer to the
+LICENSE.txt for more information.
 
-*******************************************************************************
-Credits
-*******************************************************************************
-
-Developed by Chris Barber <chris at cb1inc dot com>
+Copyright (c) 2006-2007, Chris Barber <chris at cb1inc dot com>
 CB1, INC. http://cb1inc.com
+All Rights Reserved.
