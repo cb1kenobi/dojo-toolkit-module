@@ -21,6 +21,7 @@ dojo.declare(
 				labelAttr: "name",
 				typeAttr: "type",
 				store: new drupal.data.SvnStore({ url: "/dojo/svn" }),
+				persist: false,
 				getIconClass: function() { return closed; }
 			}, d);
 
