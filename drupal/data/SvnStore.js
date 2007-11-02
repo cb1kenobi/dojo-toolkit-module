@@ -3,13 +3,11 @@ dojo.require("drupal.DojoModuleAdminDeps");
 
 dojo.declare(
 	"drupal.data.SvnStore",
-	dojo.data.ItemFileWriteStore,
+	dojo.data.ItemFileReadStore,
 	{
 		getValues: function(/* item */ parentItem, 
 							/* attribute-name-string */ attribute){
-			//	summary: 
-			//		See dojo.data.api.Read.getValues()
-	
+
 			this._assertIsItem(parentItem);
 			this._assertIsAttribute(attribute);
 
