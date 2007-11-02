@@ -242,8 +242,7 @@ class _dojo_svn_listing {
 				break;
 			case 'name':
 				$this->current_item->id = $this->path . '/' . $this->current_data;
-				$stub = array('id' => uniqid(), 'name' => $this->current_data . '_stub', 'type' => 'stub', 'path' => $this->path . '/' . $this->current_data);
-				$this->current_item->children = array($stub);
+				$this->current_item->children = array();
 			default:
 				$this->current_item->$tag = $this->current_data;
 				break;
