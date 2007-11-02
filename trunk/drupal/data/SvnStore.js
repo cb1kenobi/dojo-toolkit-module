@@ -36,7 +36,7 @@ dojo.declare(
 			if (attr == "children") {
 				return true;
 			}
-			return this.getValues(item, attribute).length > 0;
+			return this.inherited("hasAttribute", arguments);
 		}
 	}
 );
