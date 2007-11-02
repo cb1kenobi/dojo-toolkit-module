@@ -1,6 +1,6 @@
 dojo.provide("drupal.DojoModuleAdminDeps");
 
-dojo.require("dojo.data.ItemFileWriteStore");
+dojo.require("dojo.data.ItemFileReadStore");
 dojo.require("dojox.collections.ArrayList");
 dojo.require("dijit.form._FormWidget");
 dojo.require("dijit._Templated");
