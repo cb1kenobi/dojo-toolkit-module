@@ -8,7 +8,7 @@ dojo.declare(
 	"drupal.PleaseWait",
 	[dijit._Widget, dijit._Templated],
 	{
-		templateString: '<span id="Shib"><input dojoAttachPoint="_button" type="button" /><div dojoAttachPoint="_contents"><span class="Indicator">Please wait...</span></div></span>',
+		templateString: '<span id="Shib"><input dojoAttachPoint="_button" type="button"/><div dojoAttachPoint="_contents"><span class="Indicator">Please wait...</span></div></span>',
 
 		_button: null,
 		_contents: null,
@@ -32,7 +32,7 @@ dojo.declare(
 			dojo.connect(this._button, "onclick", this, "_showDialog");
 
 			this._dialog = new dijit.Dialog({
-				templateString: "<div class=\"dijitDialogBox\"><div dojoAttachPoint=\"containerNode\"></div></div>",
+				templateString: '<div class="dijitDialogBox"><div dojoAttachPoint="containerNode"></div></div>'
 			}, this._contents);
 		},
 

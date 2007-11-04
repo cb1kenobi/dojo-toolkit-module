@@ -75,6 +75,8 @@ function dojo_menu($may_cache) {
 			'access' => user_access('administer filters')
 		);
 	} else {
+		dojo_add_js('document.documentElement.className="js";', 'inline');
+
 		$profile = _dojo_config_profiles_detect();
 		if (isset($profile['dojo_force_load']) && $profile['dojo_force_load']) {
 			_dojo_include();
@@ -116,7 +118,6 @@ function _dojo_include() {
 			dojo_add_js($build, 'core');
 		}
 
-		dojo_add_js('document.documentElement.className="js";', 'inline');
 		dojo_add_js('dojo.addOnLoad(function(){dojo.addClass(dojo.body(),"' . (isset($profile['theme']) ? $profile['theme'] : DEFAULT_DIJIT_THEME) . '");});', 'inline');
 		dojo_require_js('dojo.parser');
 	}
@@ -146,7 +147,6 @@ function dojo_add_js($data, $type) {
  */
 function dojo_require_js($package) {
 	_dojo_include();
-
 	static $dojo_loaded_packages = array();
 	if (!isset($dojo_loaded_packages[$package])) {
 		dojo_add_js('dojo.require("' . $package . '");', 'inline');
@@ -159,7 +159,6 @@ function dojo_require_js($package) {
  */
 function dojo_register_module_path_js($module, $path) {
 	_dojo_include();
-
 	dojo_add_js('dojo.registerModulePath("' . $module . '", location.protocol+"//"+location.host+"/' . $path . '");', 'inline');
 }
 

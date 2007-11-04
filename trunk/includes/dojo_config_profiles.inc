@@ -7,12 +7,12 @@
  */
 
 define('DEFAULT_DIJIT_THEME', 'tundra');
-define('DOJO_JS', 'http://o.aolcdn.com/dojo/0.9.0/dojo/dojo.xd.js');
+define('DOJO_JS', 'http://o.aolcdn.com/dojo/1.0.0/dojo/dojo.xd.js');
 
 // Array of all xdomain hosting providers
 global $dojo_xdomain_urls;
 $dojo_xdomain_urls = array(
-	'http://o.aolcdn.com/dojo/0.9.0/dojo/dojo.xd.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 0.9.0'
+	'http://o.aolcdn.com/dojo/1.0.0/dojo/dojo.xd.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 1.0.0'
 );
 
 /**
@@ -284,7 +284,7 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 			$form['build'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Dojo Build'),
-				'#description' => t('<p>Dojo\'s source can be compiled into a build containing only the packages that you need. You can make your own build using the build scripts included with .</p>'),
+				'#description' => t('<p>Select the Dojo build to use below. You can use a CDN build or you can choose to make a local build containing only the packages that you need. To create a custom build, check out the <a href="/' . drupal_get_path('module', 'dojo') . '/profiles/README.txt">README file</a>.</p>'),
 				'#collapsible' => TRUE
 			);
 
