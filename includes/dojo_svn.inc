@@ -143,7 +143,7 @@ function _dojo_svn_form($form_values = NULL) {
 			$form['dojo_svn_folders'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Subversion Settings'),
-				'#description' => t('<p>The Dojo source code is organized by directories.  The <code>trunk</code> contains the latest development code.  The selected directory will be checked out to the "/' . drupal_get_path('module', 'dojo') . '" directory.</p>')
+				'#description' => t('<p>The Dojo source code is organized by directories.  The three main projects have their own folders: <code>dojo</code>, <code>dijit</code>, and <code>dojox</code>. You can check out all three projects at once by selecting <code>/view/anon/all/trunk</code>. The selected directory will be checked out to the "/' . drupal_get_path('module', 'dojo') . '" directory.</p>')
 			);
 
 			$form['dojo_svn_folders']['dojo_svn_folder'] = array(
