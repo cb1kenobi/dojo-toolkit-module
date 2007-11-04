@@ -41,7 +41,7 @@ function _dojo_config_profiles_load($profile_name = NULL) {
 	}
 
 	global $user;
-	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_config_profiles} P LEFT JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN {dojo_config_roles} R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight', implode(',', array_keys($user->roles)));
+	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_config_profiles} P LEFT JOIN {dojo_config_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN {dojo_config_roles} R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight DESC', implode(',', array_keys($user->roles)));
 
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {
@@ -207,7 +207,7 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 			$form['dijit_theme'] = array(
 				'#type' => 'fieldset',
 				'#title' => t('Dijit Theme'),
-				'#description' => t('Enter the theme to apply to all Dijit widgets.'),
+				'#description' => t('Enter the theme to apply to all Dijit widgets. You may enter a space delimited list of all CSS classes which are to added to the &lt;body&gt;\'s class. The theme is only applied on pages which Dojo is loaded.'),
 				'#collapsible' => TRUE
 			);
 
@@ -271,6 +271,14 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 				'#default_value' => $override_jquery,
 				'#options' => array('editor' => 'Resizable textareas/rich text editor', 'collapsiblepane' => 'Collapsible panes/fieldsets', 'autocomplete' => 'Autocomplete fields'),
 				'#description' =>  t('Keeping the original jQuery form elements will automatically load jQuery even if you chose to only load Dojo.')
+			);
+
+			$form['toolkits']['dojo_force_load'] = array(
+				'#type' => 'radios',
+				'#title' => t('Force Dojo'),
+				'#default_value' => isset($profile['dojo_force_load']) ? $profile['dojo_force_load'] : 0,
+				'#options' => array(t('Only load on pages that use Dojo'), t('Load on every page')),
+				'#description' => t('<p>If more than one build profile is set to force loading, then the profile with the largest weight is will be used.</p>')
 			);
 
 			$form['build'] = array(
@@ -465,17 +473,17 @@ function _dojo_config_profiles_detect() {
  * Builds the Dojo config.
  */
 function _dojo_config_profiles_config_handler() {
+	// set the headers
+	header('Expires: ' . gmdate('D, d M Y H:i:s', time() + (24 * 60 * 60)) . ' GMT');
+	header('Cache-Control: max-age=3600, must-revalidate');
+	header('Content-type: text/javascript');
+
 	$profile = _dojo_config_profiles_detect();
 
 	$dojo_js = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
 	$dojo_module_path = drupal_get_path('module', 'dojo');
 	$dojo_src_path = substr($dojo_js, 0, strrpos($dojo_js, '/'));
 	$dojo_src_path = substr($dojo_src_path, 0, strrpos($dojo_src_path, '/'));
-
-	// set the headers
-	header('Expires: ' . gmdate('D, d M Y H:i:s', time() + (24 * 60 * 60)) . ' GMT');
-	header('Cache-Control: max-age=3600, must-revalidate');
-	header('Content-type: text/javascript');
 
 	// render the host
 	echo 'var host=location.protocol+"//"+location.host;';
