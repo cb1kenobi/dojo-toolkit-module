@@ -51,7 +51,7 @@ function _dojo_editor_profiles_load($profile_name = NULL) {
 	}
 
 	global $user;
-	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_editor_profiles} P LEFT JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN {dojo_editor_roles} R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight', implode(',', array_keys($user->roles)));
+	$results = db_query('SELECT P.name, P.weight, P.settings, R2.rid FROM {dojo_editor_profiles} P LEFT JOIN {dojo_editor_roles} R ON P.name = R.name AND R.rid IN (%s) LEFT JOIN {dojo_editor_roles} R2 ON P.name = R2.name ' . ($profile_name ? "WHERE P.name = '" . $profile_name . "'" : '') . ' ORDER BY P.weight DESC', implode(',', array_keys($user->roles)));
 
 	$profiles = array();
 	while ($data = db_fetch_object($results)) {

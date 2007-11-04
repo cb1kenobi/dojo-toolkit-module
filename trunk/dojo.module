@@ -9,6 +9,9 @@ require_once('includes/dojo_svn.inc');
 define('DOJO_URL_CUSTOMIZING_BUILDS', 'http://dojotoolkit.org/docs/book/part6');
 define('DOJO_URL_DEBUGGING', 'http://dojotoolkit.org/node/136');
 
+global $dojo_js_loaded;
+$dojo_js_loaded = false;
+
 /**
  * Displays the help content
  */
@@ -38,6 +41,7 @@ function dojo_perm() {
  * Implementation of hook_requirements
  */
 function dojo_requirements() {
+	_dojo_include();
 	return array("dojo" => array('title' => 'Dojo Toolkit', 'severity' => 1, 'value' => '<span id="dojo_version">Javascript not enabled.</span><script type="text/javascript">(function(){var e=document.getElementById("dojo_version"),p=e.parentNode.parentNode;var m="Dojo not found! Make sure the build for your config profile is valid.";var s="error";if(typeof dojo!="undefined"){m=dojo.version.toString();s="ok";}e.innerHTML=m;p.className=p.className.replace(/warning/ig,s);})();</script>'));
 }
 
@@ -71,10 +75,29 @@ function dojo_menu($may_cache) {
 			'access' => user_access('administer filters')
 		);
 	} else {
-		// force Dojo to load on all pages
+		$profile = _dojo_config_profiles_detect();
+		if (isset($profile['dojo_force_load']) && $profile['dojo_force_load']) {
+			_dojo_include();
+		}
+	}
+
+	_dojo_profiles_menu($items, $may_cache);
+	_dojo_svn_menu($items, $may_cache);
+	return $items;
+}
+
+/**
+ * Loads dojo.js before any other files are added
+ */
+function _dojo_include() {
+	global $dojo_js_loaded;
+	if (!$dojo_js_loaded) {
+		$dojo_js_loaded = true;
+
 		$dojo_module_path = drupal_get_path('module', 'dojo');
 		$profile = _dojo_config_profiles_detect();
 		$build = isset($profile['dojo_js']) ? $profile['dojo_js'] : DOJO_JS;
+
 		$theme_path = substr($build, 0, strrpos($build, '/'));
 		$theme_path = substr($theme_path, 0, strrpos($theme_path, '/')) . '/dijit/themes/tundra/tundra.css';
 		if (strpos($theme_path, '/') == 0) {
@@ -97,16 +120,14 @@ function dojo_menu($may_cache) {
 		dojo_add_js('dojo.addOnLoad(function(){dojo.addClass(dojo.body(),"' . (isset($profile['theme']) ? $profile['theme'] : DEFAULT_DIJIT_THEME) . '");});', 'inline');
 		dojo_require_js('dojo.parser');
 	}
-
-	_dojo_profiles_menu($items, $may_cache);
-	_dojo_svn_menu($items, $may_cache);
-	return $items;
 }
 
 /**
  * Helper function to add Javascript files
  */
 function dojo_add_js($data, $type) {
+	_dojo_include();
+
 	$p = strpos($data, '/');
 	if ($type == 'core' && $p === 0) {
 		$data = substr($data, $p + 1);
@@ -124,6 +145,8 @@ function dojo_add_js($data, $type) {
  * Helper function to include Dojo packages
  */
 function dojo_require_js($package) {
+	_dojo_include();
+
 	static $dojo_loaded_packages = array();
 	if (!isset($dojo_loaded_packages[$package])) {
 		dojo_add_js('dojo.require("' . $package . '");', 'inline');
@@ -135,6 +158,8 @@ function dojo_require_js($package) {
  * Helper function to register dojo module paths
  */
 function dojo_register_module_path_js($module, $path) {
+	_dojo_include();
+
 	dojo_add_js('dojo.registerModulePath("' . $module . '", location.protocol+"//"+location.host+"/' . $path . '");', 'inline');
 }
 
@@ -142,6 +167,8 @@ function dojo_register_module_path_js($module, $path) {
  * Helper function to create widgets
  */
 function dojo_create_widget_js(&$element, $type, $params = NULL) {
+	_dojo_include();
+
 	$id = $element['#id'];
 	if (!$id) {
 		$id = 'temp_id_' . md5(mt_rand());
