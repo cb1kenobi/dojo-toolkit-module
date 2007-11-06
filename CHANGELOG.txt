@@ -1,9 +1,11 @@
 Dojo Toolkit Module 2.1, 2007-11-06
 ---------------------------------------
-- added support for Dojo 1.0.0
+- upgraded Dojo code to Dojo 1.0.0
 - added option to force Dojo to load on all pages
 - fixed bug with applying profile weights
 - fixed bug with Dojo Toolkit Module settings page in IE
+- fixed bug displaying duplicate roles for each profile on settings page
+- fixed typos in documentation
 
 Dojo Toolkit Module 2.0, 2007-09-27
 ---------------------------------------
