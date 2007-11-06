@@ -15,11 +15,15 @@ Downloading the Dojo source
 
 In order to perform a custom Dojo build, download the source release from:
 
-  http://download.dojotoolkit.org/release-0.9.0/dojo-release-0.9.0-src.tar.gz
+  http://download.dojotoolkit.org/release-1.0.0/dojo-release-1.0.0-src.tar.gz
 
 Save the file in the Dojo Module's directory, then extract the files:
 
-  $ tar xvfz dojo-release-0.9.0-src.tar.gz
+  $ tar xvfz dojo-release-1.0.0-src.tar.gz
+
+*******************************************************************************
+Fixing The
+*******************************************************************************
 
 *******************************************************************************
 Building The dojo-module-local Profile
@@ -27,12 +31,12 @@ Building The dojo-module-local Profile
 
 Go to the buildscripts directory:
 
-  $ cd dojo-release-0.9.0-src/util/buildscripts
+  $ cd dojo-release-1.0.0-src/util/buildscripts
 
 Then execute the build:
 
   $ ./build.sh profileFile=../../../profiles/dojo-module-local.profile.js \
-     action=clean,release version=0.9.0-2.0 releaseDir=../../../ \
+     action=clean,release version=1.0.0-2.1 releaseDir=../../../ \
      releaseName=MyBuild
 
 You can change the "releaseName" to whatever you like, but don't use spaces.
@@ -45,15 +49,15 @@ Building The dojo-module-cdn Profile
 
 Go to the buildscripts directory:
 
-  $ cd dojo-release-0.9.0-src/util/buildscripts
+  $ cd dojo-release-1.0.0-src/util/buildscripts
 
 Then execute the build:
 
   $ ./build.sh profileFile=../../../profiles/dojo-module-cdn.profile.js \
     releaseName=delete-me action=clean,release loader=xdomain \
-    xdDojoPath=http://o.aolcdn.com/dojo/0.9.0 version=0.9.0-2.0-xdomain
+    xdDojoPath=http://o.aolcdn.com/dojo/1.0.0 version=1.0.0-2.1-xdomain
 
-This will put the following files in the dojo-release-0.9.0-src/release
+This will put the following files in the dojo-release-1.0.0-src/release
 directory:
 
   DojoModuleAdmin.js
@@ -138,7 +142,7 @@ make those changes on a single line.
 After the requires have been added, move the DojoModuleAdmin.xd.js and
 DojoModuleMain.xd.js files to the "drupal" directory in the Dojo Module
 directory.  You may delete the "release" directory in the
-dojo-release-0.9.0-src directory.
+dojo-release-1.0.0-src directory.
 
 When the build completes, go to the Dojo Module settings page and create a
 build profile.  From the Dojo Build field, select your new build from the menu.

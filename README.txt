@@ -63,40 +63,6 @@ Upgrading
    the Dojo Toolkit Module.
 
 *******************************************************************************
-Patching Dojo - Dijit Tree Controller Bug
-*******************************************************************************
-
-Not everything is perfect including the Dojo 0.9 release.  If you use the CDN
-build, the SVN repository functionality will not work.  If you wish to use the
-SVN repository front-end, you will need to download Dojo, extract the files to
-the Dojo Module's directory, and then manually patch the file
-/dojo-release-0.9.0/dijit/_tree/Controller.js.
-
-Find and replace
-
-    function onItem(item){
-        if(--_waitCount == 0){
-            // all nodes have been loaded, send them to the tree
-            node.unmarkProcessing();
-            _this._onLoadAllItems(node, childItems);
-        }
-    }
-
-with
-
-    function onItem(item){
-        if(--_waitCount == 0){
-            // all nodes have been loaded, send them to the tree
-            childItems = store.getValues(parentItem, _this.childrenAttr);
-            node.isFolder = childItems.length > 0;
-            node.unmarkProcessing();
-            if (node.isFolder) {
-                _this._onLoadAllItems(node, childItems);
-            }
-        }
-    }
-
-*******************************************************************************
 Custom Builds
 *******************************************************************************
 
