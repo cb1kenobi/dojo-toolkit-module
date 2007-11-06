@@ -1,8 +1,5 @@
 dojo.provide("drupal.PleaseWait");
-
-dojo.require("dijit._Widget");
-dojo.require("dijit._Templated");
-dojo.require("dijit.Dialog");
+dojo.require("drupal.DojoModuleAdminDeps");
 
 dojo.declare(
 	"drupal.PleaseWait",
