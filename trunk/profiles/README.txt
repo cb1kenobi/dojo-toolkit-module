@@ -22,8 +22,16 @@ Save the file in the Dojo Module's directory, then extract the files:
   $ tar xvfz dojo-release-1.0.0-src.tar.gz
 
 *******************************************************************************
-Fixing The
+Build Bug Workaround
 *******************************************************************************
+
+Before running a build, there was a pretty big bug that shipped with 1.0.0 that
+needs to be fixed.
+
+This bug has been fixed the day after the 1.0.0, so new versions will work.
+
+Edit the file /dijit/form/ValidationTextBox.js.  There are 2 instances of the
+text "\x00".  Change both instances to "$_unset_$".
 
 *******************************************************************************
 Building The dojo-module-local Profile
@@ -87,7 +95,7 @@ Locate the following code which is actually on a single line:
     ["provide","drupal.form.AutoComplete"],
     ["provide","drupal.form.Editor"],
     ["provide","drupal.layout.CollapsiblePane"],
-    ["provide","drupal.DojoModuleMain"]
+    ["provide","drupal.DojoModuleAdmin"]
   ]
 
 After the last provide statement, change it so it looks like:
@@ -96,14 +104,15 @@ After the last provide statement, change it so it looks like:
     ["provide","drupal.form.AutoComplete"],
     ["provide","drupal.form.Editor"],
     ["provide","drupal.layout.CollapsiblePane"],
-    ["provide","drupal.DojoModuleMain"],
+    ["provide","drupal.DojoModuleAdmin"],
     ["require","dijit._Widget"],
     ["require","dijit._Templated"],
     ["require","dijit.form._FormWidget"],
     ["require","dijit.Dialog"],
     ["require","dijit.Tooltip"],
     ["require","dijit.Tree"],
-    ["require","dojo.data.ItemFileWriteStore"]
+    ["require","dojo.data.ItemFileReadStore"],
+    ["require","dojox.collections.ArrayList"]
   ]
 
 Don't forget to put a comma after the last provide statement.  You'll want to
@@ -132,8 +141,7 @@ After the last provide statement, change it so it looks like:
     ["require","dijit.Editor"],
     ["require","dijit._editor.plugins.AlwaysShowToolbar"],
     ["require","dijit._editor.plugins.EnterKeyHandling"],
-    ["require","dijit._editor.plugins.LinkDialog"],
-    ["require","dojox.collections.ArrayList"]
+    ["require","dijit._editor.plugins.LinkDialog"]
   ]
 
 Don't forget to put a comma after the last provide statement.  You'll want to
