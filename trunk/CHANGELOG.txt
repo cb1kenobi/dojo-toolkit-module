@@ -1,4 +1,4 @@
-Dojo Toolkit Module 2.1, 2007-11-06
+Dojo Toolkit Module 2.1, 2007-11-08
 ---------------------------------------
 - upgraded Dojo code to Dojo 1.0.0
 - added option to force Dojo to load on all pages
@@ -6,6 +6,7 @@ Dojo Toolkit Module 2.1, 2007-11-06
 - fixed bug with Dojo Toolkit Module settings page in IE
 - fixed bug displaying duplicate roles for each profile on settings page
 - fixed typos in documentation
+- added stripos() function for PHP4 users
 
 Dojo Toolkit Module 2.0, 2007-09-27
 ---------------------------------------
