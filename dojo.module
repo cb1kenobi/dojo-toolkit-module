@@ -1,6 +1,15 @@
 <?php
 // $Id:
 
+/**
+ * Define the stripos() function for PHP 4 users
+ */
+if (!function_exists("stripos")) {
+	function stripos($haystack, $needle){
+		return strpos($haystack, stristr($haystack, $needle));
+	}
+}
+
 require_once('includes/dojo_element_hooks.inc');
 require_once('includes/dojo_profiles.inc');
 require_once('includes/dojo_svn.inc');
