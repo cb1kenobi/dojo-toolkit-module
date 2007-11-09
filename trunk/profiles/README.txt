@@ -2,9 +2,9 @@
 Introduction
 *******************************************************************************
 
-The Dojo Module provides two build profiles: one for CDN builds and one for
-local builds.  In order to perform a custom Dojo build, you need to download
-the source from the Dojo Toolkit's website.
+The Dojo Toolkit Module provides two build profiles: one for CDN builds and one
+for local builds.  In order to perform a custom Dojo build, you need to
+download the source from the Dojo Toolkit's website.
 
 These instructions are intended for Linux/Unix like systems, but the concepts
 should work under Windows.  The $ signifies the command prompt.
@@ -17,9 +17,9 @@ In order to perform a custom Dojo build, download the source release from:
 
   http://download.dojotoolkit.org/release-1.0.0/dojo-release-1.0.0-src.tar.gz
 
-Save the file in the Dojo Module's directory, then extract the files:
+Save the file in the Dojo Toolkit Module's directory, then extract the files:
 
-  $ tar xvfz dojo-release-1.0.0-src.tar.gz
+  $ tar -xvfz dojo-release-1.0.0-src.tar.gz
 
 *******************************************************************************
 Build Bug Workaround
@@ -28,10 +28,10 @@ Build Bug Workaround
 Before running a build, there was a pretty big bug that shipped with 1.0.0 that
 needs to be fixed.
 
-This bug has been fixed the day after the 1.0.0, so new versions will work.
-
 Edit the file /dijit/form/ValidationTextBox.js.  There are 2 instances of the
 text "\x00".  Change both instances to "$_unset_$".
+
+This bug has been fixed the day after 1.0.0 shipped, so new versions will work.
 
 *******************************************************************************
 Building The dojo-module-local Profile
@@ -48,8 +48,9 @@ Then execute the build:
      releaseName=MyBuild
 
 You can change the "releaseName" to whatever you like, but don't use spaces.
-When the build completes, go to the Dojo Module settings page and create a
-build profile.  From the Dojo Build field, select your new build from the menu.
+When the build completes, go to the Dojo Toolkit Module settings page and
+create a build profile.  From the Dojo Build field, select your new build from
+the menu.
 
 *******************************************************************************
 Building The dojo-module-cdn Profile
@@ -148,9 +149,10 @@ Don't forget to put a comma after the last provide statement.  You'll want to
 make those changes on a single line.
 
 After the requires have been added, move the DojoModuleAdmin.xd.js and
-DojoModuleMain.xd.js files to the "drupal" directory in the Dojo Module
+DojoModuleMain.xd.js files to the "drupal" directory in the Dojo Toolkit Module
 directory.  You may delete the "release" directory in the
 dojo-release-1.0.0-src directory.
 
-When the build completes, go to the Dojo Module settings page and create a
-build profile.  From the Dojo Build field, select your new build from the menu.
+When the build completes, go to the Dojo Toolkit Module settings page and
+create a build profile.  From the Dojo Build field, select your new build from
+the menu.
