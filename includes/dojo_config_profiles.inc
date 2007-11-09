@@ -355,9 +355,9 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
  */
 function _dojo_config_profiles_scan_build_dirs() {
 	return array_merge(
-		_dojo_config_profiles_scan_builds_helper(drupal_get_path('module', 'dojo'), 3),
-		_dojo_config_profiles_scan_builds_helper('sites/all', 3),
-		_dojo_config_profiles_scan_builds_helper(conf_path(), 3)
+		_dojo_config_profiles_scan_builds_helper(drupal_get_path('module', 'dojo'), 6),
+		_dojo_config_profiles_scan_builds_helper('sites/all', 6),
+		_dojo_config_profiles_scan_builds_helper(conf_path(), 6)
 	);
 }
 
@@ -371,7 +371,7 @@ function _dojo_config_profiles_scan_builds_helper($path, $depth) {
 		$match = FALSE;
 		while ($file = readdir($dir)) {
 			$full_path = $path . '/' . $file;
-			if (is_file($full_path) && ereg('dojo.*\.js', $file) && strrpos($file, '~') != strlen($file) - 1) {
+			if (is_file($full_path) && ereg('^dojo.*\.js$', $file) && strrpos($file, '~') != strlen($file) - 1) {
 				$builds['/' . $full_path] = '/' . $full_path;
 				$match = TRUE;
 			}

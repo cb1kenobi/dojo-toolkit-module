@@ -20,11 +20,11 @@ dojo.declare(
 				typeAttr: "type",
 				store: new drupal.data.SvnStore({ url: "/dojo/svn" }),
 				persist: false,
-				getIconClass: function() { return "dojoSvnTreeFolderClosed"; }
+				getIconClass: function() { return "dojoSvnTreeFolderClosed"; },
 			}, d);
 
 			this._setupNode(this._tree);
-			
+			dojo.connect(this._tree, "onClick", function(item) { self.domNode.value = item.id; });
 			dojo.addClass(this._tree.domNode, "dojoSvnTree");
 		},
 
