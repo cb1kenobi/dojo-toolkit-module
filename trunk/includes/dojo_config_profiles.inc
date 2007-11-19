@@ -289,7 +289,7 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 			);
 
 			global $dojo_xdomain_urls;
-			$builds = array('Local Builds' => _dojo_config_profiles_scan_build_dirs(), 'XDomain Builds' => $dojo_xdomain_urls);
+			$builds = array('Local Builds' => _dojo_config_profiles_scan_builds_helper('.', 12), 'XDomain Builds' => $dojo_xdomain_urls);
 
 			if (!count($builds['Local Builds'])) {
 				$desc = '<p>No local Dojo builds found. There are circumstances where you may want to host the Dojo Javascript files on this server.  You can download a Dojo build from <a href="http://download.dojotoolkit.org" target="_blank">http://download.dojotoolkit.org</a>.  It is recommended to use the <a href="http://download.dojotoolkit.org/release-0.9.0/dojo-release-0.9.0.tar.gz">Dojo 0.9.0</a> release.</p>';
@@ -351,17 +351,6 @@ function _dojo_config_profiles_form(&$form, $action = 'add', $profile_name = NUL
 }
 
 /**
- * Scans the dojo module directory and sites folders for dojo builds.
- */
-function _dojo_config_profiles_scan_build_dirs() {
-	return array_merge(
-		_dojo_config_profiles_scan_builds_helper(drupal_get_path('module', 'dojo'), 6),
-		_dojo_config_profiles_scan_builds_helper('sites/all', 6),
-		_dojo_config_profiles_scan_builds_helper(conf_path(), 6)
-	);
-}
-
-/**
  * Helper function for finding the dojo builds.
  */
 function _dojo_config_profiles_scan_builds_helper($path, $depth) {
@@ -372,7 +361,7 @@ function _dojo_config_profiles_scan_builds_helper($path, $depth) {
 		while ($file = readdir($dir)) {
 			$full_path = $path . '/' . $file;
 			if (is_file($full_path) && ereg('^dojo.*\.js$', $file) && strrpos($file, '~') != strlen($file) - 1) {
-				$builds['/' . $full_path] = '/' . $full_path;
+				$builds[substr($full_path, 1)] = substr($full_path, 1);
 				$match = TRUE;
 			}
 		}
