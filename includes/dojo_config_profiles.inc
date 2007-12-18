@@ -7,7 +7,7 @@
  */
 
 define('DEFAULT_DIJIT_THEME', 'tundra');
-define('DOJO_JS', 'http://o.aolcdn.com/dojo/1.0.0/dojo/dojo.xd.js');
+define('DOJO_JS', 'http://o.aolcdn.com/dojo/1.0.2/dojo/dojo.xd.js');
 
 // Array of all xdomain hosting providers
 global $dojo_xdomain_urls;
