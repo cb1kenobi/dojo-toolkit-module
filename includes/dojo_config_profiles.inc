@@ -12,7 +12,8 @@ define('DOJO_JS', 'http://o.aolcdn.com/dojo/1.0.0/dojo/dojo.xd.js');
 // Array of all xdomain hosting providers
 global $dojo_xdomain_urls;
 $dojo_xdomain_urls = array(
-	'http://o.aolcdn.com/dojo/1.0.0/dojo/dojo.xd.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 1.0.0'
+	'http://o.aolcdn.com/dojo/1.0.0/dojo/dojo.xd.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 1.0.0',
+	'http://o.aolcdn.com/dojo/1.0.2/dojo/dojo.xd.js' => 'AOL\'s Content Delivery Network (CDN) Dojo 1.0.2'
 );
 
 /**
