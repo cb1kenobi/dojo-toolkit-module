@@ -69,6 +69,12 @@ function dojo_update_1() {
 	return _system_update_utf8(array('dojo_config_profiles', 'dojo_config_role', 'dojo_editor_profiles', 'dojo_editor_role'));
 }
 
+/* todo...
+function dojo_update_2() {
+	// need to get all config and build profiles, then resave them
+}
+*/
+
 /**
  * Implementation of hook_uninstall().
  */

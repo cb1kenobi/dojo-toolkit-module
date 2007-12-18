@@ -32,12 +32,17 @@ $dojo_toolbar_plugins = array(
 	array('description' => 'Align Right', 'plugin' => 'justifyRight', 'class' => 'dijitEditorIconJustifyRight'),
 	array('description' => 'Justify', 'plugin' => 'justifyFull', 'class' => 'dijitEditorIconJustifyFull'),
 	array('description' => 'Insert/Edit Link', 'plugin' => array('name' => 'dijit._editor.plugins.LinkDialog'), 'class' => 'dijitEditorIconCreateLink')
+	/* ,
+	array('description' => 'Text Color', 'plugin' => array('name' => 'dijit._editor.plugins.TextColor'), 'class' => 'dijitEditorIconForeColor'),
+	array('description' => 'Font', 'plugin' => array('name' => 'dijit._editor.plugins.FontChoice'))
+	*/
 );
 
 /**
  * Defines editor profiles specific menu items.
  */
 function _dojo_editor_profiles_menu(&$items, $may_cache) {
+	// nothing
 }
 
 /**
