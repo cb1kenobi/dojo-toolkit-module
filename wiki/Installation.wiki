@@ -1,3 +1,4 @@
+#labels Featured
 = Before You Begin =
 
 The Dojo Toolkit Module requires that you are running Drupal 5.x. This module was developed and tested on Apache 2, PHP 5, and MySQL 5 in a Linux environment. It has not been tested on any other configuration, so consider yourself warned.
