@@ -12,4 +12,4 @@ Dojo and jQuery can coexist at the same time, but the problem is file sizes, tra
 
 By enabling the Dojo Toolkit Module, most places that use jQuery have been replaced with Dojo code. This way, only the Dojo files need to be loaded and thus the page will load faster. If a non-core module requires an external script that uses jQuery, then jQuery will be automatically loaded.
 
-For a full tour of the jQuery replacements, continue on to the [Tour of Features].
+For a full tour of the jQuery replacements, continue on to the [TourOfFeatures Tour of Features].
