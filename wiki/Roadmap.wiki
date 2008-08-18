@@ -1,6 +1,6 @@
 Unfortunately, this module is no longer actively being developed.  Here's some ideas for future additions:
 
-  * Add support for Drupal 6
+  * Add support for Drupal 6+
   * Add support for debug at all costs
   * Upgrading automatically migrates existing build/editor profiles
   * Add support for Dojo 1.2+
