@@ -1,3 +1,4 @@
+#labels Featured
 = Overview =
 
 The Dojo Toolkit Module is a Drupal module that enhances content, themes, and other modules.
